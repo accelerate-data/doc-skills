@@ -1,0 +1,31 @@
+{
+  "generated_at": "2026-04-15T00:00:00Z",
+  "repo_root": "doc-skills",
+  "primary_languages": ["Markdown", "JSON"],
+  "applications": [
+    {
+      "name": "doc-skills plugin",
+      "type": "shared plugin source",
+      "description": "Single plugin-source repository with Claude and Codex manifests, canonical skills under skills/."
+    }
+  ],
+  "modules": {
+    "claude_manifest": {
+      "path": ".claude-plugin/plugin.json",
+      "description": "Claude plugin manifest."
+    },
+    "codex_manifest": {
+      "path": ".codex-plugin/plugin.json",
+      "description": "Codex plugin manifest."
+    },
+    "skills": {
+      "path": "skills/",
+      "description": "Canonical skill directories: create-spec, update-spec, write-design-doc, write-user-guide, writing-ai-prompts."
+    }
+  },
+  "key_directories": {
+    "skills/": "All skill content owned by this plugin repo",
+    ".claude-plugin/": "Claude plugin manifest",
+    ".codex-plugin/": "Codex plugin manifest"
+  }
+}

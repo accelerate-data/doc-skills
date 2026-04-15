@@ -1,0 +1,25 @@
+{
+  "name": "ad-docs",
+  "description": "Create and maintain specs, design docs, user guides, and AI prompts for codebases.",
+  "author": {
+    "name": "Accelerate Data"
+  },
+  "repository": "https://github.com/accelerate-data/doc-skills",
+  "license": "MIT",
+  "keywords": [
+    "skills",
+    "documentation",
+    "specs",
+    "codex",
+    "claude-code"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Doc Skills",
+    "shortDescription": "Documentation authoring skills.",
+    "developerName": "Accelerate Data",
+    "category": "Documentation",
+    "capabilities": [],
+    "screenshots": []
+  }
+}
