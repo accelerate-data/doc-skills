@@ -1,6 +1,7 @@
 {
-  "name": "ad-docs",
+  "name": "doc-skills",
   "description": "Create and maintain specs, design docs, user guides, and AI prompts for codebases.",
+  "version": "1.0.1",
   "author": {
     "name": "Accelerate Data"
   },

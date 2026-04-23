@@ -28,3 +28,5 @@ Single plugin-source repo for documentation skills.
 ## Conventions
 
 - Keep all skill directories under `skills/`.
+- Keep `.claude-plugin/plugin.json` and `.codex-plugin/plugin.json` on the same plugin name and version.
+- When plugin content or metadata changes, bump both manifest versions together and run `python3 scripts/validate_plugin_manifests.py`.
