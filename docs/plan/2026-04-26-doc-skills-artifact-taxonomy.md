@@ -350,13 +350,16 @@ Expected: PASS after obsolete skills are removed and runtime wording is fixed.
 - Create: `tests/evals/assertions/schema-helpers.js`
 - Create: `tests/evals/assertions/check-authoring-functional-spec-contract.js`
 - Create: `tests/evals/assertions/check-authoring-design-spec-contract.js`
-- Create: `tests/evals/assertions/check-doc-skills-routing-contract.js`
+- Create: `tests/evals/assertions/check-write-user-guide-contract.js`
+- Create: `tests/evals/assertions/check-writing-ai-prompts-contract.js`
 - Create: `tests/evals/prompts/skill-authoring-functional-spec.txt`
 - Create: `tests/evals/prompts/skill-authoring-design-spec.txt`
-- Create: `tests/evals/prompts/doc-skills-routing.txt`
+- Create: `tests/evals/prompts/skill-write-user-guide.txt`
+- Create: `tests/evals/prompts/skill-writing-ai-prompts.txt`
 - Create: `tests/evals/packages/authoring-functional-spec/skill-authoring-functional-spec.yaml`
 - Create: `tests/evals/packages/authoring-design-spec/skill-authoring-design-spec.yaml`
-- Create: `tests/evals/packages/doc-skills-routing/doc-skills-routing.yaml`
+- Create: `tests/evals/packages/write-user-guide/skill-write-user-guide.yaml`
+- Create: `tests/evals/packages/writing-ai-prompts/skill-writing-ai-prompts.yaml`
 - Create: `tests/evals/scripts/opencode-cli-provider.js`
 - Create: `tests/evals/scripts/promptfoo.sh`
 - Create: `tests/evals/scripts/check-skill-eval-coverage.js`
@@ -387,10 +390,11 @@ Create `tests/evals/package.json`:
   "private": true,
   "description": "Promptfoo eval harness for doc-skills",
   "scripts": {
-    "eval": "npm run eval:authoring-functional-spec && npm run eval:authoring-design-spec && npm run eval:doc-skills-routing && npm run eval:coverage",
+    "eval": "npm run eval:authoring-functional-spec && npm run eval:authoring-design-spec && npm run eval:write-user-guide && npm run eval:writing-ai-prompts && npm run eval:coverage",
     "eval:authoring-functional-spec": "./scripts/promptfoo.sh eval --no-cache -c packages/authoring-functional-spec/skill-authoring-functional-spec.yaml",
     "eval:authoring-design-spec": "./scripts/promptfoo.sh eval --no-cache -c packages/authoring-design-spec/skill-authoring-design-spec.yaml",
-    "eval:doc-skills-routing": "./scripts/promptfoo.sh eval --no-cache -c packages/doc-skills-routing/doc-skills-routing.yaml",
+    "eval:write-user-guide": "./scripts/promptfoo.sh eval --no-cache -c packages/write-user-guide/skill-write-user-guide.yaml",
+    "eval:writing-ai-prompts": "./scripts/promptfoo.sh eval --no-cache -c packages/writing-ai-prompts/skill-writing-ai-prompts.yaml",
     "eval:coverage": "node scripts/check-skill-eval-coverage.js",
     "view": "./scripts/promptfoo.sh view"
   },
@@ -578,9 +582,10 @@ Add an eval prompt and assertion that checks:
 - flow docs route to `authoring-functional-spec`
 - design specs route to `authoring-design-spec`
 - design specs require an existing canonical functional spec
-- implementation plans route to `superpowers:writing-plans`
-- user guides route to `write-user-guide`
-- workflows support Claude Code and Codex
+- each skill owns its own standalone routing and negative-boundary cases
+- user guides route to `write-user-guide` inside the `write-user-guide` package
+- prompt-writing routes to `writing-ai-prompts` inside the `writing-ai-prompts`
+  package
 
 - [ ] **Step 6: Add root eval scripts**
 
@@ -592,7 +597,8 @@ Root `package.json` should expose:
     "eval": "npm --prefix tests/evals run eval",
     "eval:authoring-functional-spec": "npm --prefix tests/evals run eval:authoring-functional-spec",
     "eval:authoring-design-spec": "npm --prefix tests/evals run eval:authoring-design-spec",
-    "eval:doc-skills-routing": "npm --prefix tests/evals run eval:doc-skills-routing",
+    "eval:write-user-guide": "npm --prefix tests/evals run eval:write-user-guide",
+    "eval:writing-ai-prompts": "npm --prefix tests/evals run eval:writing-ai-prompts",
     "eval:coverage": "npm --prefix tests/evals run eval:coverage"
   }
 }
@@ -605,15 +611,12 @@ uncovered skills:
 
 ```json
 {
-  "uncovered_skills": [
-    "write-user-guide",
-    "writing-ai-prompts"
-  ]
+  "uncovered_skills": []
 }
 ```
 
-`authoring-functional-spec` and `authoring-design-spec` must not appear in the
-baseline because both have eval packages in this change.
+No skill should appear in the baseline once all four skills have standalone eval
+packages.
 
 - [ ] **Step 8: Run coverage gate**
 
@@ -680,7 +683,8 @@ Run:
 ```bash
 npm run eval:authoring-functional-spec
 npm run eval:authoring-design-spec
-npm run eval:doc-skills-routing
+npm run eval:write-user-guide
+npm run eval:writing-ai-prompts
 ```
 
 Expected: Promptfoo evals pass. If OpenCode/provider credentials are not

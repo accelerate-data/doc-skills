@@ -5,8 +5,9 @@ You are evaluating the `authoring-functional-spec` skill workflow for this scena
 Skill contract:
 
 - The skill authors or updates top-level, behavior-focused functional specs only.
+- It triggers for functional docs, behavior specs, journey specs, and PRD-adjacent product flows.
 - The canonical artifact model is one flow, one functional spec, and many possible design docs.
-- It is not a design spec, implementation plan, status-update workflow, or PRD authoring workflow; those downstream artifacts must link back to the functional spec.
+- It is not a design spec, implementation plan, status-update workflow, PRD market-positioning workflow, user guide workflow, or AI prompt-writing workflow; those downstream artifacts must link back to the functional spec.
 - Precondition checks verify `gws`, `gws auth status`, git checkout status, and that the origin repo is one of studio, skill-builder, domain-cicd, or migration-utility.
 - Precondition checks also verify required cross-skill handoffs are available through the runtime skill/tool registry: `superpowers:brainstorming` and `superpowers:verification-before-completion`. If unavailable, abort before writing.
 - It identifies a canonical ID from the invocation or asks exactly which canonical ID to author.
@@ -44,6 +45,11 @@ Return JSON only with this shape:
   "aborts_outside_allowed_repos": false,
   "checks_required_skill_availability": false,
   "aborts_when_required_skill_missing": false,
+  "routes_functional_docs_to_authoring_functional_spec": false,
+  "rejects_design_specs": false,
+  "rejects_implementation_plans": false,
+  "rejects_user_guides": false,
+  "rejects_prompt_writing_requests": false,
   "one_flow_one_functional_spec_many_design_docs": false,
   "asks_for_canonical_id_when_missing": false,
   "lists_candidate_ids_for_current_repo": false,

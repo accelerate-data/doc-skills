@@ -25,6 +25,8 @@ function staticContractReason() {
       'Code grounding is expected to come from the primary repo',
       'secondary helper code',
       'docs/functional/<canonical-id>/README.md',
+      'End-user help pages',
+      'AI prompt-writing requests',
       'update that file in place',
       'do not create',
       'alternate',

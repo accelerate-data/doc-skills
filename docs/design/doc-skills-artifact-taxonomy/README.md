@@ -109,12 +109,14 @@ Initial eval packages:
   `engineering-skills/tests/evals/packages/authoring-flow-spec/`, then adapted
   to `authoring-functional-spec`.
 - `authoring-design-spec` added in this repo for the design-layer wrapper.
-- `doc-skills-routing` added in this repo to verify artifact routing:
-  - flow docs route to `authoring-functional-spec`
-  - design specs route to `authoring-design-spec`
-  - implementation plans route to `superpowers:writing-plans`
-  - user guides route to `write-user-guide`
-  - shared workflows support Claude Code and Codex
+- `write-user-guide` added in this repo for standalone user-guide routing,
+  exact-UI-label grounding, existing-page updates, and help-link integration.
+- `writing-ai-prompts` added in this repo for standalone prompt-writing routing,
+  target-tool clarification, output shape, and prompt-safety boundaries.
+
+Routing and negative-boundary cases belong in the owning skill's eval package.
+There is no separate plugin-level routing eval because the plugin is only
+packaging; each skill must stand on its own.
 
 The eval framework copy should include:
 
@@ -126,6 +128,8 @@ The eval framework copy should include:
 - `tests/evals/assertions/schema-helpers.js`
 - the copied `authoring-functional-spec` assertion, prompt, and package
 - the new `authoring-design-spec` assertion, prompt, and package
+- the new `write-user-guide` assertion, prompt, and package
+- the new `writing-ai-prompts` assertion, prompt, and package
 
 The coverage gate should allow temporary uncovered skills through an explicit
 baseline. After this change, `authoring-functional-spec` and `authoring-design-spec`

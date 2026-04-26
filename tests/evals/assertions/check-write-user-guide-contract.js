@@ -4,35 +4,31 @@ const path = require('path');
 
 const ROOT = path.resolve(__dirname, '../../..');
 
-function read(relativePath) {
-  return fs.readFileSync(path.join(ROOT, relativePath), 'utf8');
-}
-
 function staticContractReason() {
-  const combined = [
-    read('README.md'),
-    read('CLAUDE.md'),
-    read('repo-map.json'),
-    read('skills/authoring-functional-spec/SKILL.md'),
-    read('skills/authoring-design-spec/SKILL.md'),
-    read('skills/write-user-guide/SKILL.md'),
-    read('skills/writing-ai-prompts/SKILL.md'),
-  ].join('\n');
+  const content = fs.readFileSync(
+    path.join(ROOT, 'skills/write-user-guide/SKILL.md'),
+    'utf8',
+  );
   const required = [
-    'authoring-functional-spec',
-    'authoring-design-spec',
-    'write-user-guide',
-    'writing-ai-prompts',
-    'superpowers:writing-plans',
-    'existing canonical functional spec',
+    'name: write-user-guide',
+    'Use when creating or updating end-user help pages',
+    'docs/user-guide/',
+    'Functional specs',
+    'Design specs',
+    'Implementation plans',
+    'AI prompt-writing requests',
+    'update if exists',
+    'Inspect the relevant React components',
+    'EXACT text from the source code',
+    'No code',
+    'docs/.vitepress/config.ts',
+    'src/lib/help-urls.ts',
+    '<HelpIcon>',
   ];
   for (const phrase of required) {
-    if (!combined.includes(phrase)) {
-      return `routing surfaces are missing required anchor: ${phrase}`;
+    if (!content.includes(phrase)) {
+      return `skills/write-user-guide/SKILL.md is missing required anchor: ${phrase}`;
     }
-  }
-  if (combined.includes('skills/authoring-flow-spec/SKILL.md')) {
-    return 'routing surfaces still reference skills/authoring-flow-spec/SKILL.md';
   }
   return null;
 }
@@ -65,5 +61,5 @@ module.exports = (output, context) => {
     }
   }
 
-  return { pass: true, score: 1, reason: 'doc-skills routing contract matched expected behavior' };
+  return { pass: true, score: 1, reason: 'write-user-guide contract matched expected behavior' };
 };

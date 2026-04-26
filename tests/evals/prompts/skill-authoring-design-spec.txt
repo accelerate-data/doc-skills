@@ -5,7 +5,9 @@ You are evaluating the `authoring-design-spec` skill workflow for this scenario:
 Skill contract:
 
 - The skill authors or updates developer-facing design specs under docs/design only.
+- It triggers for design specs and technical design docs that sit below an existing canonical functional spec.
 - The canonical artifact model is one flow, one functional spec, and many possible design docs.
+- It rejects functional-spec authoring, implementation plans, user guides, and AI prompt-writing requests.
 - It requires a canonical ID.
 - It must find and read the existing canonical functional spec under docs/functional before proceeding.
 - It fetches the Sheet row for the canonical flow, verifies the current repo matches the Sheet repo, and writes design docs only in that Sheet repo.
@@ -38,6 +40,11 @@ Return JSON only with this shape:
 
 {
   "asks_for_canonical_id": false,
+  "routes_design_specs_to_authoring_design_spec": false,
+  "rejects_functional_spec_authoring": false,
+  "rejects_implementation_plans": false,
+  "rejects_user_guides": false,
+  "rejects_prompt_writing_requests": false,
   "one_flow_one_functional_spec_many_design_docs": false,
   "requires_existing_functional_spec": false,
   "aborts_when_functional_spec_missing": false,

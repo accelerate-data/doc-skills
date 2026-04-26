@@ -26,6 +26,18 @@ defaultTest:
       value: file://../../assertions/check-authoring-functional-spec-contract.js
 
 tests:
+  - description: "standalone discovery - functional artifacts route here and non-FS artifacts do not"
+    vars:
+      scenario: |-
+        - The user asks for a functional spec, behavior spec, journey spec, or PRD-adjacent product flow under docs/functional.
+        - In separate requests, the user asks for a design spec, an implementation plan, a user guide page, or a prompt for another AI tool.
+        - Classify whether this skill owns the functional artifact request and rejects the non-functional-spec requests.
+      expect_routes_functional_docs_to_authoring_functional_spec: "true"
+      expect_rejects_design_specs: "true"
+      expect_rejects_implementation_plans: "true"
+      expect_rejects_user_guides: "true"
+      expect_rejects_prompt_writing_requests: "true"
+
   - description: "preconditions — validates tooling, auth, git checkout, and allowed repo"
     vars:
       scenario: |-

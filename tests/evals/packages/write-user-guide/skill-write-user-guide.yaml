@@ -1,0 +1,67 @@
+# yaml-language-server: $schema=https://promptfoo.dev/config-schema.json
+description: "write-user-guide skill - standalone user-guide authoring contract"
+
+prompts:
+  - id: write-user-guide
+    label: write-user-guide
+    raw: file://../../prompts/skill-write-user-guide.txt
+
+providers:
+  - id: file://../../scripts/opencode-cli-provider.js
+    config:
+      provider_id: opencode
+      model: gpt-5-nano
+      working_dir: ../..
+      max_turns: 12
+      tools:
+        read: true
+        grep: true
+        glob: true
+        list: true
+        bash: true
+
+defaultTest:
+  assert:
+    - type: javascript
+      value: file://../../assertions/check-write-user-guide-contract.js
+
+tests:
+  - description: "standalone discovery - user guides route here and non-guide artifacts do not"
+    vars:
+      scenario: |-
+        - The user asks for an end-user guide page, a feature help page, or documentation for a UI screen under docs/user-guide.
+        - In separate requests, the user asks for a functional spec, design spec, implementation plan, or prompt for another AI tool.
+        - Classify whether this skill owns user-guide authoring and rejects the non-user-guide requests.
+      expect_routes_user_guides_to_write_user_guide: "true"
+      expect_rejects_functional_spec_authoring: "true"
+      expect_rejects_design_specs: "true"
+      expect_rejects_implementation_plans: "true"
+      expect_rejects_prompt_writing_requests: "true"
+
+  - description: "target page - updates existing guide instead of creating duplicates"
+    vars:
+      scenario: |-
+        - The user asks to document the domain settings screen.
+        - docs/user-guide/settings/domains.md already exists.
+        - The skill should update the existing page rather than create another page for the same screen.
+      expect_updates_existing_user_guide_when_present: "true"
+
+  - description: "source-grounded writing - exact UI labels and states"
+    vars:
+      scenario: |-
+        - The user asks for a guide page for a React screen with buttons, fields, placeholders, loading states, errors, disabled controls, and dialogs.
+        - The skill should inspect the React source and use exact UI text instead of guessing.
+      expect_studies_ui_source_before_drafting: "true"
+      expect_uses_exact_ui_labels: "true"
+      expect_documents_visual_states: "true"
+      expect_excludes_code_and_api_details: "true"
+
+  - description: "closeout - guide navigation and help link integration"
+    vars:
+      scenario: |-
+        - The guide page is new.
+        - The repo uses VitePress sidebar config and a help URL mapping.
+        - The matching UI screen may not yet have a HelpIcon.
+      expect_updates_vitepress_sidebar: "true"
+      expect_updates_help_url_mapping: "true"
+      expect_checks_or_adds_help_icon: "true"

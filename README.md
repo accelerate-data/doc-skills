@@ -11,12 +11,16 @@ Create and maintain functional specs, design specs, user guides, and AI prompts 
 | `write-user-guide` | Create or update user guide pages under `docs/user-guide/` |
 | `writing-ai-prompts` | Generate surgical, token-efficient prompts |
 
-## Artifact Routing
+## Skill Entry Points
+
+Each skill owns its trigger and negative-boundary contract. The plugin only packages
+the skills; it does not provide a separate routing workflow.
 
 - Functional docs, behavior specs, journey specs, and PRD-adjacent product flows: use `authoring-functional-spec`.
 - Design specs: use `authoring-design-spec`; it requires an existing canonical functional spec.
 - Implementation plans: use `superpowers:writing-plans`; this plugin does not duplicate that workflow.
 - User guides: use `write-user-guide`.
+- AI prompt-writing requests: use `writing-ai-prompts`.
 
 ## Install
 

@@ -36,6 +36,11 @@ def test_authoring_functional_spec_eval_covers_flow_selection_and_traceability()
         prompt + assertion,
         [
             "one_flow_one_functional_spec_many_design_docs",
+            "routes_functional_docs_to_authoring_functional_spec",
+            "rejects_design_specs",
+            "rejects_implementation_plans",
+            "rejects_user_guides",
+            "rejects_prompt_writing_requests",
             "functional_spec_lives_in_sheet_repo",
             "updates_existing_spec_in_place",
             "never_creates_duplicate_functional_spec",
@@ -70,6 +75,11 @@ def test_authoring_design_spec_eval_covers_code_and_related_design_selection():
         prompt + assertion,
         [
             "one_flow_one_functional_spec_many_design_docs",
+            "routes_design_specs_to_authoring_design_spec",
+            "rejects_functional_spec_authoring",
+            "rejects_implementation_plans",
+            "rejects_user_guides",
+            "rejects_prompt_writing_requests",
             "design_doc_lives_in_sheet_repo",
             "verifies_current_repo_matches_sheet_repo",
             "confirms_before_functional_spec_update",
@@ -82,5 +92,79 @@ def test_authoring_design_spec_eval_covers_code_and_related_design_selection():
             "ignores_unrelated_design_docs",
             "includes_accurate_source_files_when_code_exists",
             "states_when_code_missing",
+        ],
+    )
+
+
+def test_write_user_guide_eval_covers_standalone_routing_and_ui_grounding():
+    config = read(
+        "tests/evals/packages/write-user-guide/"
+        "skill-write-user-guide.yaml"
+    )
+    prompt = read("tests/evals/prompts/skill-write-user-guide.txt")
+    assertion = read("tests/evals/assertions/check-write-user-guide-contract.js")
+
+    assert_contains_all(
+        config,
+        [
+            "standalone discovery",
+            "target page",
+            "source-grounded writing",
+            "guide navigation and help link integration",
+        ],
+    )
+    assert_contains_all(
+        prompt + assertion,
+        [
+            "routes_user_guides_to_write_user_guide",
+            "rejects_functional_spec_authoring",
+            "rejects_design_specs",
+            "rejects_implementation_plans",
+            "rejects_prompt_writing_requests",
+            "updates_existing_user_guide_when_present",
+            "studies_ui_source_before_drafting",
+            "uses_exact_ui_labels",
+            "documents_visual_states",
+            "excludes_code_and_api_details",
+            "updates_vitepress_sidebar",
+            "updates_help_url_mapping",
+            "checks_or_adds_help_icon",
+        ],
+    )
+
+
+def test_writing_ai_prompts_eval_covers_standalone_routing_and_prompt_safety():
+    config = read(
+        "tests/evals/packages/writing-ai-prompts/"
+        "skill-writing-ai-prompts.yaml"
+    )
+    prompt = read("tests/evals/prompts/skill-writing-ai-prompts.txt")
+    assertion = read("tests/evals/assertions/check-writing-ai-prompts-contract.js")
+
+    assert_contains_all(
+        config,
+        [
+            "standalone discovery",
+            "ambiguous target",
+            "output lock",
+            "safety boundaries",
+        ],
+    )
+    assert_contains_all(
+        prompt + assertion,
+        [
+            "routes_prompt_writing_to_writing_ai_prompts",
+            "rejects_functional_spec_authoring",
+            "rejects_design_specs",
+            "rejects_implementation_plans",
+            "rejects_user_guides",
+            "confirms_target_tool_when_ambiguous",
+            "limits_clarifying_questions",
+            "emits_copyable_prompt_block",
+            "emits_tool_template_token_line",
+            "emits_strategy_note",
+            "adapts_to_target_tool_category",
+            "avoids_cot_for_reasoning_native_models",
+            "avoids_fabricated_prompt_techniques",
         ],
     )

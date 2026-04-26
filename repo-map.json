@@ -32,7 +32,7 @@
     },
     "evals": {
       "path": "tests/evals/",
-      "description": "Promptfoo/OpenCode eval harness for functional-spec, design-spec, and doc-skills routing contracts."
+      "description": "Promptfoo/OpenCode eval harness for standalone skill contracts."
     }
   },
   "key_directories": {

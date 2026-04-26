@@ -26,6 +26,18 @@ defaultTest:
       value: file://../../assertions/check-authoring-design-spec-contract.js
 
 tests:
+  - description: "standalone discovery - design specs route here and non-design artifacts do not"
+    vars:
+      scenario: |-
+        - The user asks for a design spec or technical design doc under docs/design for a canonical flow.
+        - In separate requests, the user asks to author a functional spec, write an implementation plan, write a user guide page, or write a prompt for another AI tool.
+        - Classify whether this skill owns design-spec authoring and rejects the non-design-spec requests.
+      expect_routes_design_specs_to_authoring_design_spec: "true"
+      expect_rejects_functional_spec_authoring: "true"
+      expect_rejects_implementation_plans: "true"
+      expect_rejects_user_guides: "true"
+      expect_rejects_prompt_writing_requests: "true"
+
   - description: "functional prerequisite - canonical id and existing functional spec required"
     vars:
       scenario: |-

@@ -28,6 +28,7 @@ This skill is **not** for:
   `authoring-functional-spec` first.
 - Implementation plans. Use `superpowers:writing-plans`.
 - End-user help pages. Use `write-user-guide`.
+- AI prompt-writing requests. Use `writing-ai-prompts`.
 
 ## Required inputs
 

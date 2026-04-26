@@ -26,6 +26,8 @@ This skill is **not** for:
 - PRDs (market positioning, business case)
 - Design specs (mockups, component structure, copy, styling, explicit event names, payload schemas, retry policies)
 - Implementation plans (file paths, class names, migration steps)
+- End-user help pages or user-guide documentation
+- AI prompt-writing requests for Claude, ChatGPT, Cursor, or other tools
 
 If the user asks for any of the above, redirect: the functional spec is a prerequisite
 for all of them. Produce the functional spec first; the downstream artifacts link to

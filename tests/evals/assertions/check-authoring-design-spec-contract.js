@@ -23,6 +23,7 @@ function staticContractReason() {
     'do not create a second functional spec',
     'search `docs/functional/**/*.md` for frontmatter',
     'functional spec first with `authoring-functional-spec`',
+    'AI prompt-writing requests',
     'named production artifacts cited by the functional spec',
     'sibling canonical IDs referenced in the functional spec',
     'Read only related design specs',
