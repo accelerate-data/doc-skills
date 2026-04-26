@@ -26,22 +26,24 @@ defaultTest:
       value: file://../../assertions/check-authoring-user-guide-contract.js
 
 tests:
-  - description: "standalone discovery - user guides route here and non-guide artifacts do not"
+  - description: "routes user guide request to authoring-user-guide"
     vars:
       scenario: |-
         User prompt:
         "Create a user guide page for the domain settings screen under docs/user-guide."
-
-        Nearby prompts that should route elsewhere:
-        "Write the functional spec for this flow."
-        "Write the design spec."
-        "Make the implementation plan."
-        "Write a prompt for Claude Code."
       expect_routes_user_guides_to_authoring_user_guide: "true"
-      expect_rejects_functional_spec_authoring: "true"
+      expect_rejects_functional_spec_authoring: "false"
+      expect_rejects_design_specs: "false"
+      expect_rejects_implementation_plans: "false"
+      expect_rejects_prompt_writing_requests: "false"
+
+  - description: "rejects design spec request as user guide work"
+    vars:
+      scenario: |-
+        User prompt:
+        "Write the design spec for the settings domain model."
+      expect_routes_user_guides_to_authoring_user_guide: "false"
       expect_rejects_design_specs: "true"
-      expect_rejects_implementation_plans: "true"
-      expect_rejects_prompt_writing_requests: "true"
 
   - description: "target page - updates existing guide instead of creating duplicates"
     vars:

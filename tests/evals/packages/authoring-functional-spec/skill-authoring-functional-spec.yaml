@@ -26,22 +26,32 @@ defaultTest:
       value: file://../../assertions/check-authoring-functional-spec-contract.js
 
 tests:
-  - description: "standalone discovery - functional artifacts route here and non-FS artifacts do not"
+  - description: "routes functional spec request to authoring-functional-spec"
     vars:
       scenario: |-
         User prompt:
         "Create the functional spec for flow intent-user-data-mart-build. I want the behavior and acceptance rules under docs/functional, not a design doc yet."
-
-        Nearby prompts that should route elsewhere:
-        "Write the technical design for this flow."
-        "Turn this into an implementation plan."
-        "Make a user guide page for the screen."
-        "Write a prompt for Claude Code."
       expect_routes_functional_docs_to_authoring_functional_spec: "true"
+      expect_rejects_design_specs: "false"
+      expect_rejects_implementation_plans: "false"
+      expect_rejects_user_guides: "false"
+      expect_rejects_prompt_writing_requests: "false"
+
+  - description: "rejects design doc request as functional spec work"
+    vars:
+      scenario: |-
+        User prompt:
+        "Write the technical design for intent-user-data-mart-build. The functional spec already exists."
+      expect_routes_functional_docs_to_authoring_functional_spec: "false"
       expect_rejects_design_specs: "true"
+
+  - description: "rejects implementation plan request as functional spec work"
+    vars:
+      scenario: |-
+        User prompt:
+        "Turn the intent-user-data-mart-build functional spec into implementation tasks."
+      expect_routes_functional_docs_to_authoring_functional_spec: "false"
       expect_rejects_implementation_plans: "true"
-      expect_rejects_user_guides: "true"
-      expect_rejects_prompt_writing_requests: "true"
 
   - description: "preconditions — validates tooling, auth, git checkout, and allowed repo"
     vars:

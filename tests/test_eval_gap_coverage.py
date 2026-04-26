@@ -23,6 +23,19 @@ def assert_prompt_is_user_grounded(prompt):
     assert not leaked, f"eval prompt leaks contract language: {leaked}"
 
 
+def assert_scenarios_are_user_grounded(config):
+    forbidden = [
+        "Nearby prompts that should route elsewhere",
+        "should route elsewhere",
+        "In a separate run",
+        "Skill contract:",
+        "The skill should",
+        "Classify whether",
+    ]
+    leaked = [phrase for phrase in forbidden if phrase in config]
+    assert not leaked, f"eval scenarios leak meta-test language: {leaked}"
+
+
 def test_authoring_functional_spec_eval_covers_flow_selection_and_traceability():
     config = read(
         "tests/evals/packages/authoring-functional-spec/"
@@ -33,6 +46,7 @@ def test_authoring_functional_spec_eval_covers_flow_selection_and_traceability()
         "tests/evals/assertions/check-authoring-functional-spec-contract.js"
     )
     assert_prompt_is_user_grounded(prompt)
+    assert_scenarios_are_user_grounded(config)
 
     assert_contains_all(
         config,
@@ -73,6 +87,7 @@ def test_authoring_design_spec_eval_covers_code_and_related_design_selection():
     prompt = read("tests/evals/prompts/skill-authoring-design-spec.txt")
     assertion = read("tests/evals/assertions/check-authoring-design-spec-contract.js")
     assert_prompt_is_user_grounded(prompt)
+    assert_scenarios_are_user_grounded(config)
 
     assert_contains_all(
         config,
@@ -116,11 +131,12 @@ def test_authoring_user_guide_eval_covers_standalone_routing_and_ui_grounding():
     prompt = read("tests/evals/prompts/skill-authoring-user-guide.txt")
     assertion = read("tests/evals/assertions/check-authoring-user-guide-contract.js")
     assert_prompt_is_user_grounded(prompt)
+    assert_scenarios_are_user_grounded(config)
 
     assert_contains_all(
         config,
         [
-            "standalone discovery",
+            "routes user guide request",
             "target page",
             "source-grounded writing",
             "guide navigation and help link integration",
@@ -154,13 +170,14 @@ def test_writing_ai_prompts_eval_covers_standalone_routing_and_prompt_safety():
     prompt = read("tests/evals/prompts/skill-writing-ai-prompts.txt")
     assertion = read("tests/evals/assertions/check-writing-ai-prompts-contract.js")
     assert_prompt_is_user_grounded(prompt)
+    assert_scenarios_are_user_grounded(config)
     assert "the skill needs" not in config.lower()
     assert "the skill should" not in config.lower()
 
     assert_contains_all(
         config,
         [
-            "standalone discovery",
+            "routes prompt-writing request",
             "ambiguous target",
             "output lock",
             "safety boundaries",

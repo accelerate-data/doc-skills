@@ -26,21 +26,23 @@ defaultTest:
       value: file://../../assertions/check-writing-ai-prompts-contract.js
 
 tests:
-  - description: "standalone discovery - prompt requests route here and doc artifacts do not"
+  - description: "routes prompt-writing request to writing-ai-prompts"
     vars:
       scenario: |-
         User prompt:
         "Help me write a prompt for Claude Code to refactor this module without touching unrelated files."
-
-        Nearby prompts that should route elsewhere:
-        "Write the functional spec."
-        "Write the design spec."
-        "Create the implementation plan."
-        "Document this screen for users."
       expect_routes_prompt_writing_to_writing_ai_prompts: "true"
-      expect_rejects_functional_spec_authoring: "true"
-      expect_rejects_design_specs: "true"
-      expect_rejects_implementation_plans: "true"
+      expect_rejects_functional_spec_authoring: "false"
+      expect_rejects_design_specs: "false"
+      expect_rejects_implementation_plans: "false"
+      expect_rejects_user_guides: "false"
+
+  - description: "rejects user-guide request as prompt-writing work"
+    vars:
+      scenario: |-
+        User prompt:
+        "Document this screen for users in docs/user-guide."
+      expect_routes_prompt_writing_to_writing_ai_prompts: "false"
       expect_rejects_user_guides: "true"
 
   - description: "ambiguous target - asks before generating"
