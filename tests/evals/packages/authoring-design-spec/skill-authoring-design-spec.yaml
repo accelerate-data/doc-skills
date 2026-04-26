@@ -35,15 +35,37 @@ tests:
       expect_requires_existing_functional_spec: "true"
       expect_aborts_when_functional_spec_missing: "true"
 
-  - description: "context gathering - reads functional and related design docs only"
+  - description: "child functional spec - resolves by frontmatter id"
+    vars:
+      scenario: |-
+        - The canonical ID belongs to a child flow.
+        - There is no `docs/functional/<canonical-id>/README.md`.
+        - A parent directory contains `03-child-flow.md` whose frontmatter has `id: <canonical-id>`.
+      expect_requires_existing_functional_spec: "true"
+      expect_resolves_child_functional_spec_by_frontmatter_id: "true"
+      expect_reads_canonical_functional_spec: "true"
+
+  - description: "context gathering - reads functional and multiple related design docs only"
     vars:
       scenario: |-
         - The canonical functional spec exists.
         - docs/design contains several unrelated docs and two docs related by canonical ID, title, sibling functional ID, or cited artifact.
       expect_reads_canonical_functional_spec: "true"
       expect_searches_related_design_docs: "true"
+      expect_selects_related_design_docs_by_multiple_signals: "true"
       expect_reads_only_related_design_docs: "true"
+      expect_ignores_unrelated_design_docs: "true"
       expect_builds_gap_analysis: "true"
+
+  - description: "source-file grounding - code exists or is explicitly absent"
+    vars:
+      scenario: |-
+        - The functional spec cites a production artifact already implemented in source code.
+        - The repo contains files that realize the current behavior.
+        - In another flow, no implementation exists yet.
+        - The design spec should include accurate source-file references when present and state when code is absent instead of inventing paths.
+      expect_includes_accurate_source_files_when_code_exists: "true"
+      expect_states_when_code_missing: "true"
 
   - description: "drafting gate - gap analysis and brainstorming precede writing"
     vars:

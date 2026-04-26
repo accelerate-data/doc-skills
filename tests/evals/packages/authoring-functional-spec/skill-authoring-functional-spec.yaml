@@ -67,6 +67,16 @@ tests:
       expect_uses_child_longest_prefix_inference: "true"
       expect_aborts_when_no_row_or_parent: "true"
 
+  - description: "candidate selection — repo-filtered candidate IDs"
+    vars:
+      scenario: |-
+        - The user says: "author a functional spec" and cannot name the canonical ID.
+        - The Sheet contains flows for studio, skill-builder, domain-cicd, and migration-utility.
+        - The current checkout resolves to `skill-builder`.
+        - The workflow should list only repo-filtered candidate IDs with titles and let the author choose from the canonical inventory.
+      expect_asks_for_canonical_id_when_missing: "true"
+      expect_lists_candidate_ids_for_current_repo: "true"
+
   - description: "paths — parent and child output locations are constrained"
     vars:
       scenario: |-
@@ -89,6 +99,27 @@ tests:
       expect_avoids_verbatim_copying: "true"
       expect_loads_template_and_writing_guidance: "true"
       expect_emits_required_frontmatter: "true"
+      expect_keeps_behavior_altitude: "true"
+
+  - description: "code-grounded behavior — code informs behavior without design leakage"
+    vars:
+      scenario: |-
+        - The author provides existing code that partially implements the flow.
+        - The code contains file paths, class names, payload schemas, retry constants, and event names.
+        - The functional spec should use the code only to ground behavioral claims and must not promote those implementation details into requirements.
+      expect_asks_for_reference_material: "true"
+      expect_uses_code_only_to_ground_behavior: "true"
+      expect_digests_behavioral_signals_only: "true"
+      expect_keeps_behavior_altitude: "true"
+
+  - description: "sibling flows and production artifacts — preserve stable traceability"
+    vars:
+      scenario: |-
+        - The functional spec excludes work owned by sibling canonical flows.
+        - Existing production artifacts such as `intent.md` and `design.md` define durable handoff points.
+        - The workflow should cite sibling flows by canonical ID and production artifacts by stable artifact name while keeping design-phase names out.
+      expect_cites_production_artifacts_by_stable_name: "true"
+      expect_preserves_sibling_flow_traceability: "true"
       expect_keeps_behavior_altitude: "true"
 
   - description: "review and closeout — brainstorming, self-review, commit offer, no push"

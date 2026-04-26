@@ -12,8 +12,12 @@ function staticContractReason() {
   const required = [
     'name: authoring-design-spec',
     'Existing functional spec at `docs/functional/<canonical-id>/README.md`',
+    'search `docs/functional/**/*.md` for frontmatter',
     'functional spec first with `authoring-functional-spec`',
+    'named production artifacts cited by the functional spec',
+    'sibling canonical IDs referenced in the functional spec',
     'Read only related design specs',
+    'If code does not exist',
     '**covered**',
     '**partial**',
     '**missing**',

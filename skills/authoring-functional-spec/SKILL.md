@@ -66,7 +66,9 @@ Before invoking the skill, confirm:
 - Otherwise ask: *"Which canonical ID are you authoring?"*
 - If the author cannot name one, use the pattern from
   `references/sheet-interop.md` to list candidate IDs for the current repo,
-  then let them pick.
+  then let them pick. List only IDs whose Sheet repo column matches the
+  current repo, and include the title so the choice is anchored in the
+  canonical inventory instead of free-form guessing.
 
 ### Phase 2 — Fetch Sheet row
 
@@ -161,6 +163,10 @@ anything below the altitude line per
 `references/writing-the-draft.md`. Build a short internal digest
 (4–8 bullets) summarizing the behavioral signals found. Use the digest
 to populate Phase 6's scaffold and to frame Phase 7's brainstorming arc.
+When code is provided, cite code only to ground behavioral claims. Stable
+production artifacts and sibling flow IDs may be named by artifact name or
+canonical ID, but implementation paths, classes, payload schemas, and event
+strings must not become functional requirements.
 
 Do not copy verbatim prose into the draft. Paraphrase into behavioral
 language.

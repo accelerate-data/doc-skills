@@ -7,9 +7,10 @@ Skill contract:
 - The skill authors or updates developer-facing design specs under docs/design only.
 - It requires a canonical ID.
 - It must find and read the existing canonical functional spec under docs/functional before proceeding.
+- It resolves parent README specs and child functional specs by frontmatter `id`.
 - It aborts when the matching functional spec is missing and tells the user to author the functional spec first.
 - It searches docs/design for related design docs using the canonical ID, functional spec title, sibling functional IDs, cited production artifacts, and behavioral nouns.
-- It reads only related design docs.
+- It reads only related design docs and ignores unrelated docs even when they live nearby.
 - It builds a gap analysis: covered, partial, missing, and conflicting design coverage.
 - It presents the gap analysis and proposed target path before drafting.
 - It stops without writing when no meaningful design gap exists.
@@ -17,6 +18,7 @@ Skill contract:
 - It keeps design specs below functional specs and above implementation plans.
 - It routes implementation-plan requests to superpowers:writing-plans.
 - It updates docs/design/README.md when that index exists.
+- It includes accurate source-file references when code already exists, and explicitly states when code does not exist instead of inventing paths.
 - It uses runtime-neutral wording compatible with Claude Code and Codex.
 
 Inspect `skills/authoring-design-spec/SKILL.md` before answering. This is a
@@ -32,9 +34,12 @@ Return JSON only with this shape:
   "asks_for_canonical_id": false,
   "requires_existing_functional_spec": false,
   "aborts_when_functional_spec_missing": false,
+  "resolves_child_functional_spec_by_frontmatter_id": false,
   "reads_canonical_functional_spec": false,
   "searches_related_design_docs": false,
+  "selects_related_design_docs_by_multiple_signals": false,
   "reads_only_related_design_docs": false,
+  "ignores_unrelated_design_docs": false,
   "builds_gap_analysis": false,
   "presents_gap_before_drafting": false,
   "stops_when_no_design_gap_exists": false,
@@ -42,6 +47,8 @@ Return JSON only with this shape:
   "keeps_design_below_functional_above_plan": false,
   "routes_implementation_plans_to_writing_plans": false,
   "updates_design_index_when_present": false,
+  "includes_accurate_source_files_when_code_exists": false,
+  "states_when_code_missing": false,
   "supports_claude_code_and_codex": false,
   "notes": "string"
 }
