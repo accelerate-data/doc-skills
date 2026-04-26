@@ -1,0 +1,56 @@
+# yaml-language-server: $schema=https://promptfoo.dev/config-schema.json
+description: "doc-skills routing - artifact taxonomy contract"
+
+prompts:
+  - id: doc-skills-routing
+    label: doc-skills-routing
+    raw: file://../../prompts/doc-skills-routing.txt
+
+providers:
+  - id: file://../../scripts/opencode-cli-provider.js
+    config:
+      provider_id: opencode
+      model: gpt-5-nano
+      working_dir: ../..
+      max_turns: 12
+      tools:
+        read: true
+        grep: true
+        glob: true
+        list: true
+        bash: true
+
+defaultTest:
+  assert:
+    - type: javascript
+      value: file://../../assertions/check-doc-skills-routing-contract.js
+
+tests:
+  - description: "functional artifacts route to authoring-functional-spec"
+    vars:
+      scenario: |-
+        - The user asks for a functional spec, behavior spec, journey spec, or PRD-adjacent product flow under docs/functional.
+      expect_routes_functional_docs_to_authoring_functional_spec: "true"
+      expect_supports_claude_code_and_codex: "true"
+
+  - description: "design specs require functional source of truth"
+    vars:
+      scenario: |-
+        - The user asks for a design spec under docs/design.
+        - The canonical functional spec may or may not exist yet.
+      expect_routes_design_specs_to_authoring_design_spec: "true"
+      expect_design_specs_require_existing_functional_spec: "true"
+
+  - description: "implementation plans route to superpowers"
+    vars:
+      scenario: |-
+        - The user asks for an implementation plan or task sequencing after the design spec.
+      expect_routes_implementation_plans_to_writing_plans: "true"
+
+  - description: "user guide and prompt writing routes stay separate"
+    vars:
+      scenario: |-
+        - The user asks for an end-user guide page.
+        - The user separately asks for a surgical prompt to give another AI agent.
+      expect_routes_user_guides_to_write_user_guide: "true"
+      expect_routes_prompt_writing_to_writing_ai_prompts: "true"

@@ -1,0 +1,65 @@
+# yaml-language-server: $schema=https://promptfoo.dev/config-schema.json
+description: "authoring-design-spec skill - core design-spec authoring contract"
+
+prompts:
+  - id: authoring-design-spec
+    label: authoring-design-spec
+    raw: file://../../prompts/skill-authoring-design-spec.txt
+
+providers:
+  - id: file://../../scripts/opencode-cli-provider.js
+    config:
+      provider_id: opencode
+      model: gpt-5-nano
+      working_dir: ../..
+      max_turns: 12
+      tools:
+        read: true
+        grep: true
+        glob: true
+        list: true
+        bash: true
+
+defaultTest:
+  assert:
+    - type: javascript
+      value: file://../../assertions/check-authoring-design-spec-contract.js
+
+tests:
+  - description: "functional prerequisite - canonical id and existing functional spec required"
+    vars:
+      scenario: |-
+        - The user asks to author a design spec but does not provide a canonical ID.
+        - In another run, the user provides an ID but docs/functional has no matching spec.
+      expect_asks_for_canonical_id: "true"
+      expect_requires_existing_functional_spec: "true"
+      expect_aborts_when_functional_spec_missing: "true"
+
+  - description: "context gathering - reads functional and related design docs only"
+    vars:
+      scenario: |-
+        - The canonical functional spec exists.
+        - docs/design contains several unrelated docs and two docs related by canonical ID, title, sibling functional ID, or cited artifact.
+      expect_reads_canonical_functional_spec: "true"
+      expect_searches_related_design_docs: "true"
+      expect_reads_only_related_design_docs: "true"
+      expect_builds_gap_analysis: "true"
+
+  - description: "drafting gate - gap analysis and brainstorming precede writing"
+    vars:
+      scenario: |-
+        - Related design docs partially cover the functional spec but miss state and integration decisions.
+        - The user asks to start writing immediately.
+      expect_presents_gap_before_drafting: "true"
+      expect_invokes_brainstorming_with_gap_context: "true"
+      expect_keeps_design_below_functional_above_plan: "true"
+      expect_updates_design_index_when_present: "true"
+
+  - description: "routing - no-op when covered and plans route elsewhere"
+    vars:
+      scenario: |-
+        - Existing design docs fully cover the functional spec.
+        - The user asks for implementation tasks after the design review.
+      expect_stops_when_no_design_gap_exists: "true"
+      expect_routes_implementation_plans_to_writing_plans: "true"
+      expect_supports_claude_code_and_codex: "true"

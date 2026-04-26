@@ -61,7 +61,7 @@ Proceed autonomously. Only confirm:
      ```
 
 2. **Study the UI**
-   - Spawn an `Explore` sub-agent to read the relevant React components:
+   - Inspect the relevant React components:
      - Exact button labels, placeholder text, tooltip text
      - All user actions (click, type, drag, keyboard shortcuts)
      - All states (empty, loading, error, success, disabled)

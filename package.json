@@ -1,0 +1,12 @@
+{
+  "name": "doc-skills",
+  "private": true,
+  "packageManager": "npm",
+  "scripts": {
+    "eval": "npm --prefix tests/evals run eval",
+    "eval:authoring-functional-spec": "npm --prefix tests/evals run eval:authoring-functional-spec",
+    "eval:authoring-design-spec": "npm --prefix tests/evals run eval:authoring-design-spec",
+    "eval:doc-skills-routing": "npm --prefix tests/evals run eval:doc-skills-routing",
+    "eval:coverage": "npm --prefix tests/evals run eval:coverage"
+  }
+}

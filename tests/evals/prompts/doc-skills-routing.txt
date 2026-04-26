@@ -1,0 +1,28 @@
+You are evaluating the `doc-skills` plugin routing contract for this scenario:
+
+{{scenario}}
+
+Routing contract:
+
+- Functional docs, behavior specs, journey specs, and PRD-adjacent product flows route to `authoring-functional-spec`.
+- Design specs route to `authoring-design-spec`.
+- Design specs require an existing canonical functional spec.
+- Implementation plans route to `superpowers:writing-plans`.
+- User guides route to `write-user-guide`.
+- Prompt-writing requests route to `writing-ai-prompts`.
+- Shared workflows must support Claude Code and Codex with runtime-neutral skill invocation wording.
+
+Inspect `README.md`, `CLAUDE.md`, `repo-map.json`, and the active skill
+frontmatter before answering. Do not modify files. Return JSON only with this
+shape:
+
+{
+  "routes_functional_docs_to_authoring_functional_spec": false,
+  "routes_design_specs_to_authoring_design_spec": false,
+  "design_specs_require_existing_functional_spec": false,
+  "routes_implementation_plans_to_writing_plans": false,
+  "routes_user_guides_to_write_user_guide": false,
+  "routes_prompt_writing_to_writing_ai_prompts": false,
+  "supports_claude_code_and_codex": false,
+  "notes": "string"
+}

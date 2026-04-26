@@ -1,16 +1,22 @@
 # Doc Skills
 
-Create and maintain specs, design docs, user guides, and AI prompts for codebases.
+Create and maintain functional specs, design specs, user guides, and AI prompts for codebases.
 
 ## Skills
 
 | Skill | Description |
 |-------|-------------|
-| `create-spec` | Create a new module specification |
-| `update-spec` | Update an existing module spec |
-| `write-design-doc` | Create or update a design document |
-| `write-user-guide` | Create or update a user guide page |
-| `writing-ai-prompts` | Generate surgical, token-efficient AI prompts |
+| `authoring-functional-spec` | Author top-level behavior/functional specs under `docs/functional/` |
+| `authoring-design-spec` | Author design specs under `docs/design/` from an existing canonical functional spec |
+| `write-user-guide` | Create or update user guide pages under `docs/user-guide/` |
+| `writing-ai-prompts` | Generate surgical, token-efficient prompts |
+
+## Artifact Routing
+
+- Functional docs, behavior specs, journey specs, and PRD-adjacent product flows: use `authoring-functional-spec`.
+- Design specs: use `authoring-design-spec`; it requires an existing canonical functional spec.
+- Implementation plans: use `superpowers:writing-plans`; this plugin does not duplicate that workflow.
+- User guides: use `write-user-guide`.
 
 ## Install
 

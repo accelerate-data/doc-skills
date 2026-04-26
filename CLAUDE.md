@@ -6,12 +6,25 @@
 
 ## Custom Skills
 
-### /create-spec
+### /authoring-functional-spec
 
-When the user runs `/create-spec` or asks to create a new specification,
-read and follow the skill at `skills/create-spec/SKILL.md`.
+When the user asks to author a functional spec, behavior spec,
+journey spec, or PRD-adjacent product flow, read and follow the skill at
+`skills/authoring-functional-spec/SKILL.md`.
 
-### /update-spec
+### /authoring-design-spec
 
-When the user runs `/update-spec` or asks to update an existing specification,
-read and follow the skill at `skills/update-spec/SKILL.md`.
+When the user asks to author a design spec or technical design spec for a flow,
+read and follow the skill at
+`skills/authoring-design-spec/SKILL.md`.
+
+### /write-user-guide
+
+When the user asks to create or update a user guide page, user documentation,
+or docs under `docs/user-guide/`, read and follow the skill at
+`skills/write-user-guide/SKILL.md`.
+
+### /writing-ai-prompts
+
+When the user asks to generate a surgical, token-efficient AI prompt, read and
+follow the skill at `skills/writing-ai-prompts/SKILL.md`.
