@@ -1,14 +1,18 @@
-You are evaluating whether the `writing-ai-prompts` skill contract covers the
-user prompt and workspace context below.
+You are selecting whether one installed skill should handle a real user request.
+Do not execute the request or modify files. Return JSON only.
+
+Real user request:
 
 {{scenario}}
 
-Inspect `skills/writing-ai-prompts/SKILL.md` before answering. This is a
-contract-classification eval, not an execution run: do not describe steps you
-would take and do not modify files. Return one JSON object only, with no prose
-before or after it. For each expected behavior named by the scenario, set the
-matching JSON field to true when the repository skill contract supports that
-behavior.
+Before choosing an action, inspect `skills/writing-ai-prompts/SKILL.md`.
+Decide how this installed skill applies to the user's request and workspace
+context. Set a field to true only when this skill clearly supports that behavior
+for this request; otherwise leave it false.
+
+Treat route fields as primary-skill decisions for the requested deliverable.
+Treat reject fields as true only when the current user request is for that other
+deliverable type instead.
 
 Return JSON only with this shape:
 

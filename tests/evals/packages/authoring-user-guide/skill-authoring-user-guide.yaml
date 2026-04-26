@@ -26,22 +26,20 @@ defaultTest:
       value: file://../../assertions/check-authoring-user-guide-contract.js
 
 tests:
-  - description: "standalone discovery - user guides route here and non-guide artifacts do not"
+  - description: "routes user guide request to authoring-user-guide"
     vars:
       scenario: |-
         User prompt:
         "Create a user guide page for the domain settings screen under docs/user-guide."
-
-        Nearby prompts that should route elsewhere:
-        "Write the functional spec for this flow."
-        "Write the design spec."
-        "Make the implementation plan."
-        "Write a prompt for Claude Code."
       expect_routes_user_guides_to_authoring_user_guide: "true"
-      expect_rejects_functional_spec_authoring: "true"
+
+  - description: "rejects design spec request as user guide work"
+    vars:
+      scenario: |-
+        User prompt:
+        "Write the design spec for the settings domain model."
+      expect_routes_user_guides_to_authoring_user_guide: "false"
       expect_rejects_design_specs: "true"
-      expect_rejects_implementation_plans: "true"
-      expect_rejects_prompt_writing_requests: "true"
 
   - description: "target page - updates existing guide instead of creating duplicates"
     vars:
@@ -60,11 +58,37 @@ tests:
         "Document the source wizard screen for users. Make sure the button names and empty/error/loading states match the app."
 
         Workspace context:
-        The relevant React screen has buttons, fields, placeholders, loading states, errors, disabled controls, and dialogs.
+        The relevant software code has buttons, commands, fields, placeholders, loading states, errors, disabled controls, and dialogs.
       expect_studies_ui_source_before_drafting: "true"
       expect_uses_exact_ui_labels: "true"
       expect_documents_visual_states: "true"
       expect_excludes_code_and_api_details: "true"
+
+  - description: "source synthesis - reads functional spec design docs and code before writing"
+    vars:
+      scenario: |-
+        User prompt:
+        "Write the user guide for this feature. Use the FS, the design docs, and the actual code so the guide explains how users use the software."
+
+        Workspace context:
+        The repo has docs/functional/, docs/design/, docs/user-guide/, and implementation files for the feature.
+      expect_reads_functional_spec_for_user_outcomes: "true"
+      expect_reads_related_design_docs_for_product_context: "true"
+      expect_studies_ui_source_before_drafting: "true"
+      expect_keeps_user_guide_usage_focused: "true"
+      expect_excludes_code_and_api_details: "true"
+
+  - description: "missing functional spec - asks to switch back with handoff context"
+    vars:
+      scenario: |-
+        User prompt:
+        "Write the user guide for intent-user-data-mart-build, but there is no functional spec yet."
+
+        Workspace context:
+        docs/user-guide exists. docs/functional has no matching functional spec. The user has provided notes about the feature and a related design doc.
+      expect_requires_existing_functional_spec: "true"
+      expect_asks_to_switch_to_authoring_functional_spec_when_missing: "true"
+      expect_hands_over_context_to_authoring_functional_spec: "true"
 
   - description: "closeout - guide navigation and help link integration"
     vars:
@@ -77,3 +101,15 @@ tests:
       expect_updates_vitepress_sidebar: "true"
       expect_updates_help_url_mapping: "true"
       expect_checks_or_adds_help_icon: "true"
+
+  - description: "generic docs repo - follows local guide conventions when VD Studio wiring is absent"
+    vars:
+      scenario: |-
+        User prompt:
+        "Add a user guide for the account settings page."
+
+        Workspace context:
+        The repo has docs/user-guide/ and React screen components, but no docs/.vitepress/config.ts, no src/lib/help-urls.ts, and no HelpIcon component.
+      expect_routes_user_guides_to_authoring_user_guide: "true"
+      expect_studies_ui_source_before_drafting: "true"
+      expect_uses_exact_ui_labels: "true"

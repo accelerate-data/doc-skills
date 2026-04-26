@@ -18,12 +18,19 @@ function staticContractReason() {
     'Implementation plans',
     'AI prompt-writing requests',
     'update if exists',
-    'Inspect the relevant React components',
+    'functional spec',
+    'ask the user to',
+    'switch back to `authoring-functional-spec`',
+    'handoff for `authoring-functional-spec`',
+    'related design docs',
+    'Inspect the relevant software source files',
+    'Usage focus',
     'EXACT text from the source code',
     'No code',
-    'docs/.vitepress/config.ts',
-    'src/lib/help-urls.ts',
-    '<HelpIcon>',
+    'sidebar or nav config',
+    'route-to-help mapping',
+    'help-link component',
+    'Do not create a new help-link architecture',
   ];
   for (const phrase of required) {
     if (!content.includes(phrase)) {

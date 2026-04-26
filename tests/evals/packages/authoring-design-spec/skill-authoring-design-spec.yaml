@@ -26,22 +26,20 @@ defaultTest:
       value: file://../../assertions/check-authoring-design-spec-contract.js
 
 tests:
-  - description: "standalone discovery - design specs route here and non-design artifacts do not"
+  - description: "routes design spec request to authoring-design-spec"
     vars:
       scenario: |-
         User prompt:
         "Write the design spec for canonical flow intent-user-data-mart-build. The functional spec already exists; I want the technical design under docs/design."
-
-        Nearby prompts that should route elsewhere:
-        "Author the functional spec first."
-        "Turn this into implementation tasks."
-        "Write the user guide page."
-        "Make me a prompt for ChatGPT."
       expect_routes_design_specs_to_authoring_design_spec: "true"
+
+  - description: "rejects functional spec request as design spec work"
+    vars:
+      scenario: |-
+        User prompt:
+        "Author the functional spec for intent-user-data-mart-build before we design it."
+      expect_routes_design_specs_to_authoring_design_spec: "false"
       expect_rejects_functional_spec_authoring: "true"
-      expect_rejects_implementation_plans: "true"
-      expect_rejects_user_guides: "true"
-      expect_rejects_prompt_writing_requests: "true"
 
   - description: "functional prerequisite - canonical id and existing functional spec required"
     vars:
@@ -50,11 +48,24 @@ tests:
         "Create the design doc for that onboarding flow."
 
         Workspace context:
-        The prompt does not name a canonical ID. In a separate run, the user gives an ID but docs/functional has no matching spec. The sheet row identifies the primary repo.
+        The prompt does not name a canonical ID. The repo has no matching functional spec under docs/functional for the flow the user later identifies. The sheet row identifies the primary repo.
       expect_asks_for_canonical_id: "true"
       expect_requires_existing_functional_spec: "true"
       expect_aborts_when_functional_spec_missing: "true"
       expect_one_flow_one_functional_spec_many_design_docs: "true"
+
+  - description: "missing functional spec - asks to switch back with handoff context"
+    vars:
+      scenario: |-
+        User prompt:
+        "Write the design spec for intent-user-data-mart-build, but I don't think the functional spec exists yet."
+
+        Workspace context:
+        The canonical flow ID is known. docs/functional has no matching README or child flow file. The user has provided a design goal and related source files.
+      expect_requires_existing_functional_spec: "true"
+      expect_aborts_when_functional_spec_missing: "true"
+      expect_asks_to_switch_to_authoring_functional_spec_when_missing: "true"
+      expect_hands_over_context_to_authoring_functional_spec: "true"
 
   - description: "repo ownership - design doc lives beside functional spec in Sheet repo"
     vars:
@@ -143,3 +154,14 @@ tests:
       expect_stops_when_no_design_gap_exists: "true"
       expect_routes_implementation_plans_to_writing_plans: "true"
       expect_supports_claude_code_and_codex: "true"
+      expect_hands_over_design_context_to_writing_plans: "true"
+
+  - description: "covered design - refuses duplicate design doc when existing docs already cover the flow"
+    vars:
+      scenario: |-
+        User prompt:
+        "Check whether this flow already has design coverage. If it does, don't create another design doc just to have one."
+
+        Workspace context:
+        The canonical functional spec exists. Existing design docs cover every behavior, state, and source-file anchor needed for the flow.
+      expect_stops_when_no_design_gap_exists: "true"

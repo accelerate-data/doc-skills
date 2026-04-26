@@ -1,6 +1,7 @@
 const assert = require('node:assert/strict');
 const test = require('node:test');
 const { EventEmitter } = require('node:events');
+const path = require('node:path');
 
 const OpenCodeCliProvider = require('./opencode-cli-provider');
 
@@ -56,7 +57,7 @@ test('callApi invokes opencode run with configured Qwen model and prompt', async
     'Read the skill and summarize it.',
   ]);
   assert.equal(calls[0].options.stdio[0], 'ignore');
-  assert.match(calls[0].options.cwd, /doc-skills/);
+  assert.equal(calls[0].options.cwd, path.resolve(__dirname, '..', '..', '..'));
   assert.match(calls[0].options.env.XDG_DATA_HOME, /tests\/evals\/\.promptfoo\/opencode-runtime\/data$/);
   assert.match(calls[0].options.env.XDG_STATE_HOME, /tests\/evals\/\.promptfoo\/opencode-runtime\/state$/);
 });

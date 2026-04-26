@@ -25,10 +25,22 @@ truth; the design spec explains how the repo intends to realize that behavior.
 This skill is **not** for:
 
 - User-flow, behavior, journey, or PRD-adjacent specs. Use
-  `authoring-functional-spec` first.
+  `authoring-functional-spec` first. A direct request to author a functional
+  spec is not a design-spec trigger; do not select this skill as the primary
+  authoring workflow for that request.
 - Implementation plans. Use `superpowers:writing-plans`.
 - End-user help pages. Use `authoring-user-guide`.
 - AI prompt-writing requests. Use `writing-ai-prompts`.
+
+For implementation-plan requests based on a functional spec or design spec, do
+not continue in design-spec authoring mode. Route to `superpowers:writing-plans`
+and hand over the canonical flow ID, functional-spec path, relevant design-spec
+paths, gap analysis, source-file anchors, open questions, and any implementation
+constraints the user provided.
+
+If existing design docs already cover the flow and the user asks for an
+implementation plan next, stop design-spec authoring and hand that covered
+design context to `superpowers:writing-plans`.
 
 ## Required inputs
 
@@ -48,6 +60,12 @@ If the matching functional spec is not present, abort:
 > Functional spec `<canonical-id>` was not found under `docs/functional/`. Author the
 > functional spec first with `authoring-functional-spec`, then rerun this skill.
 
+Before stopping, prepare a handoff for `authoring-functional-spec` containing
+the canonical flow ID, the requested design goal, relevant docs or source files
+already identified, and the reason the design spec is blocked. Ask the user to
+switch back to `authoring-functional-spec` with that handoff instead of silently
+continuing in design-spec mode.
+
 ## Workflow
 
 ### Phase 0 - Precondition check
@@ -64,7 +82,8 @@ If the matching functional spec is not present, abort:
    runtime's skill mechanism. In Codex, use the available skills list and
    follow the relevant `SKILL.md`; in Claude Code, use the Skill tool.
 6. Confirm the repo has `docs/functional/`. If not, abort with the missing
-   functional-spec message above.
+   functional-spec message above and include the `authoring-functional-spec`
+   handoff context.
 
 ### Phase 1 - Resolve the canonical flow
 

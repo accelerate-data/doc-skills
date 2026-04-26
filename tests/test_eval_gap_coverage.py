@@ -16,11 +16,27 @@ def assert_contains_all(content, phrases):
 def assert_prompt_is_user_grounded(prompt):
     forbidden = [
         "Skill contract:",
+        "skill contract covers",
+        "contract-classification eval",
         "The skill should",
         "Classify whether",
+        "For each expected behavior named by the scenario",
     ]
     leaked = [phrase for phrase in forbidden if phrase in prompt]
     assert not leaked, f"eval prompt leaks contract language: {leaked}"
+
+
+def assert_scenarios_are_user_grounded(config):
+    forbidden = [
+        "Nearby prompts that should route elsewhere",
+        "should route elsewhere",
+        "In a separate run",
+        "Skill contract:",
+        "The skill should",
+        "Classify whether",
+    ]
+    leaked = [phrase for phrase in forbidden if phrase in config]
+    assert not leaked, f"eval scenarios leak meta-test language: {leaked}"
 
 
 def test_authoring_functional_spec_eval_covers_flow_selection_and_traceability():
@@ -33,6 +49,7 @@ def test_authoring_functional_spec_eval_covers_flow_selection_and_traceability()
         "tests/evals/assertions/check-authoring-functional-spec-contract.js"
     )
     assert_prompt_is_user_grounded(prompt)
+    assert_scenarios_are_user_grounded(config)
 
     assert_contains_all(
         config,
@@ -50,6 +67,8 @@ def test_authoring_functional_spec_eval_covers_flow_selection_and_traceability()
             "routes_functional_docs_to_authoring_functional_spec",
             "rejects_design_specs",
             "rejects_implementation_plans",
+            "routes_implementation_plans_to_writing_plans",
+            "hands_over_functional_spec_context_to_writing_plans",
             "rejects_user_guides",
             "rejects_prompt_writing_requests",
             "functional_spec_lives_in_sheet_repo",
@@ -73,6 +92,7 @@ def test_authoring_design_spec_eval_covers_code_and_related_design_selection():
     prompt = read("tests/evals/prompts/skill-authoring-design-spec.txt")
     assertion = read("tests/evals/assertions/check-authoring-design-spec-contract.js")
     assert_prompt_is_user_grounded(prompt)
+    assert_scenarios_are_user_grounded(config)
 
     assert_contains_all(
         config,
@@ -92,6 +112,9 @@ def test_authoring_design_spec_eval_covers_code_and_related_design_selection():
             "rejects_implementation_plans",
             "rejects_user_guides",
             "rejects_prompt_writing_requests",
+            "requires_existing_functional_spec",
+            "asks_to_switch_to_authoring_functional_spec_when_missing",
+            "hands_over_context_to_authoring_functional_spec",
             "design_doc_lives_in_sheet_repo",
             "verifies_current_repo_matches_sheet_repo",
             "confirms_before_functional_spec_update",
@@ -104,6 +127,7 @@ def test_authoring_design_spec_eval_covers_code_and_related_design_selection():
             "ignores_unrelated_design_docs",
             "includes_accurate_source_files_when_code_exists",
             "states_when_code_missing",
+            "hands_over_design_context_to_writing_plans",
         ],
     )
 
@@ -116,11 +140,12 @@ def test_authoring_user_guide_eval_covers_standalone_routing_and_ui_grounding():
     prompt = read("tests/evals/prompts/skill-authoring-user-guide.txt")
     assertion = read("tests/evals/assertions/check-authoring-user-guide-contract.js")
     assert_prompt_is_user_grounded(prompt)
+    assert_scenarios_are_user_grounded(config)
 
     assert_contains_all(
         config,
         [
-            "standalone discovery",
+            "routes user guide request",
             "target page",
             "source-grounded writing",
             "guide navigation and help link integration",
@@ -135,9 +160,15 @@ def test_authoring_user_guide_eval_covers_standalone_routing_and_ui_grounding():
             "rejects_implementation_plans",
             "rejects_prompt_writing_requests",
             "updates_existing_user_guide_when_present",
+            "reads_functional_spec_for_user_outcomes",
+            "requires_existing_functional_spec",
+            "asks_to_switch_to_authoring_functional_spec_when_missing",
+            "hands_over_context_to_authoring_functional_spec",
+            "reads_related_design_docs_for_product_context",
             "studies_ui_source_before_drafting",
             "uses_exact_ui_labels",
             "documents_visual_states",
+            "keeps_user_guide_usage_focused",
             "excludes_code_and_api_details",
             "updates_vitepress_sidebar",
             "updates_help_url_mapping",
@@ -154,13 +185,14 @@ def test_writing_ai_prompts_eval_covers_standalone_routing_and_prompt_safety():
     prompt = read("tests/evals/prompts/skill-writing-ai-prompts.txt")
     assertion = read("tests/evals/assertions/check-writing-ai-prompts-contract.js")
     assert_prompt_is_user_grounded(prompt)
+    assert_scenarios_are_user_grounded(config)
     assert "the skill needs" not in config.lower()
     assert "the skill should" not in config.lower()
 
     assert_contains_all(
         config,
         [
-            "standalone discovery",
+            "routes prompt-writing request",
             "ambiguous target",
             "output lock",
             "safety boundaries",
@@ -194,10 +226,12 @@ def test_writing_ai_prompts_skill_has_no_question_count_or_cot_contradiction():
 
     assert "ask these 4 questions" not in skill
     assert "Unknown tool — ask these 4 questions" not in skill
+    assert "Think through this carefully before answering" not in skill
     assert "**Chain of Thought**" not in skill
     assert "Template E — Chain of Thought" not in templates
     assert "Template E - Chain of Thought" not in templates
     assert "<thinking>" not in templates
     assert "Give your final answer in <answer> tags only" not in templates
     assert "Template E - Reasoning Summary" in templates
+    assert "without revealing hidden" in skill
     assert "Never ask the model to reveal hidden chain-of-thought" in templates

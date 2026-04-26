@@ -26,22 +26,30 @@ defaultTest:
       value: file://../../assertions/check-authoring-functional-spec-contract.js
 
 tests:
-  - description: "standalone discovery - functional artifacts route here and non-FS artifacts do not"
+  - description: "routes functional spec request to authoring-functional-spec"
     vars:
       scenario: |-
         User prompt:
         "Create the functional spec for flow intent-user-data-mart-build. I want the behavior and acceptance rules under docs/functional, not a design doc yet."
-
-        Nearby prompts that should route elsewhere:
-        "Write the technical design for this flow."
-        "Turn this into an implementation plan."
-        "Make a user guide page for the screen."
-        "Write a prompt for Claude Code."
       expect_routes_functional_docs_to_authoring_functional_spec: "true"
+
+  - description: "rejects design doc request as functional spec work"
+    vars:
+      scenario: |-
+        User prompt:
+        "Write the technical design for intent-user-data-mart-build. The functional spec already exists."
+      expect_routes_functional_docs_to_authoring_functional_spec: "false"
       expect_rejects_design_specs: "true"
+
+  - description: "rejects implementation plan request as functional spec work"
+    vars:
+      scenario: |-
+        User prompt:
+        "Turn the intent-user-data-mart-build functional spec into implementation tasks."
+      expect_routes_functional_docs_to_authoring_functional_spec: "false"
       expect_rejects_implementation_plans: "true"
-      expect_rejects_user_guides: "true"
-      expect_rejects_prompt_writing_requests: "true"
+      expect_routes_implementation_plans_to_writing_plans: "true"
+      expect_hands_over_functional_spec_context_to_writing_plans: "true"
 
   - description: "preconditions — validates tooling, auth, git checkout, and allowed repo"
     vars:
@@ -112,7 +120,6 @@ tests:
 
         Workspace context:
         Parent flows use a README in docs/functional. Child flows are listed in the parent's frontmatter and should not create a second parent-level README.
-      expect_writes_parent_readme_path: "true"
       expect_writes_child_numbered_path: "true"
       expect_requires_parent_readme_and_subflow: "true"
       expect_updates_existing_spec_in_place: "true"
@@ -172,3 +179,15 @@ tests:
       expect_self_reviews_before_completion: "true"
       expect_refuses_downstream_artifact: "true"
       expect_offers_commit_without_push: "true"
+
+  - description: "existing functional spec - edits canonical file instead of creating a second FS"
+    vars:
+      scenario: |-
+        User prompt:
+        "The FS for intent-user-data-mart-build already exists, but it is stale. Update it instead of making a new version."
+
+        Workspace context:
+        docs/functional/intent-user-data-mart-build/README.md exists in the repo named by the User-Flows sheet.
+      expect_updates_existing_spec_in_place: "true"
+      expect_never_creates_duplicate_functional_spec: "true"
+      expect_functional_spec_lives_in_sheet_repo: "true"
