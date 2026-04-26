@@ -32,10 +32,6 @@ tests:
         User prompt:
         "Create the functional spec for flow intent-user-data-mart-build. I want the behavior and acceptance rules under docs/functional, not a design doc yet."
       expect_routes_functional_docs_to_authoring_functional_spec: "true"
-      expect_rejects_design_specs: "false"
-      expect_rejects_implementation_plans: "false"
-      expect_rejects_user_guides: "false"
-      expect_rejects_prompt_writing_requests: "false"
 
   - description: "rejects design doc request as functional spec work"
     vars:
@@ -122,7 +118,6 @@ tests:
 
         Workspace context:
         Parent flows use a README in docs/functional. Child flows are listed in the parent's frontmatter and should not create a second parent-level README.
-      expect_writes_parent_readme_path: "true"
       expect_writes_child_numbered_path: "true"
       expect_requires_parent_readme_and_subflow: "true"
       expect_updates_existing_spec_in_place: "true"

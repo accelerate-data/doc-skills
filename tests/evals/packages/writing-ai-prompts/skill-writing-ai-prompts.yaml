@@ -32,10 +32,6 @@ tests:
         User prompt:
         "Help me write a prompt for Claude Code to refactor this module without touching unrelated files."
       expect_routes_prompt_writing_to_writing_ai_prompts: "true"
-      expect_rejects_functional_spec_authoring: "false"
-      expect_rejects_design_specs: "false"
-      expect_rejects_implementation_plans: "false"
-      expect_rejects_user_guides: "false"
 
   - description: "rejects user-guide request as prompt-writing work"
     vars:

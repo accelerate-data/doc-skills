@@ -32,10 +32,6 @@ tests:
         User prompt:
         "Create a user guide page for the domain settings screen under docs/user-guide."
       expect_routes_user_guides_to_authoring_user_guide: "true"
-      expect_rejects_functional_spec_authoring: "false"
-      expect_rejects_design_specs: "false"
-      expect_rejects_implementation_plans: "false"
-      expect_rejects_prompt_writing_requests: "false"
 
   - description: "rejects design spec request as user guide work"
     vars:

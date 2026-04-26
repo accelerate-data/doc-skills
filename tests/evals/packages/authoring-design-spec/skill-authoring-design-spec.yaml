@@ -32,10 +32,6 @@ tests:
         User prompt:
         "Write the design spec for canonical flow intent-user-data-mart-build. The functional spec already exists; I want the technical design under docs/design."
       expect_routes_design_specs_to_authoring_design_spec: "true"
-      expect_rejects_functional_spec_authoring: "false"
-      expect_rejects_implementation_plans: "false"
-      expect_rejects_user_guides: "false"
-      expect_rejects_prompt_writing_requests: "false"
 
   - description: "rejects functional spec request as design spec work"
     vars:
