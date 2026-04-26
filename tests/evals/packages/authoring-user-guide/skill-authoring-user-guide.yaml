@@ -79,3 +79,18 @@ tests:
       expect_updates_vitepress_sidebar: "true"
       expect_updates_help_url_mapping: "true"
       expect_checks_or_adds_help_icon: "true"
+
+  - description: "generic docs repo - follows local guide conventions when VD Studio wiring is absent"
+    vars:
+      scenario: |-
+        User prompt:
+        "Add a user guide for the account settings page."
+
+        Workspace context:
+        The repo has docs/user-guide/ and React screen components, but no docs/.vitepress/config.ts, no src/lib/help-urls.ts, and no HelpIcon component.
+      expect_routes_user_guides_to_authoring_user_guide: "true"
+      expect_studies_ui_source_before_drafting: "true"
+      expect_uses_exact_ui_labels: "true"
+      expect_updates_vitepress_sidebar: "false"
+      expect_updates_help_url_mapping: "false"
+      expect_checks_or_adds_help_icon: "false"

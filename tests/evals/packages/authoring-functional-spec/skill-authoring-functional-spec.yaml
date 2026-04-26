@@ -182,3 +182,15 @@ tests:
       expect_self_reviews_before_completion: "true"
       expect_refuses_downstream_artifact: "true"
       expect_offers_commit_without_push: "true"
+
+  - description: "existing functional spec - edits canonical file instead of creating a second FS"
+    vars:
+      scenario: |-
+        User prompt:
+        "The FS for intent-user-data-mart-build already exists, but it is stale. Update it instead of making a new version."
+
+        Workspace context:
+        docs/functional/intent-user-data-mart-build/README.md exists in the repo named by the User-Flows sheet.
+      expect_updates_existing_spec_in_place: "true"
+      expect_never_creates_duplicate_functional_spec: "true"
+      expect_functional_spec_lives_in_sheet_repo: "true"

@@ -100,3 +100,10 @@ tests:
         Workspace context:
         The team wants a short rationale it can scan during incident review.
       expect_avoids_explicit_cot_in_generated_prompts: "true"
+
+  - description: "direct answer request - does not force prompt-writing skill"
+    vars:
+      scenario: |-
+        User prompt:
+        "Explain how this function works. I am not asking you to write a prompt."
+      expect_routes_prompt_writing_to_writing_ai_prompts: "false"
