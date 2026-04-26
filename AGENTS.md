@@ -29,3 +29,4 @@ Single plugin-source repo for documentation skills.
 - Keep all skill directories under `skills/`.
 - Keep `.claude-plugin/plugin.json` and `.codex-plugin/plugin.json` on the same plugin name and version.
 - When plugin content or metadata changes, bump both manifest versions together and run `python3 scripts/validate_plugin_manifests.py`.
+- When setting up or reattaching a development worktree, run `scripts/worktree.sh <branch-name>` from the main checkout instead of calling `git worktree` directly. The helper links `.env`, shared Promptfoo state, OpenCode auth, and eval dependencies so `npm run eval` uses the same `qwen3.6-plus` runtime across worktrees.
