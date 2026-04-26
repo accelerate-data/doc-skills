@@ -30,6 +30,12 @@ This skill is **not** for:
 - End-user help pages. Use `authoring-user-guide`.
 - AI prompt-writing requests. Use `writing-ai-prompts`.
 
+For implementation-plan requests based on a functional spec or design spec, do
+not continue in design-spec authoring mode. Route to `superpowers:writing-plans`
+and hand over the canonical flow ID, functional-spec path, relevant design-spec
+paths, gap analysis, source-file anchors, open questions, and any implementation
+constraints the user provided.
+
 ## Required inputs
 
 - Canonical flow ID.

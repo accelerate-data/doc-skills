@@ -48,6 +48,8 @@ tests:
         "Turn the intent-user-data-mart-build functional spec into implementation tasks."
       expect_routes_functional_docs_to_authoring_functional_spec: "false"
       expect_rejects_implementation_plans: "true"
+      expect_routes_implementation_plans_to_writing_plans: "true"
+      expect_hands_over_functional_spec_context_to_writing_plans: "true"
 
   - description: "preconditions — validates tooling, auth, git checkout, and allowed repo"
     vars:

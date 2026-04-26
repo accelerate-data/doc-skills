@@ -34,6 +34,11 @@ authoring workflow. Route to the downstream skill when the canonical functional
 spec already exists. If it does not exist, stop and explain that the functional
 spec must be authored first, then ask whether to switch to this skill.
 
+For implementation-plan requests based on a functional spec, route to
+`superpowers:writing-plans`. Hand over the canonical flow ID, functional-spec
+path, open questions, relevant design docs or source files already identified,
+and any implementation constraints the user provided.
+
 ## Prerequisites
 
 Before invoking the skill, confirm:

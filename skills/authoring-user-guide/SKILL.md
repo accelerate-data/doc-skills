@@ -70,7 +70,8 @@ Proceed autonomously. Only confirm:
      requested guide goal, known canonical ID or feature name, provided notes,
      related design docs, and source files already identified. Ask the user to
      switch back with that handoff instead of drafting a guide from partial
-     context.
+     context. Hand over that gathered context directly so the functional-spec
+     authoring run can continue without rediscovery.
    - Read related design docs in `docs/design/` when present. Use them to
      understand interaction states and product concepts, not implementation
      internals.

@@ -37,6 +37,7 @@ function staticContractReason() {
     '**conflicting**',
     'superpowers:brainstorming',
     'superpowers:writing-plans',
+    'hand over the canonical flow ID',
   ];
   for (const phrase of required) {
     if (!content.includes(phrase)) {

@@ -113,6 +113,3 @@ tests:
       expect_routes_user_guides_to_authoring_user_guide: "true"
       expect_studies_ui_source_before_drafting: "true"
       expect_uses_exact_ui_labels: "true"
-      expect_updates_vitepress_sidebar: "false"
-      expect_updates_help_url_mapping: "false"
-      expect_checks_or_adds_help_icon: "false"

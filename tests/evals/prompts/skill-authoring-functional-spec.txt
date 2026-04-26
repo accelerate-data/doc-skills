@@ -57,6 +57,8 @@ Return JSON only with this shape:
   "invokes_brainstorming": false,
   "self_reviews_before_completion": false,
   "refuses_downstream_artifact": false,
+  "routes_implementation_plans_to_writing_plans": false,
+  "hands_over_functional_spec_context_to_writing_plans": false,
   "offers_commit_without_push": false,
   "notes": "string"
 }

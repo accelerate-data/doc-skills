@@ -45,6 +45,7 @@ Return JSON only with this shape:
   "invokes_brainstorming_with_gap_context": false,
   "keeps_design_below_functional_above_plan": false,
   "routes_implementation_plans_to_writing_plans": false,
+  "hands_over_design_context_to_writing_plans": false,
   "updates_design_index_when_present": false,
   "primary_code_expected_in_sheet_repo": false,
   "requires_user_override_for_secondary_repo_code": false,

@@ -33,6 +33,8 @@ function staticContractReason() {
       'gws auth status',
       'superpowers:brainstorming',
       'superpowers:verification-before-completion',
+      'superpowers:writing-plans',
+      'Hand over the canonical flow ID',
       'Do NOT read column H',
       'Do not write to the Sheet',
       'list candidate IDs for the current repo',

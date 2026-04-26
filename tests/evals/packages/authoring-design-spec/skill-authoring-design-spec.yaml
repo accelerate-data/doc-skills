@@ -154,6 +154,7 @@ tests:
       expect_stops_when_no_design_gap_exists: "true"
       expect_routes_implementation_plans_to_writing_plans: "true"
       expect_supports_claude_code_and_codex: "true"
+      expect_hands_over_design_context_to_writing_plans: "true"
 
   - description: "covered design - refuses duplicate design doc when existing docs already cover the flow"
     vars:

@@ -67,6 +67,8 @@ def test_authoring_functional_spec_eval_covers_flow_selection_and_traceability()
             "routes_functional_docs_to_authoring_functional_spec",
             "rejects_design_specs",
             "rejects_implementation_plans",
+            "routes_implementation_plans_to_writing_plans",
+            "hands_over_functional_spec_context_to_writing_plans",
             "rejects_user_guides",
             "rejects_prompt_writing_requests",
             "functional_spec_lives_in_sheet_repo",
@@ -125,6 +127,7 @@ def test_authoring_design_spec_eval_covers_code_and_related_design_selection():
             "ignores_unrelated_design_docs",
             "includes_accurate_source_files_when_code_exists",
             "states_when_code_missing",
+            "hands_over_design_context_to_writing_plans",
         ],
     )
 
