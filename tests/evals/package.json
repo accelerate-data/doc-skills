@@ -9,6 +9,8 @@
     "eval:authoring-user-guide": "./scripts/promptfoo.sh eval --no-cache -c packages/authoring-user-guide/skill-authoring-user-guide.yaml",
     "eval:writing-ai-prompts": "./scripts/promptfoo.sh eval --no-cache -c packages/writing-ai-prompts/skill-writing-ai-prompts.yaml",
     "eval:coverage": "node scripts/check-skill-eval-coverage.js",
+    "test:eval-harness-contract": "node --test scripts/eval-harness-contract.test.js",
+    "test:opencode-cli-provider": "node --test scripts/opencode-cli-provider.test.js",
     "view": "./scripts/promptfoo.sh view"
   },
   "dependencies": {
