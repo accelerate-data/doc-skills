@@ -19,12 +19,14 @@ Return JSON only with this shape:
   "rejects_implementation_plans": false,
   "rejects_user_guides": false,
   "confirms_target_tool_when_ambiguous": false,
+  "confirms_unknown_tool_context_within_limit": false,
   "limits_clarifying_questions": false,
   "emits_copyable_prompt_block": false,
   "emits_tool_template_token_line": false,
   "emits_strategy_note": false,
   "adapts_to_target_tool_category": false,
   "avoids_cot_for_reasoning_native_models": false,
+  "avoids_explicit_cot_in_generated_prompts": false,
   "avoids_fabricated_prompt_techniques": false,
   "notes": "string"
 }

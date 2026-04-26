@@ -10,7 +10,7 @@ Full template library. Read only the template you need — do not load all at on
 | [B — CO-STAR](#template-b--co-star) | Professional documents, business writing |
 | [C — RISEN](#template-c--risen) | Complex multi-step projects |
 | [D — CRISPE](#template-d--crispe) | Creative work, brand voice |
-| [E — Chain of Thought](#template-e--chain-of-thought) | Logic, math, analysis, debugging |
+| [E - Reasoning Summary](#template-e---reasoning-summary) | Logic, math, analysis, debugging |
 | [F — Few-Shot](#template-f--few-shot) | Consistent structured output, pattern replication |
 | [G — File-Scope](#template-g--file-scope) | Cursor, Windsurf, Copilot — code editing AI |
 | [H — ReAct + Stop Conditions](#template-h--react--stop-conditions) | Claude Code, Devin — autonomous agents |
@@ -117,29 +117,24 @@ Experiment: Give 3 variants ranging from minimal to bold.
 
 ---
 
-## Template E — Chain of Thought
+## Template E - Reasoning Summary
 
-_Use for logic-heavy tasks, math, debugging, and multi-factor analysis where the AI needs to reason carefully before committing to an answer._
+_Use for logic-heavy tasks, math, debugging, and multi-factor analysis where the AI should reason carefully but only expose a concise rationale._
 
-**IMPORTANT:** Only use for standard reasoning models (Claude, GPT-4o, Gemini). NEVER add to o1, o3, or DeepSeek-R1 — they reason internally and CoT instructions degrade their output.
+**IMPORTANT:** Never ask the model to reveal hidden chain-of-thought. For reasoning-native models (o1, o3, DeepSeek-R1), keep the prompt short and ask only for the final answer plus a brief rationale when useful.
 
 ```
 [Task statement]
 
-Before answering, think through this carefully:
-<thinking>
-1. What is the actual problem being asked?
-2. What constraints must the solution respect?
-3. What are the possible approaches?
-4. Which approach is best and why?
-</thinking>
-
-Give your final answer in <answer> tags only.
+Work through the problem privately. Return:
+1. Final answer
+2. Brief rationale: 3-5 bullets covering the key assumptions, checks, or tradeoffs
+3. Confidence and any uncertainty
 ```
 
-**When to use:** Debugging with non-obvious cause, comparing technical approaches, any math or calculation, analysis where a wrong first impression is likely.
+**When to use:** Debugging with non-obvious cause, comparing technical approaches, math or calculations where a concise audit trail helps, analysis where a wrong first impression is likely.
 
-**When NOT to use:** o1/o3/reasoning models, simple tasks, creative tasks.
+**When NOT to use:** Requests for hidden reasoning, simple tasks, creative tasks.
 
 ---
 

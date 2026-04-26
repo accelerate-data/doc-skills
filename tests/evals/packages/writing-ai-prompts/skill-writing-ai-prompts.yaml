@@ -54,6 +54,17 @@ tests:
       expect_confirms_target_tool_when_ambiguous: "true"
       expect_limits_clarifying_questions: "true"
 
+  - description: "unknown tool - gathers tool context without exceeding question limit"
+    vars:
+      scenario: |-
+        User prompt:
+        "Help me write a prompt for our internal AI assistant. It has its own quirks and I don't know what details matter."
+
+        Workspace context:
+        We do not have docs for the internal assistant handy. Ask only the few details needed to avoid a bad prompt.
+      expect_confirms_unknown_tool_context_within_limit: "true"
+      expect_limits_clarifying_questions: "true"
+
   - description: "output lock - copyable prompt plus compact metadata"
     vars:
       scenario: |-
@@ -77,3 +88,13 @@ tests:
         The requested target model is reasoning-native.
       expect_avoids_cot_for_reasoning_native_models: "true"
       expect_avoids_fabricated_prompt_techniques: "true"
+
+  - description: "reasoning summary - avoids explicit chain-of-thought requests"
+    vars:
+      scenario: |-
+        User prompt:
+        "Write a GPT-4o prompt for debugging a tricky API issue. I want useful reasoning, but don't ask it to expose hidden chain-of-thought."
+
+        Workspace context:
+        The team wants a short rationale it can scan during incident review.
+      expect_avoids_explicit_cot_in_generated_prompts: "true"

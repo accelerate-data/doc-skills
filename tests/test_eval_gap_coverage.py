@@ -154,6 +154,8 @@ def test_writing_ai_prompts_eval_covers_standalone_routing_and_prompt_safety():
     prompt = read("tests/evals/prompts/skill-writing-ai-prompts.txt")
     assertion = read("tests/evals/assertions/check-writing-ai-prompts-contract.js")
     assert_prompt_is_user_grounded(prompt)
+    assert "the skill needs" not in config.lower()
+    assert "the skill should" not in config.lower()
 
     assert_contains_all(
         config,
@@ -173,12 +175,29 @@ def test_writing_ai_prompts_eval_covers_standalone_routing_and_prompt_safety():
             "rejects_implementation_plans",
             "rejects_user_guides",
             "confirms_target_tool_when_ambiguous",
+            "confirms_unknown_tool_context_within_limit",
             "limits_clarifying_questions",
             "emits_copyable_prompt_block",
             "emits_tool_template_token_line",
             "emits_strategy_note",
             "adapts_to_target_tool_category",
             "avoids_cot_for_reasoning_native_models",
+            "avoids_explicit_cot_in_generated_prompts",
             "avoids_fabricated_prompt_techniques",
         ],
     )
+
+
+def test_writing_ai_prompts_skill_has_no_question_count_or_cot_contradiction():
+    skill = read("skills/writing-ai-prompts/SKILL.md")
+    templates = read("skills/writing-ai-prompts/references/templates.md")
+
+    assert "ask these 4 questions" not in skill
+    assert "Unknown tool — ask these 4 questions" not in skill
+    assert "**Chain of Thought**" not in skill
+    assert "Template E — Chain of Thought" not in templates
+    assert "Template E - Chain of Thought" not in templates
+    assert "<thinking>" not in templates
+    assert "Give your final answer in <answer> tags only" not in templates
+    assert "Template E - Reasoning Summary" in templates
+    assert "Never ask the model to reveal hidden chain-of-thought" in templates

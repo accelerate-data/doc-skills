@@ -114,11 +114,10 @@ Emotion + pacing + emphasis markers + speech rate. Prose descriptions do not tra
 **Workflow AI** (Zapier, Make, n8n)
 Trigger app + event → action app + field mapping. Step by step. Auth requirements noted explicitly.
 
-**Unknown tool — ask these 4 questions:**
+**Unknown tool - ask up to 3 questions:**
 1. What format does this tool accept? (natural language / structured / code)
-2. Does it support system instructions separate from user input?
-3. What is its most common failure — too much output, wrong scope, or hallucination?
-4. Does it have memory or is it stateless?
+2. Does it support system instructions separate from user input, and does it have memory or is it stateless?
+3. What is its most common failure - too much output, wrong scope, or hallucination?
 
 Then build using the closest matching category above.
 
@@ -189,7 +188,7 @@ When the user's request references prior work, decisions, or session history —
 
 **Grounding anchors** — for any factual or citation task: "Use only information you are highly confident is accurate. If uncertain, write [uncertain] next to the claim. Do not fabricate citations or statistics."
 
-**Chain of Thought** — for logic, math, and debugging on standard reasoning models ONLY (Claude, GPT-4o, Gemini). Never on o1/o3/R1. "Think through this step by step before answering."
+**Reasoning summaries** — for logic, math, and debugging on standard LLMs, ask for a concise rationale, key assumptions, and final answer. Do not ask any model to reveal hidden chain-of-thought.
 
 ---
 
