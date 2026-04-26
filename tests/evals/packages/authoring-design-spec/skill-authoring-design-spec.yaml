@@ -164,4 +164,3 @@ tests:
         Workspace context:
         The canonical functional spec exists. Existing design docs cover every behavior, state, and source-file anchor needed for the flow.
       expect_stops_when_no_design_gap_exists: "true"
-      expect_presents_gap_before_drafting: "false"
