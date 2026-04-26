@@ -54,6 +54,19 @@ tests:
       expect_aborts_when_functional_spec_missing: "true"
       expect_one_flow_one_functional_spec_many_design_docs: "true"
 
+  - description: "missing functional spec - asks to switch back with handoff context"
+    vars:
+      scenario: |-
+        User prompt:
+        "Write the design spec for intent-user-data-mart-build, but I don't think the functional spec exists yet."
+
+        Workspace context:
+        The canonical flow ID is known. docs/functional has no matching README or child flow file. The user has provided a design goal and related source files.
+      expect_requires_existing_functional_spec: "true"
+      expect_aborts_when_functional_spec_missing: "true"
+      expect_asks_to_switch_to_authoring_functional_spec_when_missing: "true"
+      expect_hands_over_context_to_authoring_functional_spec: "true"
+
   - description: "repo ownership - design doc lives beside functional spec in Sheet repo"
     vars:
       scenario: |-

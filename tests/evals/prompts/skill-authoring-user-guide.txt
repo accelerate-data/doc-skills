@@ -1,12 +1,14 @@
-A user asks for help in a repo:
+You are selecting whether one installed skill should handle a real user request.
+Do not execute the request or modify files. Return JSON only.
+
+Real user request:
 
 {{scenario}}
 
 Before choosing an action, inspect `skills/authoring-user-guide/SKILL.md`.
 Decide how this installed skill applies to the user's request and workspace
-context. Return one JSON object only, with no prose before or after it. Set a
-field to true only when this skill clearly supports that behavior for this
-request; otherwise leave it false.
+context. Set a field to true only when this skill clearly supports that behavior
+for this request; otherwise leave it false.
 
 Treat route fields as primary-skill decisions for the requested deliverable.
 Treat reject fields as true only when the current user request is for that other
@@ -22,6 +24,9 @@ Return JSON only with this shape:
   "rejects_prompt_writing_requests": false,
   "updates_existing_user_guide_when_present": false,
   "reads_functional_spec_for_user_outcomes": false,
+  "requires_existing_functional_spec": false,
+  "asks_to_switch_to_authoring_functional_spec_when_missing": false,
+  "hands_over_context_to_authoring_functional_spec": false,
   "reads_related_design_docs_for_product_context": false,
   "studies_ui_source_before_drafting": false,
   "uses_exact_ui_labels": false,

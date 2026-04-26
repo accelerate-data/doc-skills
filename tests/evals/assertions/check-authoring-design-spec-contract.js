@@ -16,6 +16,8 @@ function staticContractReason() {
     'The functional spec and all design docs for that flow must live in the primary',
     'secondary helper code',
     'Existing functional spec at `docs/functional/<canonical-id>/README.md`',
+    'handoff for `authoring-functional-spec`',
+    'Ask the user to switch back to `authoring-functional-spec`',
     'Fetch the User-Flows-Details Sheet row',
     'Verify the current repo from Phase 0 matches the Sheet repo',
     'ask for explicit confirmation before editing it',

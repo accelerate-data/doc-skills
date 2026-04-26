@@ -1,12 +1,14 @@
-A user asks for help:
+You are selecting whether one installed skill should handle a real user request.
+Do not execute the request or modify files. Return JSON only.
+
+Real user request:
 
 {{scenario}}
 
 Before choosing an action, inspect `skills/writing-ai-prompts/SKILL.md`.
 Decide how this installed skill applies to the user's request and workspace
-context. Return one JSON object only, with no prose before or after it. Set a
-field to true only when this skill clearly supports that behavior for this
-request; otherwise leave it false.
+context. Set a field to true only when this skill clearly supports that behavior
+for this request; otherwise leave it false.
 
 Treat route fields as primary-skill decisions for the requested deliverable.
 Treat reject fields as true only when the current user request is for that other

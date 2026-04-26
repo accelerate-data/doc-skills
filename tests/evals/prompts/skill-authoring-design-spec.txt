@@ -1,12 +1,14 @@
-A user asks for help in a repo:
+You are selecting whether one installed skill should handle a real user request.
+Do not execute the request or modify files. Return JSON only.
+
+Real user request:
 
 {{scenario}}
 
 Before choosing an action, inspect `skills/authoring-design-spec/SKILL.md`.
 Decide how this installed skill applies to the user's request and workspace
-context. Return one JSON object only, with no prose before or after it. Set a
-field to true only when this skill clearly supports that behavior for this
-request; otherwise leave it false.
+context. Set a field to true only when this skill clearly supports that behavior
+for this request; otherwise leave it false.
 
 Treat route fields as primary-skill decisions for the requested deliverable.
 Treat reject fields as true only when the current user request is for that other
@@ -24,6 +26,8 @@ Return JSON only with this shape:
   "one_flow_one_functional_spec_many_design_docs": false,
   "requires_existing_functional_spec": false,
   "aborts_when_functional_spec_missing": false,
+  "asks_to_switch_to_authoring_functional_spec_when_missing": false,
+  "hands_over_context_to_authoring_functional_spec": false,
   "verifies_current_repo_matches_sheet_repo": false,
   "design_doc_lives_in_sheet_repo": false,
   "confirms_before_functional_spec_update": false,

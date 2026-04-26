@@ -78,6 +78,18 @@ tests:
       expect_keeps_user_guide_usage_focused: "true"
       expect_excludes_code_and_api_details: "true"
 
+  - description: "missing functional spec - asks to switch back with handoff context"
+    vars:
+      scenario: |-
+        User prompt:
+        "Write the user guide for intent-user-data-mart-build, but there is no functional spec yet."
+
+        Workspace context:
+        docs/user-guide exists. docs/functional has no matching functional spec. The user has provided notes about the feature and a related design doc.
+      expect_requires_existing_functional_spec: "true"
+      expect_asks_to_switch_to_authoring_functional_spec_when_missing: "true"
+      expect_hands_over_context_to_authoring_functional_spec: "true"
+
   - description: "closeout - guide navigation and help link integration"
     vars:
       scenario: |-

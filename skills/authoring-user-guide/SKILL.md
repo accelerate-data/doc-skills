@@ -38,6 +38,9 @@ Proceed autonomously. Only confirm:
   - design documentation under `docs/design/` that explains product states and interaction model
 - If a convention file is absent, do not invent it. Write the guide page and report
   that the repo has no matching integration point.
+- User guides for canonical flows require an existing functional spec. If the
+  matching functional spec is missing, stop before drafting and ask the user to
+  switch back to `authoring-functional-spec`.
 
 ## Input
 
@@ -62,6 +65,12 @@ Proceed autonomously. Only confirm:
    - Read the matching functional spec in `docs/functional/` when present.
      Extract only user outcomes, entry points, main tasks, alternate paths,
      success states, and failure states.
+   - If the user guide is for a canonical flow and the matching functional spec
+     is absent, prepare a handoff for `authoring-functional-spec` containing the
+     requested guide goal, known canonical ID or feature name, provided notes,
+     related design docs, and source files already identified. Ask the user to
+     switch back with that handoff instead of drafting a guide from partial
+     context.
    - Read related design docs in `docs/design/` when present. Use them to
      understand interaction states and product concepts, not implementation
      internals.

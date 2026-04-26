@@ -48,6 +48,12 @@ If the matching functional spec is not present, abort:
 > Functional spec `<canonical-id>` was not found under `docs/functional/`. Author the
 > functional spec first with `authoring-functional-spec`, then rerun this skill.
 
+Before stopping, prepare a handoff for `authoring-functional-spec` containing
+the canonical flow ID, the requested design goal, relevant docs or source files
+already identified, and the reason the design spec is blocked. Ask the user to
+switch back to `authoring-functional-spec` with that handoff instead of silently
+continuing in design-spec mode.
+
 ## Workflow
 
 ### Phase 0 - Precondition check
@@ -64,7 +70,8 @@ If the matching functional spec is not present, abort:
    runtime's skill mechanism. In Codex, use the available skills list and
    follow the relevant `SKILL.md`; in Claude Code, use the Skill tool.
 6. Confirm the repo has `docs/functional/`. If not, abort with the missing
-   functional-spec message above.
+   functional-spec message above and include the `authoring-functional-spec`
+   handoff context.
 
 ### Phase 1 - Resolve the canonical flow
 
