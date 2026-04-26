@@ -11,7 +11,16 @@ function staticContractReason() {
   );
   const required = [
     'name: authoring-design-spec',
+    'One canonical user flow maps to exactly one functional spec',
+    'One functional spec may be supported by many design docs',
+    'The functional spec and all design docs for that flow must live in the primary',
+    'secondary helper code',
     'Existing functional spec at `docs/functional/<canonical-id>/README.md`',
+    'Fetch the User-Flows-Details Sheet row',
+    'Verify the current repo from Phase 0 matches the Sheet repo',
+    'ask for explicit confirmation before editing it',
+    'modify the existing canonical functional spec in place',
+    'do not create a second functional spec',
     'search `docs/functional/**/*.md` for frontmatter',
     'functional spec first with `authoring-functional-spec`',
     'named production artifacts cited by the functional spec',

@@ -11,6 +11,17 @@ Use this skill when authoring or updating the design spec that sits one
 level below a canonical functional spec. The functional spec is the behavioral source of
 truth; the design spec explains how the repo intends to realize that behavior.
 
+## Canonical artifact model
+
+- One canonical user flow maps to exactly one functional spec.
+- One functional spec may be supported by many design docs.
+- The User-Flows-Details Sheet repo column is the primary repo for the flow.
+- The functional spec and all design docs for that flow must live in the primary
+  repo.
+- Code grounding is expected to come from the primary repo. Read or cite code
+  from another repo only when the user explicitly identifies that repo as a
+  secondary helper location for the flow.
+
 This skill is **not** for:
 
 - User-flow, behavior, journey, or PRD-adjacent specs. Use
@@ -24,6 +35,8 @@ This skill is **not** for:
 - Existing functional spec at `docs/functional/<canonical-id>/README.md`, or a child
   flow file under `docs/functional/<parent-id>/NN-<child-slug>.md` whose
   frontmatter `id` matches the canonical ID.
+- Access to the User-Flows-Details Sheet through `gws`, so the skill can verify
+  the flow's Sheet repo before writing a design doc.
 
 If the canonical ID is missing, ask:
 
@@ -38,26 +51,51 @@ If the matching functional spec is not present, abort:
 
 ### Phase 0 - Precondition check
 
-1. Verify `git rev-parse --is-inside-work-tree` exits zero.
-2. Confirm `superpowers:brainstorming` is available through the active
+1. Verify `command -v gws` resolves.
+2. Run `gws auth status`. If non-zero, abort with:
+
+   > Run `gws auth login` first, then retry.
+
+3. Verify `git rev-parse --is-inside-work-tree` exits zero.
+4. Parse `git remote get-url origin` to extract the repo name (everything after
+   the last `/`, stripping `.git`).
+5. Confirm `superpowers:brainstorming` is available through the active
    runtime's skill mechanism. In Codex, use the available skills list and
    follow the relevant `SKILL.md`; in Claude Code, use the Skill tool.
-3. Confirm the repo has `docs/functional/`. If not, abort with the missing
+6. Confirm the repo has `docs/functional/`. If not, abort with the missing
    functional-spec message above.
 
 ### Phase 1 - Resolve the canonical flow
 
 1. Use the supplied canonical ID, or ask for it if missing.
-2. Check `docs/functional/<canonical-id>/README.md`.
-3. If not found, search `docs/functional/**/*.md` for frontmatter
+2. Fetch the User-Flows-Details Sheet row for the canonical ID using the command
+   patterns from `authoring-functional-spec/references/sheet-interop.md`.
+   Extract column C (`repo`) as the primary repo.
+3. Verify the current repo from Phase 0 matches the Sheet repo. If they differ,
+   abort:
+
+   > You are in `<current-repo>` but flow `<id>` targets `<sheet-repo>`. Re-run
+   > this skill from the correct repo so the design doc lands beside the
+   > functional spec.
+
+4. Check `docs/functional/<canonical-id>/README.md`.
+5. If not found, search `docs/functional/**/*.md` for frontmatter
    `id: <canonical-id>`.
-4. Read the matching functional spec. Extract:
+6. Read the matching functional spec. Extract:
    - title and persona
    - goal, scope, trigger, inputs, outputs, success outcome
    - main flow or phases
    - alternate flows, failure cases, state transitions
    - business rules, invariants, events / observability
    - open questions
+7. If design discovery shows the functional spec itself is stale, incomplete,
+   or contradicted by the intended design, present the proposed functional-spec
+   change to the author and ask for explicit confirmation before editing it.
+   When confirmed, modify the existing canonical functional spec in place in the
+   same Sheet repo; do not create a second functional spec for the flow.
+   If not confirmed, keep the design spec aligned to the current functional
+   spec and record the unresolved product question instead of silently changing
+   behavior.
 
 ### Phase 2 - Find related design specs
 
@@ -84,6 +122,8 @@ Before drafting, present the gap analysis to the author:
 
 - canonical flow ID and functional-spec path
 - related design specs read
+- any functional-spec changes that need explicit author confirmation before
+  editing the canonical functional spec in place
 - proposed target path under `docs/design/`
 - what should be covered or changed
 - what should stay out because it belongs in the functional spec or implementation
@@ -108,7 +148,8 @@ Wait for brainstorming to produce an approved design direction before drafting.
 
 ### Phase 5 - Draft or update the design spec
 
-Write to the approved target path under `docs/design/`. Prefer
+Write to the approved target path under `docs/design/` in the primary repo from
+the Sheet. Prefer
 `docs/design/<topic>/README.md` for durable topics; use a sub-document only when
 an existing design directory already owns the topic.
 
@@ -175,21 +216,30 @@ Include only state that matters to the design.
 3. **Design altitude**: Include design decisions, state, schemas, interfaces,
    data flow, and source anchors. Exclude behavior-source-of-truth content and
    implementation task sequencing.
-4. **Traceability**: Link to the functional spec and related design specs.
-5. **Decisions over descriptions**: State the decision and rationale.
-6. **Present tense**: Describe the current intended design, not history.
-7. **Source file references**: Include accurate source files when code already
-   exists. If code does not exist, state that in the source-files section
-   instead of inventing paths.
+4. **Functional spec stewardship**: If design work reveals a needed product-flow
+   correction, confirm with the author first, then edit the existing canonical
+   functional spec in place. Never create an alternate functional spec for the
+   same canonical flow.
+5. **Traceability**: Link to the functional spec and related design specs.
+6. **Decisions over descriptions**: State the decision and rationale.
+7. **Present tense**: Describe the current intended design, not history.
+8. **Source file references**: Include accurate source files when code already
+   exists in the primary repo. If code does not exist, state that in the
+   source-files section instead of inventing paths. Cite another repo only when
+   the user explicitly identifies it as secondary helper code for the flow.
 
 ## Self-review
 
 Before writing or claiming completion, check:
 
 - The canonical functional spec exists and is linked.
+- The current repo matches the Sheet repo for the canonical flow.
 - Related design specs were searched and read when relevant.
 - The spec explicitly covers a gap, partial coverage, or conflict.
 - No unresolved product-flow question is hidden in design text.
+- Any functional-spec change discovered during design was explicitly confirmed
+  by the author and applied to the existing canonical functional spec in place,
+  or left as an unresolved product question.
 - Implementation plan tasks are absent.
 - `docs/design/README.md` is updated when it exists.
 - `superpowers:verification-before-completion` is invoked before completion
@@ -202,6 +252,8 @@ After writing, summarize:
 - canonical flow ID and functional-spec path
 - design spec path
 - related design specs read
+- functional spec updates made after author confirmation, or product-flow
+  questions left unresolved
 - coverage added or changed
 - open questions remaining
 - whether `docs/design/README.md` was updated

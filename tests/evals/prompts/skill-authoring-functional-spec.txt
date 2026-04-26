@@ -5,6 +5,7 @@ You are evaluating the `authoring-functional-spec` skill workflow for this scena
 Skill contract:
 
 - The skill authors or updates top-level, behavior-focused functional specs only.
+- The canonical artifact model is one flow, one functional spec, and many possible design docs.
 - It is not a design spec, implementation plan, status-update workflow, or PRD authoring workflow; those downstream artifacts must link back to the functional spec.
 - Precondition checks verify `gws`, `gws auth status`, git checkout status, and that the origin repo is one of studio, skill-builder, domain-cicd, or migration-utility.
 - Precondition checks also verify required cross-skill handoffs are available through the runtime skill/tool registry: `superpowers:brainstorming` and `superpowers:verification-before-completion`. If unavailable, abort before writing.
@@ -13,11 +14,15 @@ Skill contract:
 - It fetches the matching User-Flows-Details Sheet row and extracts only canonical ID, repo, category, title, and persona. It must not read status column H or write to the Sheet.
 - If no exact row exists, it attempts longest-prefix child-flow inference. If no parent prefix exists, it aborts and asks for a Sheet row first.
 - It verifies the current repo matches the Sheet repo.
+- It writes the functional spec only in the Sheet repo for the canonical flow.
 - Parent and standalone outputs go to `docs/functional/<canonical-id>/README.md`.
 - Child outputs go to `docs/functional/<parent-id>/NN-<child-slug>.md` only when the parent README exists and lists the child in `sub-flows:`.
-- It checks for an existing target spec and asks whether to update in place or abort.
+- If the target functional spec already exists, it reads and updates that
+  existing file in place. It never creates a sibling or alternate functional
+  spec for the same canonical flow; if the author refuses in-place updates, it
+  aborts.
 - It asks for existing reference material before drafting, digests behavioral signals only, and avoids verbatim copying.
-- When code is reference material, it uses code only to ground behavioral claims and does not turn implementation paths, classes, payload schemas, or event names into functional requirements.
+- When code is reference material, it expects primary code in the Sheet repo, requires a user override before reading secondary-repo helper code, uses code only to ground behavioral claims, and does not turn implementation paths, classes, payload schemas, or event names into functional requirements.
 - It preserves traceability by citing stable sibling flow IDs and existing production artifacts by canonical ID or artifact name when they define scope, exclusions, or handoffs.
 - It loads the functional-spec template and writing guidance, drafts required frontmatter and all required sections, and keeps the spec at behavior altitude.
 - It invokes `superpowers:brainstorming` for section-by-section pressure testing.
@@ -39,6 +44,7 @@ Return JSON only with this shape:
   "aborts_outside_allowed_repos": false,
   "checks_required_skill_availability": false,
   "aborts_when_required_skill_missing": false,
+  "one_flow_one_functional_spec_many_design_docs": false,
   "asks_for_canonical_id_when_missing": false,
   "lists_candidate_ids_for_current_repo": false,
   "fetches_sheet_row_for_id": false,
@@ -48,12 +54,16 @@ Return JSON only with this shape:
   "uses_child_longest_prefix_inference": false,
   "aborts_when_no_row_or_parent": false,
   "verifies_repo_alignment": false,
+  "functional_spec_lives_in_sheet_repo": false,
   "writes_parent_readme_path": false,
   "writes_child_numbered_path": false,
   "requires_parent_readme_and_subflow": false,
-  "asks_update_or_abort_for_existing_spec": false,
+  "updates_existing_spec_in_place": false,
+  "never_creates_duplicate_functional_spec": false,
   "asks_for_reference_material": false,
   "digests_behavioral_signals_only": false,
+  "primary_code_expected_in_sheet_repo": false,
+  "requires_user_override_for_secondary_repo_code": false,
   "uses_code_only_to_ground_behavior": false,
   "cites_production_artifacts_by_stable_name": false,
   "preserves_sibling_flow_traceability": false,

@@ -11,6 +11,16 @@ version: 0.1.0
 Use this skill when authoring or updating a **product level, behavior-focused
 functional specification** for Vibedata. The output is the source-of-truth artifact. Downstream design specs, and implementation plans link back to this one — not the other way around.
 
+## Canonical artifact model
+
+- One canonical user flow maps to exactly one functional spec.
+- One functional spec may be supported by many design docs.
+- The User-Flows-Details Sheet repo column is the primary repo for the flow.
+- The functional spec must live in that primary repo.
+- Code grounding is expected to come from the primary repo. Read or cite code
+  from another repo only when the user explicitly identifies that repo as a
+  secondary helper location for the flow.
+
 This skill is **not** for:
 
 - PRDs (market positioning, business case)
@@ -124,10 +134,11 @@ missing, abort:
 > Author the parent flow `<parent-id>` first (and add `<child-id>` to its
 > `sub-flows:` list).
 
-If the target file already exists, read it and ask the author:
-
-> Spec already exists. Update in place (preserve closed sections, re-run
-> brainstorming on open ones), or abort?
+If the target file already exists, read it and update that file in place.
+Preserve closed sections, re-run brainstorming on open ones, and do not create
+a sibling, alternate, or replacement functional spec for the same canonical
+flow. If the author explicitly refuses in-place updates, abort instead of
+creating another file.
 
 Otherwise, proceed to draft.
 
@@ -145,8 +156,11 @@ functional spec:
 
 Collect whatever the author provides:
 
-- **File paths** (inside any of the relevant repos) → read them using the
-  active runtime's file-reading mechanism.
+- **File paths** in the primary repo → read them using the active runtime's
+  file-reading mechanism.
+- **File paths in another repo** → read them only when the user explicitly says
+  that repo contains secondary helper code for this flow. Treat that material as
+  supporting context; do not move the functional spec out of the Sheet repo.
 - **Linear issue IDs** (e.g., `VD-123`) → fetch via the Linear MCP tool
   available in your runtime.
 - **Granola meeting IDs or titles** → fetch via the Granola MCP tool

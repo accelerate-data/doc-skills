@@ -19,7 +19,15 @@ function staticContractReason() {
   const checks = [
     requireFileContains('skills/authoring-functional-spec/SKILL.md', [
       'name: authoring-functional-spec',
+      'One canonical user flow maps to exactly one functional spec',
+      'One functional spec may be supported by many design docs',
+      'The functional spec must live in that primary repo',
+      'Code grounding is expected to come from the primary repo',
+      'secondary helper code',
       'docs/functional/<canonical-id>/README.md',
+      'update that file in place',
+      'do not create',
+      'alternate',
       'gws auth status',
       'superpowers:brainstorming',
       'superpowers:verification-before-completion',

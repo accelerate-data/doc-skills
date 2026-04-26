@@ -31,9 +31,32 @@ tests:
       scenario: |-
         - The user asks to author a design spec but does not provide a canonical ID.
         - In another run, the user provides an ID but docs/functional has no matching spec.
+        - The Sheet row identifies the primary repo for the flow.
       expect_asks_for_canonical_id: "true"
       expect_requires_existing_functional_spec: "true"
       expect_aborts_when_functional_spec_missing: "true"
+      expect_one_flow_one_functional_spec_many_design_docs: "true"
+
+  - description: "repo ownership - design doc lives beside functional spec in Sheet repo"
+    vars:
+      scenario: |-
+        - The user asks to author a design spec for a canonical flow.
+        - The User-Flows-Details Sheet row says the flow belongs to `skill-builder`.
+        - The current checkout is `studio`.
+        - The skill should abort and tell the user to rerun from the Sheet repo so both the functional spec and design docs live in the primary repo.
+      expect_verifies_current_repo_matches_sheet_repo: "true"
+      expect_design_doc_lives_in_sheet_repo: "true"
+
+  - description: "functional spec stewardship - design changes update the canonical FS only after confirmation"
+    vars:
+      scenario: |-
+        - While authoring a design spec, the related design/code discovery shows the current functional spec is stale or incomplete.
+        - The needed change is product-flow behavior, not a design decision.
+        - The skill should present the proposed functional-spec change and get explicit user confirmation before editing.
+        - If confirmed, it should update the existing canonical functional spec in place in the Sheet repo and must not create another functional spec for the same flow.
+      expect_confirms_before_functional_spec_update: "true"
+      expect_updates_existing_functional_spec_in_place: "true"
+      expect_never_creates_duplicate_functional_spec: "true"
 
   - description: "child functional spec - resolves by frontmatter id"
     vars:
@@ -61,9 +84,12 @@ tests:
     vars:
       scenario: |-
         - The functional spec cites a production artifact already implemented in source code.
-        - The repo contains files that realize the current behavior.
+        - The Sheet repo contains files that realize the current behavior.
+        - A different repo may contain helper code, but only if the user explicitly identifies it.
         - In another flow, no implementation exists yet.
         - The design spec should include accurate source-file references when present and state when code is absent instead of inventing paths.
+      expect_primary_code_expected_in_sheet_repo: "true"
+      expect_requires_user_override_for_secondary_repo_code: "true"
       expect_includes_accurate_source_files_when_code_exists: "true"
       expect_states_when_code_missing: "true"
 

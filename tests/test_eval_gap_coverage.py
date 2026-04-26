@@ -35,6 +35,12 @@ def test_authoring_functional_spec_eval_covers_flow_selection_and_traceability()
     assert_contains_all(
         prompt + assertion,
         [
+            "one_flow_one_functional_spec_many_design_docs",
+            "functional_spec_lives_in_sheet_repo",
+            "updates_existing_spec_in_place",
+            "never_creates_duplicate_functional_spec",
+            "primary_code_expected_in_sheet_repo",
+            "requires_user_override_for_secondary_repo_code",
             "lists_candidate_ids_for_current_repo",
             "uses_code_only_to_ground_behavior",
             "cites_production_artifacts_by_stable_name",
@@ -63,6 +69,14 @@ def test_authoring_design_spec_eval_covers_code_and_related_design_selection():
     assert_contains_all(
         prompt + assertion,
         [
+            "one_flow_one_functional_spec_many_design_docs",
+            "design_doc_lives_in_sheet_repo",
+            "verifies_current_repo_matches_sheet_repo",
+            "confirms_before_functional_spec_update",
+            "updates_existing_functional_spec_in_place",
+            "never_creates_duplicate_functional_spec",
+            "primary_code_expected_in_sheet_repo",
+            "requires_user_override_for_secondary_repo_code",
             "resolves_child_functional_spec_by_frontmatter_id",
             "selects_related_design_docs_by_multiple_signals",
             "ignores_unrelated_design_docs",

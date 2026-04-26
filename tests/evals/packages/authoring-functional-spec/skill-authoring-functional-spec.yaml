@@ -56,6 +56,8 @@ tests:
       expect_does_not_read_status_column: "true"
       expect_does_not_write_sheet: "true"
       expect_verifies_repo_alignment: "true"
+      expect_functional_spec_lives_in_sheet_repo: "true"
+      expect_one_flow_one_functional_spec_many_design_docs: "true"
 
   - description: "missing id — asks for canonical ID and can infer child flow"
     vars:
@@ -86,7 +88,8 @@ tests:
       expect_writes_parent_readme_path: "true"
       expect_writes_child_numbered_path: "true"
       expect_requires_parent_readme_and_subflow: "true"
-      expect_asks_update_or_abort_for_existing_spec: "true"
+      expect_updates_existing_spec_in_place: "true"
+      expect_never_creates_duplicate_functional_spec: "true"
 
   - description: "drafting — gathers behavioral context and keeps behavior altitude"
     vars:
@@ -105,9 +108,13 @@ tests:
     vars:
       scenario: |-
         - The author provides existing code that partially implements the flow.
+        - Most implementation code is expected in the Sheet repo for the flow.
+        - A different repo may contain helper code, but only if the user explicitly identifies it.
         - The code contains file paths, class names, payload schemas, retry constants, and event names.
-        - The functional spec should use the code only to ground behavioral claims and must not promote those implementation details into requirements.
+        - The functional spec should use code only to ground behavioral claims and must not promote implementation details into requirements.
       expect_asks_for_reference_material: "true"
+      expect_primary_code_expected_in_sheet_repo: "true"
+      expect_requires_user_override_for_secondary_repo_code: "true"
       expect_uses_code_only_to_ground_behavior: "true"
       expect_digests_behavioral_signals_only: "true"
       expect_keeps_behavior_altitude: "true"
