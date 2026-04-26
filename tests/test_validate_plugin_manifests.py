@@ -15,7 +15,7 @@ def write_manifest(root: Path, relative_path: str, **overrides: object) -> None:
         "version": "1.0.1",
         "author": {"name": "Accelerate Data"},
         "repository": "https://github.com/accelerate-data/doc-skills",
-        "license": "MIT",
+        "license": "Elastic-2.0",
         "skills": "./skills",
     }
     manifest.update(overrides)
