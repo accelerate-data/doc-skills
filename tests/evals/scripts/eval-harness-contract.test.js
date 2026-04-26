@@ -29,6 +29,14 @@ test('promptfoo wrapper does not manage an OpenCode server', () => {
   assert.equal(wrapper.includes('PROMPTFOO_OPENCODE_PORT'), false);
 });
 
+test('promptfoo wrapper links active OpenCode auth into the isolated eval runtime', () => {
+  const wrapper = readText('scripts/promptfoo.sh');
+
+  assert.equal(wrapper.includes('OPENCODE_AUTH_DST='), true);
+  assert.equal(wrapper.includes('opencode/auth.json'), true);
+  assert.equal(wrapper.includes('ln -s'), true);
+});
+
 test('eval package providers use the OpenCode CLI provider with the Qwen eval model', () => {
   const packageFiles = walkYaml(path.join(EVAL_ROOT, 'packages'));
   assert.ok(packageFiles.length > 0, 'expected eval package YAML files');
