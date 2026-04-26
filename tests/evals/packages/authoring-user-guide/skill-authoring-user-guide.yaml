@@ -1,0 +1,79 @@
+# yaml-language-server: $schema=https://promptfoo.dev/config-schema.json
+description: "authoring-user-guide skill - standalone user-guide authoring contract"
+
+prompts:
+  - id: authoring-user-guide
+    label: authoring-user-guide
+    raw: file://../../prompts/skill-authoring-user-guide.txt
+
+providers:
+  - id: file://../../scripts/opencode-cli-provider.js
+    config:
+      provider_id: opencode
+      model: qwen3.6-plus
+      working_dir: ../..
+      max_turns: 12
+      tools:
+        read: true
+        grep: true
+        glob: true
+        list: true
+        bash: true
+
+defaultTest:
+  assert:
+    - type: javascript
+      value: file://../../assertions/check-authoring-user-guide-contract.js
+
+tests:
+  - description: "standalone discovery - user guides route here and non-guide artifacts do not"
+    vars:
+      scenario: |-
+        User prompt:
+        "Create a user guide page for the domain settings screen under docs/user-guide."
+
+        Nearby prompts that should route elsewhere:
+        "Write the functional spec for this flow."
+        "Write the design spec."
+        "Make the implementation plan."
+        "Write a prompt for Claude Code."
+      expect_routes_user_guides_to_authoring_user_guide: "true"
+      expect_rejects_functional_spec_authoring: "true"
+      expect_rejects_design_specs: "true"
+      expect_rejects_implementation_plans: "true"
+      expect_rejects_prompt_writing_requests: "true"
+
+  - description: "target page - updates existing guide instead of creating duplicates"
+    vars:
+      scenario: |-
+        User prompt:
+        "The domain settings guide is out of date. Refresh it."
+
+        Workspace context:
+        docs/user-guide/settings/domains.md already exists.
+      expect_updates_existing_user_guide_when_present: "true"
+
+  - description: "source-grounded writing - exact UI labels and states"
+    vars:
+      scenario: |-
+        User prompt:
+        "Document the source wizard screen for users. Make sure the button names and empty/error/loading states match the app."
+
+        Workspace context:
+        The relevant React screen has buttons, fields, placeholders, loading states, errors, disabled controls, and dialogs.
+      expect_studies_ui_source_before_drafting: "true"
+      expect_uses_exact_ui_labels: "true"
+      expect_documents_visual_states: "true"
+      expect_excludes_code_and_api_details: "true"
+
+  - description: "closeout - guide navigation and help link integration"
+    vars:
+      scenario: |-
+        User prompt:
+        "Add a new guide for the monitor dashboard and wire it into the app help."
+
+        Workspace context:
+        The repo uses VitePress sidebar config and a help URL mapping. The matching UI screen may not yet have a HelpIcon.
+      expect_updates_vitepress_sidebar: "true"
+      expect_updates_help_url_mapping: "true"
+      expect_checks_or_adds_help_icon: "true"

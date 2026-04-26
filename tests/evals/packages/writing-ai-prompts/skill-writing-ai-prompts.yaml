@@ -1,0 +1,100 @@
+# yaml-language-server: $schema=https://promptfoo.dev/config-schema.json
+description: "writing-ai-prompts skill - standalone prompt-authoring contract"
+
+prompts:
+  - id: writing-ai-prompts
+    label: writing-ai-prompts
+    raw: file://../../prompts/skill-writing-ai-prompts.txt
+
+providers:
+  - id: file://../../scripts/opencode-cli-provider.js
+    config:
+      provider_id: opencode
+      model: qwen3.6-plus
+      working_dir: ../..
+      max_turns: 12
+      tools:
+        read: true
+        grep: true
+        glob: true
+        list: true
+        bash: true
+
+defaultTest:
+  assert:
+    - type: javascript
+      value: file://../../assertions/check-writing-ai-prompts-contract.js
+
+tests:
+  - description: "standalone discovery - prompt requests route here and doc artifacts do not"
+    vars:
+      scenario: |-
+        User prompt:
+        "Help me write a prompt for Claude Code to refactor this module without touching unrelated files."
+
+        Nearby prompts that should route elsewhere:
+        "Write the functional spec."
+        "Write the design spec."
+        "Create the implementation plan."
+        "Document this screen for users."
+      expect_routes_prompt_writing_to_writing_ai_prompts: "true"
+      expect_rejects_functional_spec_authoring: "true"
+      expect_rejects_design_specs: "true"
+      expect_rejects_implementation_plans: "true"
+      expect_rejects_user_guides: "true"
+
+  - description: "ambiguous target - asks before generating"
+    vars:
+      scenario: |-
+        User prompt:
+        "Help me write a prompt that gets a better answer."
+
+        Workspace context:
+        The user did not name the target AI tool.
+      expect_confirms_target_tool_when_ambiguous: "true"
+      expect_limits_clarifying_questions: "true"
+
+  - description: "unknown tool - gathers tool context without exceeding question limit"
+    vars:
+      scenario: |-
+        User prompt:
+        "Help me write a prompt for our internal AI assistant. It has its own quirks and I don't know what details matter."
+
+        Workspace context:
+        We do not have docs for the internal assistant handy. Ask only the few details needed to avoid a bad prompt.
+      expect_confirms_unknown_tool_context_within_limit: "true"
+      expect_limits_clarifying_questions: "true"
+
+  - description: "output lock - copyable prompt plus compact metadata"
+    vars:
+      scenario: |-
+        User prompt:
+        "Write a Claude Code prompt to add a focused regression test for this bug. I have enough context; just give me the prompt."
+
+        Workspace context:
+        The target tool is Claude Code and the user did not ask for prompting theory.
+      expect_emits_copyable_prompt_block: "true"
+      expect_emits_tool_template_token_line: "true"
+      expect_emits_strategy_note: "true"
+      expect_adapts_to_target_tool_category: "true"
+
+  - description: "safety boundaries - no fabricated reasoning techniques"
+    vars:
+      scenario: |-
+        User prompt:
+        "Make me an o3 prompt using Tree of Thought and show all chain-of-thought so it reasons better."
+
+        Workspace context:
+        The requested target model is reasoning-native.
+      expect_avoids_cot_for_reasoning_native_models: "true"
+      expect_avoids_fabricated_prompt_techniques: "true"
+
+  - description: "reasoning summary - avoids explicit chain-of-thought requests"
+    vars:
+      scenario: |-
+        User prompt:
+        "Write a GPT-4o prompt for debugging a tricky API issue. I want useful reasoning, but don't ask it to expose hidden chain-of-thought."
+
+        Workspace context:
+        The team wants a short rationale it can scan during incident review.
+      expect_avoids_explicit_cot_in_generated_prompts: "true"

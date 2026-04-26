@@ -1,0 +1,37 @@
+#!/bin/sh
+set -eu
+
+SCRIPT_DIR=$(CDPATH= cd -- "$(dirname "$0")/.." && pwd)
+REPO_ROOT=$(CDPATH= cd -- "$SCRIPT_DIR/../.." && pwd)
+NODE_BIN="${npm_node_execpath:-$(command -v node)}"
+OPENCODE_XDG_ROOT="$SCRIPT_DIR/.promptfoo/opencode-runtime"
+OPENCODE_AUTH_DST="$OPENCODE_XDG_ROOT/data/opencode/auth.json"
+
+mkdir -p \
+  "$SCRIPT_DIR/.promptfoo" \
+  "$SCRIPT_DIR/.cache/promptfoo" \
+  "$OPENCODE_XDG_ROOT/state" \
+  "$OPENCODE_XDG_ROOT/data/opencode"
+
+if [ ! -e "$OPENCODE_AUTH_DST" ]; then
+  if [ -f "${XDG_DATA_HOME:-$HOME/.local/share}/opencode/auth.json" ]; then
+    ln -s "${XDG_DATA_HOME:-$HOME/.local/share}/opencode/auth.json" "$OPENCODE_AUTH_DST"
+  elif [ -f "$HOME/.opencode/auth.json" ]; then
+    ln -s "$HOME/.opencode/auth.json" "$OPENCODE_AUTH_DST"
+  fi
+fi
+
+# Load .env from repo root if present so evals inherit the same model credentials
+# as local development without writing secrets into Promptfoo configs.
+if [ -f "$REPO_ROOT/.env" ]; then
+  set -a
+  . "$REPO_ROOT/.env"
+  set +a
+fi
+
+export PROMPTFOO_CACHE_PATH="$SCRIPT_DIR/.cache/promptfoo"
+export PROMPTFOO_CONFIG_DIR="$SCRIPT_DIR/.promptfoo"
+export XDG_DATA_HOME="$OPENCODE_XDG_ROOT/data"
+export XDG_STATE_HOME="$OPENCODE_XDG_ROOT/state"
+
+exec "$NODE_BIN" "$SCRIPT_DIR/node_modules/promptfoo/dist/src/entrypoint.js" "$@"

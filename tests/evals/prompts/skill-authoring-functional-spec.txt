@@ -1,0 +1,59 @@
+You are evaluating whether the `authoring-functional-spec` skill contract covers
+the user prompt and workspace context below.
+
+{{scenario}}
+
+Inspect `skills/authoring-functional-spec/SKILL.md` and its referenced files
+before answering. This is a contract-classification eval, not an execution run:
+do not simulate missing tools, do not describe steps you would take, and do not
+modify files. Return one JSON object only, with no prose before or after it.
+For each expected behavior named by the scenario, set the matching JSON field to
+true when the repository skill contract supports that behavior.
+
+Return JSON only with this shape:
+
+```json
+{
+  "checks_gws_auth_git_and_repo": false,
+  "aborts_outside_allowed_repos": false,
+  "checks_required_skill_availability": false,
+  "aborts_when_required_skill_missing": false,
+  "routes_functional_docs_to_authoring_functional_spec": false,
+  "rejects_design_specs": false,
+  "rejects_implementation_plans": false,
+  "rejects_user_guides": false,
+  "rejects_prompt_writing_requests": false,
+  "one_flow_one_functional_spec_many_design_docs": false,
+  "asks_for_canonical_id_when_missing": false,
+  "lists_candidate_ids_for_current_repo": false,
+  "fetches_sheet_row_for_id": false,
+  "extracts_allowed_sheet_columns_only": false,
+  "does_not_read_status_column": false,
+  "does_not_write_sheet": false,
+  "uses_child_longest_prefix_inference": false,
+  "aborts_when_no_row_or_parent": false,
+  "verifies_repo_alignment": false,
+  "functional_spec_lives_in_sheet_repo": false,
+  "writes_parent_readme_path": false,
+  "writes_child_numbered_path": false,
+  "requires_parent_readme_and_subflow": false,
+  "updates_existing_spec_in_place": false,
+  "never_creates_duplicate_functional_spec": false,
+  "asks_for_reference_material": false,
+  "digests_behavioral_signals_only": false,
+  "primary_code_expected_in_sheet_repo": false,
+  "requires_user_override_for_secondary_repo_code": false,
+  "uses_code_only_to_ground_behavior": false,
+  "cites_production_artifacts_by_stable_name": false,
+  "preserves_sibling_flow_traceability": false,
+  "avoids_verbatim_copying": false,
+  "loads_template_and_writing_guidance": false,
+  "emits_required_frontmatter": false,
+  "keeps_behavior_altitude": false,
+  "invokes_brainstorming": false,
+  "self_reviews_before_completion": false,
+  "refuses_downstream_artifact": false,
+  "offers_commit_without_push": false,
+  "notes": "string"
+}
+```

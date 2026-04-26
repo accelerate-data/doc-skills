@@ -20,7 +20,7 @@
     },
     "skills": {
       "path": "skills/",
-      "description": "Canonical skill directories: create-spec, update-spec, write-design-doc, write-user-guide, writing-ai-prompts."
+      "description": "Canonical skill directories: authoring-functional-spec, authoring-design-spec, authoring-user-guide, writing-ai-prompts."
     },
     "validation_scripts": {
       "path": "scripts/",
@@ -28,7 +28,11 @@
     },
     "tests": {
       "path": "tests/",
-      "description": "Unit tests for repository validation scripts."
+      "description": "Unit tests for validation scripts, skill inventory guards, and Promptfoo eval harness coverage."
+    },
+    "evals": {
+      "path": "tests/evals/",
+      "description": "Promptfoo/OpenCode eval harness for standalone skill contracts."
     }
   },
   "key_directories": {
@@ -41,6 +45,7 @@
   "commands": {
     "validate_plugin_manifests": "python3 scripts/validate_plugin_manifests.py",
     "check_plugin_version_bump": "python3 scripts/check_plugin_version_bump.py --base-ref origin/main",
-    "test_validation_scripts": "python3 -m unittest discover -s tests"
+    "test_validation_scripts": "python3 -m unittest discover -s tests",
+    "eval_coverage": "npm run eval:coverage"
   }
 }

@@ -1,0 +1,20 @@
+{
+  "name": "@doc-skills/evals",
+  "private": true,
+  "description": "Promptfoo eval harness for doc-skills",
+  "scripts": {
+    "eval": "npm run eval:authoring-functional-spec && npm run eval:authoring-design-spec && npm run eval:authoring-user-guide && npm run eval:writing-ai-prompts && npm run eval:coverage",
+    "eval:authoring-functional-spec": "./scripts/promptfoo.sh eval --no-cache -c packages/authoring-functional-spec/skill-authoring-functional-spec.yaml",
+    "eval:authoring-design-spec": "./scripts/promptfoo.sh eval --no-cache -c packages/authoring-design-spec/skill-authoring-design-spec.yaml",
+    "eval:authoring-user-guide": "./scripts/promptfoo.sh eval --no-cache -c packages/authoring-user-guide/skill-authoring-user-guide.yaml",
+    "eval:writing-ai-prompts": "./scripts/promptfoo.sh eval --no-cache -c packages/writing-ai-prompts/skill-writing-ai-prompts.yaml",
+    "eval:coverage": "node scripts/check-skill-eval-coverage.js",
+    "test:eval-harness-contract": "node --test scripts/eval-harness-contract.test.js",
+    "test:opencode-cli-provider": "node --test scripts/opencode-cli-provider.test.js",
+    "view": "./scripts/promptfoo.sh view"
+  },
+  "dependencies": {
+    "@opencode-ai/sdk": "1.14.21",
+    "promptfoo": "0.121.7"
+  }
+}

@@ -1,13 +1,20 @@
 ---
-name: write-user-guide
+name: authoring-user-guide
 description: |
-  Creates or updates a user guide page in `docs/user-guide/`. Follows the VitePress template with exact UI labels, step-by-step instructions, and state descriptions.
-  Triggers on "write user guide", "create user guide", "new user guide", "update user guide", "document <screen>", "help page for <feature>", or "/write-user-guide".
+  Use when creating or updating end-user help pages, user documentation, screen docs, feature help pages, or docs under `docs/user-guide/`.
+  Trigger on "author user guide", "create user guide", "new user guide", "update user guide", "document <screen>", "help page for <feature>", or "/authoring-user-guide".
 ---
 
-# Write User Guide
+# Authoring User Guide
 
 You are a **documentation writer** creating end-user help pages. Content must use exact button labels and UI text from the application — never paraphrase or invent UI elements.
+
+This skill is **not** for:
+
+- Functional specs, behavior specs, journey specs, or PRD-adjacent product flows. Use `authoring-functional-spec`.
+- Design specs or technical design docs. Use `authoring-design-spec`.
+- Implementation plans or task sequencing. Use `superpowers:writing-plans`.
+- AI prompt-writing requests. Use `writing-ai-prompts`.
 
 ## Autonomy
 
@@ -61,7 +68,7 @@ Proceed autonomously. Only confirm:
      ```
 
 2. **Study the UI**
-   - Spawn an `Explore` sub-agent to read the relevant React components:
+   - Inspect the relevant React components:
      - Exact button labels, placeholder text, tooltip text
      - All user actions (click, type, drag, keyboard shortcuts)
      - All states (empty, loading, error, success, disabled)
