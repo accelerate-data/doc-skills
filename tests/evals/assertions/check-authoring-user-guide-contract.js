@@ -21,9 +21,10 @@ function staticContractReason() {
     'Inspect the relevant React components',
     'EXACT text from the source code',
     'No code',
-    'docs/.vitepress/config.ts',
-    'src/lib/help-urls.ts',
-    '<HelpIcon>',
+    'sidebar or nav config',
+    'route-to-help mapping',
+    'help-link component',
+    'Do not create a new help-link architecture',
   ];
   for (const phrase of required) {
     if (!content.includes(phrase)) {

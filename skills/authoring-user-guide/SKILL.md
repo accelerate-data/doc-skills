@@ -25,10 +25,14 @@ Proceed autonomously. Only confirm:
 
 ## Standards
 
-- User guides are hosted via VitePress on GitHub Pages
-- Config: `docs/.vitepress/config.ts`
-- URL mapping: `src/lib/help-urls.ts`
-- Full architecture: `docs/design/documentation/README.md`
+- User guides live under `docs/user-guide/`.
+- First discover the repo's local documentation conventions:
+  - sidebar or nav config, such as `docs/.vitepress/config.ts`, when present
+  - route-to-help mapping files, such as `src/lib/help-urls.ts`, when present
+  - reusable help-link components, such as `src/components/ui/HelpIcon.tsx`, when present
+  - design documentation under `docs/design/` that explains the docs architecture
+- If a convention file is absent, do not invent it. Write the guide page and report
+  that the repo has no matching integration point.
 
 ## Input
 
@@ -43,29 +47,10 @@ Proceed autonomously. Only confirm:
 1. **Determine the target page**
    - Parse `$ARGUMENTS` for the target screen/feature
    - Check existing `docs/user-guide/` pages — update if exists, create if new
-   - Map to the file structure:
-     ```
-     docs/user-guide/
-     ├── index.md              # Getting Started
-     ├── workspace.md          # Main workspace
-     ├── chat.md               # Chat interface
-     ├── code-view.md          # Code view
-     ├── monitor.md            # Monitor dashboard
-     ├── usage.md              # Usage analytics
-     ├── sidebar/
-     │   ├── overview.md       # Sidebar navigation
-     │   ├── intents.md        # Intent CRUD
-     │   └── domains.md        # Domain selector
-     ├── settings/
-     │   ├── overview.md       # Settings navigation
-     │   ├── domains.md        # Domain CRUD
-     │   ├── sources.md        # Source CRUD + wizard
-     │   ├── skills.md         # Skills management
-     │   └── profile.md        # Profile + GitHub + themes
-     └── reference/
-         ├── keyboard-shortcuts.md
-         └── artifacts.md
-     ```
+   - Follow the existing `docs/user-guide/` structure when pages already exist.
+   - Prefer one screen or one user task per page.
+   - If no structure exists, use a simple path based on the screen or feature
+     name, for example `docs/user-guide/settings/domains.md`.
 
 2. **Study the UI**
    - Inspect the relevant React components:
@@ -82,11 +67,17 @@ Proceed autonomously. Only confirm:
 
 5. **Write** the markdown file.
 
-6. **Update VitePress config** — ensure `docs/.vitepress/config.ts` sidebar includes the new page.
+6. **Update docs navigation when present** — if the repo has a sidebar/nav config
+   such as `docs/.vitepress/config.ts`, ensure it includes the new page.
 
-7. **Update help-urls.ts** — ensure `src/lib/help-urls.ts` maps the relevant route/component to the new page URL.
+7. **Update help URL mapping when present** — if the repo has a route-to-help
+   mapping such as `src/lib/help-urls.ts`, map the relevant route/component to
+   the guide URL.
 
-8. **Add HelpIcon** — if the target screen doesn't have a `<HelpIcon>` component yet, add one pointing to the new doc page. Import from `src/components/ui/HelpIcon.tsx`.
+8. **Add or update help entry points when present** — if the target screen uses
+   a reusable help-link component such as `<HelpIcon>`, ensure it points to the
+   guide. Do not create a new help-link architecture in repos that do not already
+   have one.
 
 ## Page Template
 
@@ -125,7 +116,8 @@ Short paragraph: 2-3 sentences describing the layout. Mention the key panels, se
 
 ## Writing Principles
 
-1. **User audience**: Readers are data engineers using VD Studio. They know data concepts but may not know the UI.
+1. **User audience**: Readers are product users trying to complete a task. Match
+   the repo's product domain and avoid assuming internal implementation knowledge.
 2. **Exact labels**: Every button, field, tab, and menu item uses the EXACT text from the React source code. Bold all UI labels.
 3. **Action-oriented**: Lead with "How to" sections. Users come to docs to DO things.
 4. **States matter**: Document every visual state — users need to know what's normal vs. broken.
@@ -136,7 +128,7 @@ Short paragraph: 2-3 sentences describing the layout. Mention the key panels, se
 
 ## After Writing
 
-- Verify `docs/.vitepress/config.ts` sidebar includes the page
-- Verify `src/lib/help-urls.ts` has a mapping for this page
-- Check if the corresponding UI component has a `<HelpIcon>` — add one if missing
+- Verify the repo's sidebar or nav config includes the page when such config exists
+- Verify route-to-help mapping includes the page when the repo has such a mapping
+- Check existing help-link components such as `<HelpIcon>` when the repo uses them
 - If the feature has a design doc in `docs/design/`, verify they're consistent
