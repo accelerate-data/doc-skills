@@ -62,10 +62,24 @@ tests:
         "Document the source wizard screen for users. Make sure the button names and empty/error/loading states match the app."
 
         Workspace context:
-        The relevant React screen has buttons, fields, placeholders, loading states, errors, disabled controls, and dialogs.
+        The relevant software code has buttons, commands, fields, placeholders, loading states, errors, disabled controls, and dialogs.
       expect_studies_ui_source_before_drafting: "true"
       expect_uses_exact_ui_labels: "true"
       expect_documents_visual_states: "true"
+      expect_excludes_code_and_api_details: "true"
+
+  - description: "source synthesis - reads functional spec design docs and code before writing"
+    vars:
+      scenario: |-
+        User prompt:
+        "Write the user guide for this feature. Use the FS, the design docs, and the actual code so the guide explains how users use the software."
+
+        Workspace context:
+        The repo has docs/functional/, docs/design/, docs/user-guide/, and implementation files for the feature.
+      expect_reads_functional_spec_for_user_outcomes: "true"
+      expect_reads_related_design_docs_for_product_context: "true"
+      expect_studies_ui_source_before_drafting: "true"
+      expect_keeps_user_guide_usage_focused: "true"
       expect_excludes_code_and_api_details: "true"
 
   - description: "closeout - guide navigation and help link integration"

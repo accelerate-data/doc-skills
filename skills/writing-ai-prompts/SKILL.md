@@ -151,7 +151,9 @@ Scan every user-provided prompt or rough idea for these failure patterns. Fix si
 - Entire codebase pasted as context → scope to the relevant file and function only
 
 **Reasoning failures**
-- Logic or analysis task with no step-by-step → add "Think through this carefully before answering"
+- Logic or analysis task with no reasoning support → ask for a concise rationale,
+  key assumptions, verification checks, and final answer without revealing hidden
+  chain-of-thought
 - CoT added to o1/o3/R1 → REMOVE IT
 - New prompt contradicts prior session decisions → flag, resolve, include memory block
 

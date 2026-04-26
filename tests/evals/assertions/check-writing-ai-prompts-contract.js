@@ -68,6 +68,9 @@ function staticContradictionReason() {
   if (content.includes('**Chain of Thought**')) {
     return 'Safe techniques must not recommend explicit Chain-of-Thought prompting';
   }
+  if (content.includes('Think through this carefully before answering')) {
+    return 'Prompt-writing skill still recommends explicit reasoning process wording';
+  }
   const forbiddenTemplatePhrases = [
     'Template E — Chain of Thought',
     'Template E - Chain of Thought',

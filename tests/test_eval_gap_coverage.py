@@ -151,9 +151,12 @@ def test_authoring_user_guide_eval_covers_standalone_routing_and_ui_grounding():
             "rejects_implementation_plans",
             "rejects_prompt_writing_requests",
             "updates_existing_user_guide_when_present",
+            "reads_functional_spec_for_user_outcomes",
+            "reads_related_design_docs_for_product_context",
             "studies_ui_source_before_drafting",
             "uses_exact_ui_labels",
             "documents_visual_states",
+            "keeps_user_guide_usage_focused",
             "excludes_code_and_api_details",
             "updates_vitepress_sidebar",
             "updates_help_url_mapping",
@@ -211,10 +214,12 @@ def test_writing_ai_prompts_skill_has_no_question_count_or_cot_contradiction():
 
     assert "ask these 4 questions" not in skill
     assert "Unknown tool — ask these 4 questions" not in skill
+    assert "Think through this carefully before answering" not in skill
     assert "**Chain of Thought**" not in skill
     assert "Template E — Chain of Thought" not in templates
     assert "Template E - Chain of Thought" not in templates
     assert "<thinking>" not in templates
     assert "Give your final answer in <answer> tags only" not in templates
     assert "Template E - Reasoning Summary" in templates
+    assert "without revealing hidden" in skill
     assert "Never ask the model to reveal hidden chain-of-thought" in templates
