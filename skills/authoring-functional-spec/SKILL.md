@@ -29,9 +29,10 @@ This skill is **not** for:
 - End-user help pages or user-guide documentation
 - AI prompt-writing requests for Claude, ChatGPT, Cursor, or other tools
 
-If the user asks for any of the above, redirect: the functional spec is a prerequisite
-for all of them. Produce the functional spec first; the downstream artifacts link to
-it later.
+If the user asks for a downstream artifact, do not use this skill as the primary
+authoring workflow. Route to the downstream skill when the canonical functional
+spec already exists. If it does not exist, stop and explain that the functional
+spec must be authored first, then ask whether to switch to this skill.
 
 ## Prerequisites
 
