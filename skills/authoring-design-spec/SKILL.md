@@ -25,7 +25,9 @@ truth; the design spec explains how the repo intends to realize that behavior.
 This skill is **not** for:
 
 - User-flow, behavior, journey, or PRD-adjacent specs. Use
-  `authoring-functional-spec` first.
+  `authoring-functional-spec` first. A direct request to author a functional
+  spec is not a design-spec trigger; do not select this skill as the primary
+  authoring workflow for that request.
 - Implementation plans. Use `superpowers:writing-plans`.
 - End-user help pages. Use `authoring-user-guide`.
 - AI prompt-writing requests. Use `writing-ai-prompts`.
@@ -35,6 +37,10 @@ not continue in design-spec authoring mode. Route to `superpowers:writing-plans`
 and hand over the canonical flow ID, functional-spec path, relevant design-spec
 paths, gap analysis, source-file anchors, open questions, and any implementation
 constraints the user provided.
+
+If existing design docs already cover the flow and the user asks for an
+implementation plan next, stop design-spec authoring and hand that covered
+design context to `superpowers:writing-plans`.
 
 ## Required inputs
 
