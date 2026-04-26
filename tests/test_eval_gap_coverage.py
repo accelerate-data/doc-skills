@@ -13,6 +13,16 @@ def assert_contains_all(content, phrases):
     assert not missing, f"missing expected coverage phrases: {missing}"
 
 
+def assert_prompt_is_user_grounded(prompt):
+    forbidden = [
+        "Skill contract:",
+        "The skill should",
+        "Classify whether",
+    ]
+    leaked = [phrase for phrase in forbidden if phrase in prompt]
+    assert not leaked, f"eval prompt leaks contract language: {leaked}"
+
+
 def test_authoring_functional_spec_eval_covers_flow_selection_and_traceability():
     config = read(
         "tests/evals/packages/authoring-functional-spec/"
@@ -22,6 +32,7 @@ def test_authoring_functional_spec_eval_covers_flow_selection_and_traceability()
     assertion = read(
         "tests/evals/assertions/check-authoring-functional-spec-contract.js"
     )
+    assert_prompt_is_user_grounded(prompt)
 
     assert_contains_all(
         config,
@@ -61,6 +72,7 @@ def test_authoring_design_spec_eval_covers_code_and_related_design_selection():
     )
     prompt = read("tests/evals/prompts/skill-authoring-design-spec.txt")
     assertion = read("tests/evals/assertions/check-authoring-design-spec-contract.js")
+    assert_prompt_is_user_grounded(prompt)
 
     assert_contains_all(
         config,
@@ -96,13 +108,14 @@ def test_authoring_design_spec_eval_covers_code_and_related_design_selection():
     )
 
 
-def test_write_user_guide_eval_covers_standalone_routing_and_ui_grounding():
+def test_authoring_user_guide_eval_covers_standalone_routing_and_ui_grounding():
     config = read(
-        "tests/evals/packages/write-user-guide/"
-        "skill-write-user-guide.yaml"
+        "tests/evals/packages/authoring-user-guide/"
+        "skill-authoring-user-guide.yaml"
     )
-    prompt = read("tests/evals/prompts/skill-write-user-guide.txt")
-    assertion = read("tests/evals/assertions/check-write-user-guide-contract.js")
+    prompt = read("tests/evals/prompts/skill-authoring-user-guide.txt")
+    assertion = read("tests/evals/assertions/check-authoring-user-guide-contract.js")
+    assert_prompt_is_user_grounded(prompt)
 
     assert_contains_all(
         config,
@@ -116,7 +129,7 @@ def test_write_user_guide_eval_covers_standalone_routing_and_ui_grounding():
     assert_contains_all(
         prompt + assertion,
         [
-            "routes_user_guides_to_write_user_guide",
+            "routes_user_guides_to_authoring_user_guide",
             "rejects_functional_spec_authoring",
             "rejects_design_specs",
             "rejects_implementation_plans",
@@ -140,6 +153,7 @@ def test_writing_ai_prompts_eval_covers_standalone_routing_and_prompt_safety():
     )
     prompt = read("tests/evals/prompts/skill-writing-ai-prompts.txt")
     assertion = read("tests/evals/assertions/check-writing-ai-prompts-contract.js")
+    assert_prompt_is_user_grounded(prompt)
 
     assert_contains_all(
         config,

@@ -1,11 +1,11 @@
 ---
-name: write-user-guide
+name: authoring-user-guide
 description: |
   Use when creating or updating end-user help pages, user documentation, screen docs, feature help pages, or docs under `docs/user-guide/`.
-  Trigger on "write user guide", "create user guide", "new user guide", "update user guide", "document <screen>", "help page for <feature>", or "/write-user-guide".
+  Trigger on "author user guide", "create user guide", "new user guide", "update user guide", "document <screen>", "help page for <feature>", or "/authoring-user-guide".
 ---
 
-# Write User Guide
+# Authoring User Guide
 
 You are a **documentation writer** creating end-user help pages. Content must use exact button labels and UI text from the application — never paraphrase or invent UI elements.
 

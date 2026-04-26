@@ -40,7 +40,7 @@ That cleanup is explicitly separate.
 - Create/keep `skills/authoring-design-spec/SKILL.md`.
 - Confirm `write-design-doc` is removed now that public routing points to
   `authoring-design-spec`.
-- Keep `skills/write-user-guide/SKILL.md`.
+- Keep `skills/authoring-user-guide/SKILL.md`.
 - Keep `skills/writing-ai-prompts/SKILL.md`.
 - Remove `skills/create-spec/` and `skills/update-spec/` if the final taxonomy excludes module specs.
 - Modify `README.md`, `CLAUDE.md`, and `repo-map.json` for the active inventory.
@@ -223,7 +223,7 @@ Use:
 |-------|-------------|
 | `authoring-functional-spec` | Author top-level behavior/functional specs under `docs/functional/` |
 | `authoring-design-spec` | Author design specs under `docs/design/` from an existing canonical functional spec |
-| `write-user-guide` | Create or update user guide pages under `docs/user-guide/` |
+| `authoring-user-guide` | Create or update user guide pages under `docs/user-guide/` |
 | `writing-ai-prompts` | Generate surgical, token-efficient prompts |
 ```
 
@@ -235,7 +235,7 @@ Use:
 - Functional docs, behavior specs, journey specs, and PRD-adjacent product flows: use `authoring-functional-spec`.
 - Design specs: use `authoring-design-spec`; it requires an existing canonical functional spec.
 - Implementation plans: use `superpowers:writing-plans`; this plugin does not duplicate that workflow.
-- User guides: use `write-user-guide`.
+- User guides: use `authoring-user-guide`.
 ```
 
 - [ ] **Step 3: Update CLAUDE adapter**
@@ -244,7 +244,7 @@ Include route entries for:
 
 - `authoring-functional-spec`
 - `authoring-design-spec`
-- `write-user-guide`
+- `authoring-user-guide`
 - `writing-ai-prompts`
 
 Remove `create-spec` and `update-spec` entries if those skills are removed.
@@ -254,7 +254,7 @@ Remove `create-spec` and `update-spec` entries if those skills are removed.
 Set skills description to:
 
 ```json
-"Canonical skill directories: authoring-functional-spec, authoring-design-spec, write-user-guide, writing-ai-prompts."
+"Canonical skill directories: authoring-functional-spec, authoring-design-spec, authoring-user-guide, writing-ai-prompts."
 ```
 
 - [ ] **Step 5: Keep manifests aligned**
@@ -307,7 +307,7 @@ def test_doc_artifact_skill_inventory() -> None:
     assert {
         "authoring-functional-spec",
         "authoring-design-spec",
-        "write-user-guide",
+        "authoring-user-guide",
         "writing-ai-prompts",
     }.issubset(skill_dirs())
     assert "create-spec" not in skill_dirs()
@@ -350,15 +350,15 @@ Expected: PASS after obsolete skills are removed and runtime wording is fixed.
 - Create: `tests/evals/assertions/schema-helpers.js`
 - Create: `tests/evals/assertions/check-authoring-functional-spec-contract.js`
 - Create: `tests/evals/assertions/check-authoring-design-spec-contract.js`
-- Create: `tests/evals/assertions/check-write-user-guide-contract.js`
+- Create: `tests/evals/assertions/check-authoring-user-guide-contract.js`
 - Create: `tests/evals/assertions/check-writing-ai-prompts-contract.js`
 - Create: `tests/evals/prompts/skill-authoring-functional-spec.txt`
 - Create: `tests/evals/prompts/skill-authoring-design-spec.txt`
-- Create: `tests/evals/prompts/skill-write-user-guide.txt`
+- Create: `tests/evals/prompts/skill-authoring-user-guide.txt`
 - Create: `tests/evals/prompts/skill-writing-ai-prompts.txt`
 - Create: `tests/evals/packages/authoring-functional-spec/skill-authoring-functional-spec.yaml`
 - Create: `tests/evals/packages/authoring-design-spec/skill-authoring-design-spec.yaml`
-- Create: `tests/evals/packages/write-user-guide/skill-write-user-guide.yaml`
+- Create: `tests/evals/packages/authoring-user-guide/skill-authoring-user-guide.yaml`
 - Create: `tests/evals/packages/writing-ai-prompts/skill-writing-ai-prompts.yaml`
 - Create: `tests/evals/scripts/opencode-cli-provider.js`
 - Create: `tests/evals/scripts/promptfoo.sh`
@@ -390,10 +390,10 @@ Create `tests/evals/package.json`:
   "private": true,
   "description": "Promptfoo eval harness for doc-skills",
   "scripts": {
-    "eval": "npm run eval:authoring-functional-spec && npm run eval:authoring-design-spec && npm run eval:write-user-guide && npm run eval:writing-ai-prompts && npm run eval:coverage",
+    "eval": "npm run eval:authoring-functional-spec && npm run eval:authoring-design-spec && npm run eval:authoring-user-guide && npm run eval:writing-ai-prompts && npm run eval:coverage",
     "eval:authoring-functional-spec": "./scripts/promptfoo.sh eval --no-cache -c packages/authoring-functional-spec/skill-authoring-functional-spec.yaml",
     "eval:authoring-design-spec": "./scripts/promptfoo.sh eval --no-cache -c packages/authoring-design-spec/skill-authoring-design-spec.yaml",
-    "eval:write-user-guide": "./scripts/promptfoo.sh eval --no-cache -c packages/write-user-guide/skill-write-user-guide.yaml",
+    "eval:authoring-user-guide": "./scripts/promptfoo.sh eval --no-cache -c packages/authoring-user-guide/skill-authoring-user-guide.yaml",
     "eval:writing-ai-prompts": "./scripts/promptfoo.sh eval --no-cache -c packages/writing-ai-prompts/skill-writing-ai-prompts.yaml",
     "eval:coverage": "node scripts/check-skill-eval-coverage.js",
     "view": "./scripts/promptfoo.sh view"
@@ -583,7 +583,7 @@ Add an eval prompt and assertion that checks:
 - design specs route to `authoring-design-spec`
 - design specs require an existing canonical functional spec
 - each skill owns its own standalone routing and negative-boundary cases
-- user guides route to `write-user-guide` inside the `write-user-guide` package
+- user guides route to `authoring-user-guide` inside the `authoring-user-guide` package
 - prompt-writing routes to `writing-ai-prompts` inside the `writing-ai-prompts`
   package
 
@@ -597,7 +597,7 @@ Root `package.json` should expose:
     "eval": "npm --prefix tests/evals run eval",
     "eval:authoring-functional-spec": "npm --prefix tests/evals run eval:authoring-functional-spec",
     "eval:authoring-design-spec": "npm --prefix tests/evals run eval:authoring-design-spec",
-    "eval:write-user-guide": "npm --prefix tests/evals run eval:write-user-guide",
+    "eval:authoring-user-guide": "npm --prefix tests/evals run eval:authoring-user-guide",
     "eval:writing-ai-prompts": "npm --prefix tests/evals run eval:writing-ai-prompts",
     "eval:coverage": "npm --prefix tests/evals run eval:coverage"
   }
@@ -683,7 +683,7 @@ Run:
 ```bash
 npm run eval:authoring-functional-spec
 npm run eval:authoring-design-spec
-npm run eval:write-user-guide
+npm run eval:authoring-user-guide
 npm run eval:writing-ai-prompts
 ```
 
@@ -705,5 +705,5 @@ Claude Code/Codex compatibility.
 is when to remove module-spec skills.
 
 **Type/name consistency:** The active taxonomy consistently uses
-`authoring-functional-spec`, `authoring-design-spec`, `write-user-guide`,
+`authoring-functional-spec`, `authoring-design-spec`, `authoring-user-guide`,
 `writing-ai-prompts`, and `superpowers:writing-plans`.

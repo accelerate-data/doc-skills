@@ -19,7 +19,7 @@ def test_doc_artifact_skill_inventory() -> None:
     assert skill_dirs() == {
         "authoring-functional-spec",
         "authoring-design-spec",
-        "write-user-guide",
+        "authoring-user-guide",
         "writing-ai-prompts",
     }
 

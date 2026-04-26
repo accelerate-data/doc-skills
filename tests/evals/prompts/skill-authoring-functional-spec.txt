@@ -1,34 +1,7 @@
-You are evaluating the `authoring-functional-spec` skill workflow for this scenario:
+You are evaluating whether the `authoring-functional-spec` skill contract covers
+the user prompt and workspace context below.
 
 {{scenario}}
-
-Skill contract:
-
-- The skill authors or updates top-level, behavior-focused functional specs only.
-- It triggers for functional docs, behavior specs, journey specs, and PRD-adjacent product flows.
-- The canonical artifact model is one flow, one functional spec, and many possible design docs.
-- It is not a design spec, implementation plan, status-update workflow, PRD market-positioning workflow, user guide workflow, or AI prompt-writing workflow; those downstream artifacts must link back to the functional spec.
-- Precondition checks verify `gws`, `gws auth status`, git checkout status, and that the origin repo is one of studio, skill-builder, domain-cicd, or migration-utility.
-- Precondition checks also verify required cross-skill handoffs are available through the runtime skill/tool registry: `superpowers:brainstorming` and `superpowers:verification-before-completion`. If unavailable, abort before writing.
-- It identifies a canonical ID from the invocation or asks exactly which canonical ID to author.
-- If the author cannot name an ID, it lists repo-filtered candidate IDs from the Sheet with titles and lets the author choose.
-- It fetches the matching User-Flows-Details Sheet row and extracts only canonical ID, repo, category, title, and persona. It must not read status column H or write to the Sheet.
-- If no exact row exists, it attempts longest-prefix child-flow inference. If no parent prefix exists, it aborts and asks for a Sheet row first.
-- It verifies the current repo matches the Sheet repo.
-- It writes the functional spec only in the Sheet repo for the canonical flow.
-- Parent and standalone outputs go to `docs/functional/<canonical-id>/README.md`.
-- Child outputs go to `docs/functional/<parent-id>/NN-<child-slug>.md` only when the parent README exists and lists the child in `sub-flows:`.
-- If the target functional spec already exists, it reads and updates that
-  existing file in place. It never creates a sibling or alternate functional
-  spec for the same canonical flow; if the author refuses in-place updates, it
-  aborts.
-- It asks for existing reference material before drafting, digests behavioral signals only, and avoids verbatim copying.
-- When code is reference material, it expects primary code in the Sheet repo, requires a user override before reading secondary-repo helper code, uses code only to ground behavioral claims, and does not turn implementation paths, classes, payload schemas, or event names into functional requirements.
-- It preserves traceability by citing stable sibling flow IDs and existing production artifacts by canonical ID or artifact name when they define scope, exclusions, or handoffs.
-- It loads the functional-spec template and writing guidance, drafts required frontmatter and all required sections, and keeps the spec at behavior altitude.
-- It invokes `superpowers:brainstorming` for section-by-section pressure testing.
-- It self-reviews for placeholders, contradictions, altitude violations, illegitimate citations, and unresolved behavioral open questions.
-- It writes only the target docs/functional path, summarizes the result, and offers a local commit. It does not push.
 
 Inspect `skills/authoring-functional-spec/SKILL.md` and its referenced files
 before answering. This is a contract-classification eval, not an execution run:

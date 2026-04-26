@@ -24,7 +24,7 @@ This skill is **not** for:
 - Functional specs, behavior specs, journey specs, or PRD-adjacent product flows. Use `authoring-functional-spec`.
 - Design specs or technical design docs. Use `authoring-design-spec`.
 - Implementation plans or task sequencing. Use `superpowers:writing-plans`.
-- End-user help pages or user-guide documentation. Use `write-user-guide`.
+- End-user help pages or user-guide documentation. Use `authoring-user-guide`.
 
 ---
 

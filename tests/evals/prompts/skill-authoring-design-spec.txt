@@ -1,33 +1,7 @@
-You are evaluating the `authoring-design-spec` skill workflow for this scenario:
+You are evaluating whether the `authoring-design-spec` skill contract covers
+the user prompt and workspace context below.
 
 {{scenario}}
-
-Skill contract:
-
-- The skill authors or updates developer-facing design specs under docs/design only.
-- It triggers for design specs and technical design docs that sit below an existing canonical functional spec.
-- The canonical artifact model is one flow, one functional spec, and many possible design docs.
-- It rejects functional-spec authoring, implementation plans, user guides, and AI prompt-writing requests.
-- It requires a canonical ID.
-- It must find and read the existing canonical functional spec under docs/functional before proceeding.
-- It fetches the Sheet row for the canonical flow, verifies the current repo matches the Sheet repo, and writes design docs only in that Sheet repo.
-- When design discovery shows the functional spec needs a change, it must
-  present the proposed functional-spec change, get explicit user confirmation,
-  then edit the existing canonical functional spec in place in the Sheet repo.
-  It must not create a second functional spec for the same canonical flow.
-- It resolves parent README specs and child functional specs by frontmatter `id`.
-- It aborts when the matching functional spec is missing and tells the user to author the functional spec first.
-- It searches docs/design for related design docs using the canonical ID, functional spec title, sibling functional IDs, cited production artifacts, and behavioral nouns.
-- It reads only related design docs and ignores unrelated docs even when they live nearby.
-- It builds a gap analysis: covered, partial, missing, and conflicting design coverage.
-- It presents the gap analysis and proposed target path before drafting.
-- It stops without writing when no meaningful design gap exists.
-- It invokes superpowers:brainstorming with the canonical functional path, related design docs, and gap analysis.
-- It keeps design specs below functional specs and above implementation plans.
-- It routes implementation-plan requests to superpowers:writing-plans.
-- It updates docs/design/README.md when that index exists.
-- It expects primary code in the Sheet repo, requires a user override before reading secondary-repo helper code, includes accurate source-file references when code already exists, and explicitly states when code does not exist instead of inventing paths.
-- It uses runtime-neutral wording compatible with Claude Code and Codex.
 
 Inspect `skills/authoring-design-spec/SKILL.md` before answering. This is a
 contract-classification eval, not an execution run: do not describe steps you

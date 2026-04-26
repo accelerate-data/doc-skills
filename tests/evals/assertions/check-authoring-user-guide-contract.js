@@ -6,11 +6,11 @@ const ROOT = path.resolve(__dirname, '../../..');
 
 function staticContractReason() {
   const content = fs.readFileSync(
-    path.join(ROOT, 'skills/write-user-guide/SKILL.md'),
+    path.join(ROOT, 'skills/authoring-user-guide/SKILL.md'),
     'utf8',
   );
   const required = [
-    'name: write-user-guide',
+    'name: authoring-user-guide',
     'Use when creating or updating end-user help pages',
     'docs/user-guide/',
     'Functional specs',
@@ -27,7 +27,7 @@ function staticContractReason() {
   ];
   for (const phrase of required) {
     if (!content.includes(phrase)) {
-      return `skills/write-user-guide/SKILL.md is missing required anchor: ${phrase}`;
+      return `skills/authoring-user-guide/SKILL.md is missing required anchor: ${phrase}`;
     }
   }
   return null;
@@ -61,5 +61,5 @@ module.exports = (output, context) => {
     }
   }
 
-  return { pass: true, score: 1, reason: 'write-user-guide contract matched expected behavior' };
+  return { pass: true, score: 1, reason: 'authoring-user-guide contract matched expected behavior' };
 };

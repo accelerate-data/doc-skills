@@ -33,7 +33,7 @@ workflow.
 | Functional / behavior spec | `authoring-functional-spec` | `docs/functional/<canonical-id>/README.md` or child file | User-Flows-Details Sheet row or parent inference |
 | Design spec | `authoring-design-spec` | `docs/design/<topic>/README.md` or existing design subdoc | Existing canonical functional spec |
 | Implementation plan | `superpowers:writing-plans` | `docs/plan/<date>-<topic>.md` | Approved design spec when implementation is requested |
-| User guide | `write-user-guide` | `docs/user-guide/**/*.md` | Existing UI/source behavior |
+| User guide | `authoring-user-guide` | `docs/user-guide/**/*.md` | Existing UI/source behavior |
 | AI prompt | `writing-ai-prompts` | Chat output | Target AI tool |
 
 ## Flow-Spec Authoring
@@ -109,7 +109,7 @@ Initial eval packages:
   `engineering-skills/tests/evals/packages/authoring-flow-spec/`, then adapted
   to `authoring-functional-spec`.
 - `authoring-design-spec` added in this repo for the design-layer wrapper.
-- `write-user-guide` added in this repo for standalone user-guide routing,
+- `authoring-user-guide` added in this repo for standalone user-guide routing,
   exact-UI-label grounding, existing-page updates, and help-link integration.
 - `writing-ai-prompts` added in this repo for standalone prompt-writing routing,
   target-tool clarification, output shape, and prompt-safety boundaries.
@@ -128,12 +128,12 @@ The eval framework copy should include:
 - `tests/evals/assertions/schema-helpers.js`
 - the copied `authoring-functional-spec` assertion, prompt, and package
 - the new `authoring-design-spec` assertion, prompt, and package
-- the new `write-user-guide` assertion, prompt, and package
+- the new `authoring-user-guide` assertion, prompt, and package
 - the new `writing-ai-prompts` assertion, prompt, and package
 
 The coverage gate should allow temporary uncovered skills through an explicit
 baseline. After this change, `authoring-functional-spec` and `authoring-design-spec`
-must both have eval packages; uncovered skills such as `write-user-guide` and
+must both have eval packages; uncovered skills such as `authoring-user-guide` and
 `writing-ai-prompts` may remain in the baseline until they receive targeted
 evals.
 
@@ -153,7 +153,7 @@ evals.
 | `skills/authoring-functional-spec/SKILL.md` | Copied functional-spec authoring workflow. |
 | `skills/authoring-functional-spec/references/` | Functional-spec template, rationale, sheet interop, and altitude guidance. |
 | `skills/authoring-design-spec/SKILL.md` | Design-spec authoring wrapper below canonical functional specs. |
-| `skills/write-user-guide/SKILL.md` | Separate end-user guide authoring workflow. |
+| `skills/authoring-user-guide/SKILL.md` | Separate end-user guide authoring workflow. |
 | `skills/writing-ai-prompts/SKILL.md` | Prompt-authoring workflow. |
 | `README.md` | Public skill inventory and artifact routing. |
 | `CLAUDE.md` | Claude Code adapter. |

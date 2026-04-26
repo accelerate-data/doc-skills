@@ -18,11 +18,11 @@ When the user asks to author a design spec or technical design spec for a flow,
 read and follow the skill at
 `skills/authoring-design-spec/SKILL.md`.
 
-### /write-user-guide
+### /authoring-user-guide
 
 When the user asks to create or update a user guide page, user documentation,
 or docs under `docs/user-guide/`, read and follow the skill at
-`skills/write-user-guide/SKILL.md`.
+`skills/authoring-user-guide/SKILL.md`.
 
 ### /writing-ai-prompts
 

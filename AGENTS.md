@@ -21,7 +21,7 @@ Single plugin-source repo for documentation skills.
 
 - `skills/authoring-functional-spec/SKILL.md` - author top-level behavior/functional specs under `docs/functional/`
 - `skills/authoring-design-spec/SKILL.md` - author design specs under `docs/design/` from an existing canonical functional spec
-- `skills/write-user-guide/SKILL.md` - create or update user guide pages under `docs/user-guide/`
+- `skills/authoring-user-guide/SKILL.md` - create or update user guide pages under `docs/user-guide/`
 - `skills/writing-ai-prompts/SKILL.md` - generate surgical, token-efficient AI prompts
 
 ## Conventions

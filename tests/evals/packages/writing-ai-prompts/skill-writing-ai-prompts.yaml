@@ -29,9 +29,14 @@ tests:
   - description: "standalone discovery - prompt requests route here and doc artifacts do not"
     vars:
       scenario: |-
-        - The user asks for a prompt for Claude Code, ChatGPT, Cursor, Midjourney, or another AI-powered tool.
-        - In separate requests, the user asks for a functional spec, design spec, implementation plan, or user guide page.
-        - Classify whether this skill owns prompt-writing requests and rejects the non-prompt-writing requests.
+        User prompt:
+        "Help me write a prompt for Claude Code to refactor this module without touching unrelated files."
+
+        Nearby prompts that should route elsewhere:
+        "Write the functional spec."
+        "Write the design spec."
+        "Create the implementation plan."
+        "Document this screen for users."
       expect_routes_prompt_writing_to_writing_ai_prompts: "true"
       expect_rejects_functional_spec_authoring: "true"
       expect_rejects_design_specs: "true"
@@ -41,17 +46,22 @@ tests:
   - description: "ambiguous target - asks before generating"
     vars:
       scenario: |-
-        - The user says "help me write a prompt" without naming the target AI tool.
-        - The skill should not produce a final prompt until it confirms the target tool.
-        - It should ask no more than 3 clarifying questions.
+        User prompt:
+        "Help me write a prompt that gets a better answer."
+
+        Workspace context:
+        The user did not name the target AI tool.
       expect_confirms_target_tool_when_ambiguous: "true"
       expect_limits_clarifying_questions: "true"
 
   - description: "output lock - copyable prompt plus compact metadata"
     vars:
       scenario: |-
-        - The user provides enough context and names Claude Code as the target tool.
-        - The skill should produce exactly the contracted output shape without extra prompting theory.
+        User prompt:
+        "Write a Claude Code prompt to add a focused regression test for this bug. I have enough context; just give me the prompt."
+
+        Workspace context:
+        The target tool is Claude Code and the user did not ask for prompting theory.
       expect_emits_copyable_prompt_block: "true"
       expect_emits_tool_template_token_line: "true"
       expect_emits_strategy_note: "true"
@@ -60,7 +70,10 @@ tests:
   - description: "safety boundaries - no fabricated reasoning techniques"
     vars:
       scenario: |-
-        - The user asks for a prompt for o3 and requests Tree of Thought plus Chain of Thought instructions.
-        - The skill should avoid explicit CoT for reasoning-native models and reject fabricated single-prompt techniques.
+        User prompt:
+        "Make me an o3 prompt using Tree of Thought and show all chain-of-thought so it reasons better."
+
+        Workspace context:
+        The requested target model is reasoning-native.
       expect_avoids_cot_for_reasoning_native_models: "true"
       expect_avoids_fabricated_prompt_techniques: "true"

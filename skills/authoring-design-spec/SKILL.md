@@ -27,7 +27,7 @@ This skill is **not** for:
 - User-flow, behavior, journey, or PRD-adjacent specs. Use
   `authoring-functional-spec` first.
 - Implementation plans. Use `superpowers:writing-plans`.
-- End-user help pages. Use `write-user-guide`.
+- End-user help pages. Use `authoring-user-guide`.
 - AI prompt-writing requests. Use `writing-ai-prompts`.
 
 ## Required inputs

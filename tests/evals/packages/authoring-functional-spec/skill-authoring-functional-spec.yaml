@@ -29,9 +29,14 @@ tests:
   - description: "standalone discovery - functional artifacts route here and non-FS artifacts do not"
     vars:
       scenario: |-
-        - The user asks for a functional spec, behavior spec, journey spec, or PRD-adjacent product flow under docs/functional.
-        - In separate requests, the user asks for a design spec, an implementation plan, a user guide page, or a prompt for another AI tool.
-        - Classify whether this skill owns the functional artifact request and rejects the non-functional-spec requests.
+        User prompt:
+        "Create the functional spec for flow intent-user-data-mart-build. I want the behavior and acceptance rules under docs/functional, not a design doc yet."
+
+        Nearby prompts that should route elsewhere:
+        "Write the technical design for this flow."
+        "Turn this into an implementation plan."
+        "Make a user guide page for the screen."
+        "Write a prompt for Claude Code."
       expect_routes_functional_docs_to_authoring_functional_spec: "true"
       expect_rejects_design_specs: "true"
       expect_rejects_implementation_plans: "true"
@@ -41,28 +46,33 @@ tests:
   - description: "preconditions — validates tooling, auth, git checkout, and allowed repo"
     vars:
       scenario: |-
-        - The user asks: "author a functional spec for intent-user-data-mart-build."
-        - Classify whether the skill contract checks `gws`, auth, git checkout cleanliness, and allowed origin repositories before any drafting.
-        - Classify whether the skill aborts when the current repository is outside the allowed set.
+        User prompt:
+        "Author a functional spec for intent-user-data-mart-build."
+
+        Workspace context:
+        The agent is in a git checkout with an origin URL that may or may not be one of the supported product repos. The User-Flows-Details Sheet is accessed through gws.
       expect_checks_gws_auth_git_and_repo: "true"
       expect_aborts_outside_allowed_repos: "true"
 
   - description: "preconditions — verifies required cross-skill handoffs are available"
     vars:
       scenario: |-
-        - The user asks: "author a functional spec for intent-user-data-mart-build."
-        - `superpowers:brainstorming` is required for Phase 7.
-        - `superpowers:verification-before-completion` is required before claiming completion.
-        - One of those skills may not be installed or exposed in the runtime skill registry.
+        User prompt:
+        "Author the functional spec for intent-user-data-mart-build and pressure-test it before you call it done."
+
+        Workspace context:
+        The active runtime may not expose every expected supporting skill.
       expect_checks_required_skill_availability: "true"
       expect_aborts_when_required_skill_missing: "true"
 
   - description: "sheet lookup — canonical ID fetch avoids status and Sheet writes"
     vars:
       scenario: |-
-        - The invocation includes canonical ID `intent-user-data-mart-build`.
-        - The Sheet row exists and includes status in column H.
-        - The workflow needs the ID, repo, category, title, and persona.
+        User prompt:
+        "Use the User-Flows sheet row for intent-user-data-mart-build and create the FS in the repo named by the sheet."
+
+        Workspace context:
+        The sheet has columns for canonical ID, repo, category, title, status, and persona. Status is operational metadata, not spec content.
       expect_fetches_sheet_row_for_id: "true"
       expect_extracts_allowed_sheet_columns_only: "true"
       expect_does_not_read_status_column: "true"
@@ -74,9 +84,11 @@ tests:
   - description: "missing id — asks for canonical ID and can infer child flow"
     vars:
       scenario: |-
-        - The user says: "author a functional spec" without an ID.
-        - Later they provide a child composite ID whose exact row is missing but whose parent prefix exists in the Sheet.
-        - In a separate missing-row path, no exact row or parent prefix exists.
+        User prompt:
+        "Author a functional spec for the child flow under intent-user-data-mart-build. I don't remember the exact canonical ID."
+
+        Workspace context:
+        Some child flow IDs are composite IDs below a parent row. A typo may have no exact row and no matching parent prefix.
       expect_asks_for_canonical_id_when_missing: "true"
       expect_uses_child_longest_prefix_inference: "true"
       expect_aborts_when_no_row_or_parent: "true"
@@ -84,19 +96,22 @@ tests:
   - description: "candidate selection — repo-filtered candidate IDs"
     vars:
       scenario: |-
-        - The user says: "author a functional spec" and cannot name the canonical ID.
-        - The Sheet contains flows for studio, skill-builder, domain-cicd, and migration-utility.
-        - The current checkout resolves to `skill-builder`.
-        - The workflow should list only repo-filtered candidate IDs with titles and let the author choose from the canonical inventory.
+        User prompt:
+        "I know this is a skill-builder flow, but I can't remember the ID. Show me the likely flow IDs so I can pick one."
+
+        Workspace context:
+        The Sheet contains flows for studio, skill-builder, domain-cicd, and migration-utility. The current checkout resolves to skill-builder.
       expect_asks_for_canonical_id_when_missing: "true"
       expect_lists_candidate_ids_for_current_repo: "true"
 
   - description: "paths — parent and child output locations are constrained"
     vars:
       scenario: |-
-        - A parent flow should be written as a README.
-        - A child flow should be written under the parent directory.
-        - The parent README must already exist and include the child in `sub-flows:`.
+        User prompt:
+        "Add the FS for the third child under intent-user-data-mart-build."
+
+        Workspace context:
+        Parent flows use a README in docs/functional. Child flows are listed in the parent's frontmatter and should not create a second parent-level README.
       expect_writes_parent_readme_path: "true"
       expect_writes_child_numbered_path: "true"
       expect_requires_parent_readme_and_subflow: "true"
@@ -106,9 +121,11 @@ tests:
   - description: "drafting — gathers behavioral context and keeps behavior altitude"
     vars:
       scenario: |-
-        - The author provides a prior functional spec, a Linear issue, and implementation notes.
-        - Some sources include UI labels, payload schemas, and copy.
-        - The draft should use behavioral signals only.
+        User prompt:
+        "Draft the FS from this Linear issue, the old spec, and these implementation notes. Keep it product-level; don't turn payload names or UI copy into requirements."
+
+        Workspace context:
+        The provided references include behavior, UI labels, payload schemas, and implementation notes mixed together.
       expect_asks_for_reference_material: "true"
       expect_digests_behavioral_signals_only: "true"
       expect_avoids_verbatim_copying: "true"
@@ -119,11 +136,11 @@ tests:
   - description: "code-grounded behavior — code informs behavior without design leakage"
     vars:
       scenario: |-
-        - The author provides existing code that partially implements the flow.
-        - Most implementation code is expected in the Sheet repo for the flow.
-        - A different repo may contain helper code, but only if the user explicitly identifies it.
-        - The code contains file paths, class names, payload schemas, retry constants, and event names.
-        - The functional spec should use code only to ground behavioral claims and must not promote implementation details into requirements.
+        User prompt:
+        "Some of this flow already exists in code. Use it to keep the functional spec honest, but don't make the FS a code walkthrough. There might be a helper in another repo if I point you there."
+
+        Workspace context:
+        The code contains file paths, class names, payload schemas, retry constants, and event names.
       expect_asks_for_reference_material: "true"
       expect_primary_code_expected_in_sheet_repo: "true"
       expect_requires_user_override_for_secondary_repo_code: "true"
@@ -134,9 +151,11 @@ tests:
   - description: "sibling flows and production artifacts — preserve stable traceability"
     vars:
       scenario: |-
-        - The functional spec excludes work owned by sibling canonical flows.
-        - Existing production artifacts such as `intent.md` and `design.md` define durable handoff points.
-        - The workflow should cite sibling flows by canonical ID and production artifacts by stable artifact name while keeping design-phase names out.
+        User prompt:
+        "This FS should call out what belongs to the sibling flow and refer to the existing intent.md artifact where that boundary is already defined."
+
+        Workspace context:
+        The related flow has its own canonical ID. Some design-phase names are unstable, but the production artifact names are stable.
       expect_cites_production_artifacts_by_stable_name: "true"
       expect_preserves_sibling_flow_traceability: "true"
       expect_keeps_behavior_altitude: "true"
@@ -144,9 +163,11 @@ tests:
   - description: "review and closeout — brainstorming, self-review, commit offer, no push"
     vars:
       scenario: |-
-        - The scaffold is drafted.
-        - Some placeholders and open questions remain.
-        - The user asks for the implementation plan immediately after the draft.
+        User prompt:
+        "Once the FS draft is in place, review it and commit it locally. Do not push. Then we can talk about the implementation plan."
+
+        Workspace context:
+        The draft may still contain placeholders, contradictions, or unresolved behavior questions.
       expect_invokes_brainstorming: "true"
       expect_self_reviews_before_completion: "true"
       expect_refuses_downstream_artifact: "true"

@@ -29,9 +29,14 @@ tests:
   - description: "standalone discovery - design specs route here and non-design artifacts do not"
     vars:
       scenario: |-
-        - The user asks for a design spec or technical design doc under docs/design for a canonical flow.
-        - In separate requests, the user asks to author a functional spec, write an implementation plan, write a user guide page, or write a prompt for another AI tool.
-        - Classify whether this skill owns design-spec authoring and rejects the non-design-spec requests.
+        User prompt:
+        "Write the design spec for canonical flow intent-user-data-mart-build. The functional spec already exists; I want the technical design under docs/design."
+
+        Nearby prompts that should route elsewhere:
+        "Author the functional spec first."
+        "Turn this into implementation tasks."
+        "Write the user guide page."
+        "Make me a prompt for ChatGPT."
       expect_routes_design_specs_to_authoring_design_spec: "true"
       expect_rejects_functional_spec_authoring: "true"
       expect_rejects_implementation_plans: "true"
@@ -41,9 +46,11 @@ tests:
   - description: "functional prerequisite - canonical id and existing functional spec required"
     vars:
       scenario: |-
-        - The user asks to author a design spec but does not provide a canonical ID.
-        - In another run, the user provides an ID but docs/functional has no matching spec.
-        - The Sheet row identifies the primary repo for the flow.
+        User prompt:
+        "Create the design doc for that onboarding flow."
+
+        Workspace context:
+        The prompt does not name a canonical ID. In a separate run, the user gives an ID but docs/functional has no matching spec. The sheet row identifies the primary repo.
       expect_asks_for_canonical_id: "true"
       expect_requires_existing_functional_spec: "true"
       expect_aborts_when_functional_spec_missing: "true"
@@ -52,20 +59,22 @@ tests:
   - description: "repo ownership - design doc lives beside functional spec in Sheet repo"
     vars:
       scenario: |-
-        - The user asks to author a design spec for a canonical flow.
-        - The User-Flows-Details Sheet row says the flow belongs to `skill-builder`.
-        - The current checkout is `studio`.
-        - The skill should abort and tell the user to rerun from the Sheet repo so both the functional spec and design docs live in the primary repo.
+        User prompt:
+        "Add the design spec for intent-user-data-mart-build."
+
+        Workspace context:
+        The User-Flows-Details Sheet row says the flow belongs to skill-builder. The current checkout is studio.
       expect_verifies_current_repo_matches_sheet_repo: "true"
       expect_design_doc_lives_in_sheet_repo: "true"
 
   - description: "functional spec stewardship - design changes update the canonical FS only after confirmation"
     vars:
       scenario: |-
-        - While authoring a design spec, the related design/code discovery shows the current functional spec is stale or incomplete.
-        - The needed change is product-flow behavior, not a design decision.
-        - The skill should present the proposed functional-spec change and get explicit user confirmation before editing.
-        - If confirmed, it should update the existing canonical functional spec in place in the Sheet repo and must not create another functional spec for the same flow.
+        User prompt:
+        "While writing the design spec, if you find the FS is wrong, fix the FS too but check with me first."
+
+        Workspace context:
+        Related design/code discovery shows the current functional spec is stale on product-flow behavior, not just missing design detail.
       expect_confirms_before_functional_spec_update: "true"
       expect_updates_existing_functional_spec_in_place: "true"
       expect_never_creates_duplicate_functional_spec: "true"
@@ -73,9 +82,11 @@ tests:
   - description: "child functional spec - resolves by frontmatter id"
     vars:
       scenario: |-
-        - The canonical ID belongs to a child flow.
-        - There is no `docs/functional/<canonical-id>/README.md`.
-        - A parent directory contains `03-child-flow.md` whose frontmatter has `id: <canonical-id>`.
+        User prompt:
+        "Write the design spec for child flow intent-user-data-mart-build-review."
+
+        Workspace context:
+        There is no standalone docs/functional/<canonical-id>/README.md. A parent directory contains 03-child-flow.md with matching frontmatter id.
       expect_requires_existing_functional_spec: "true"
       expect_resolves_child_functional_spec_by_frontmatter_id: "true"
       expect_reads_canonical_functional_spec: "true"
@@ -83,8 +94,11 @@ tests:
   - description: "context gathering - reads functional and multiple related design docs only"
     vars:
       scenario: |-
-        - The canonical functional spec exists.
-        - docs/design contains several unrelated docs and two docs related by canonical ID, title, sibling functional ID, or cited artifact.
+        User prompt:
+        "Before you draft the new design spec, check whether existing design docs already cover this flow."
+
+        Workspace context:
+        The canonical functional spec exists. docs/design contains several unrelated docs and two docs related by canonical ID, title, sibling functional ID, or cited artifact.
       expect_reads_canonical_functional_spec: "true"
       expect_searches_related_design_docs: "true"
       expect_selects_related_design_docs_by_multiple_signals: "true"
@@ -95,11 +109,11 @@ tests:
   - description: "source-file grounding - code exists or is explicitly absent"
     vars:
       scenario: |-
-        - The functional spec cites a production artifact already implemented in source code.
-        - The Sheet repo contains files that realize the current behavior.
-        - A different repo may contain helper code, but only if the user explicitly identifies it.
-        - In another flow, no implementation exists yet.
-        - The design spec should include accurate source-file references when present and state when code is absent instead of inventing paths.
+        User prompt:
+        "Tie the design back to the actual source files if code exists. If it doesn't exist yet, say that. Assume code is in this repo unless I name a helper repo."
+
+        Workspace context:
+        The functional spec cites a production artifact. In another flow, no implementation exists yet.
       expect_primary_code_expected_in_sheet_repo: "true"
       expect_requires_user_override_for_secondary_repo_code: "true"
       expect_includes_accurate_source_files_when_code_exists: "true"
@@ -108,8 +122,11 @@ tests:
   - description: "drafting gate - gap analysis and brainstorming precede writing"
     vars:
       scenario: |-
-        - Related design docs partially cover the functional spec but miss state and integration decisions.
-        - The user asks to start writing immediately.
+        User prompt:
+        "Start the design doc now, but first tell me what gap it is covering."
+
+        Workspace context:
+        Related design docs partially cover the functional spec but miss state and integration decisions. docs/design/README.md exists.
       expect_presents_gap_before_drafting: "true"
       expect_invokes_brainstorming_with_gap_context: "true"
       expect_keeps_design_below_functional_above_plan: "true"
@@ -118,8 +135,11 @@ tests:
   - description: "routing - no-op when covered and plans route elsewhere"
     vars:
       scenario: |-
-        - Existing design docs fully cover the functional spec.
-        - The user asks for implementation tasks after the design review.
+        User prompt:
+        "If existing design docs already cover the flow, don't create another one. After that, give me the implementation plan."
+
+        Workspace context:
+        Existing design docs fully cover the functional spec.
       expect_stops_when_no_design_gap_exists: "true"
       expect_routes_implementation_plans_to_writing_plans: "true"
       expect_supports_claude_code_and_codex: "true"
