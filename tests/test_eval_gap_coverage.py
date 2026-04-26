@@ -16,8 +16,11 @@ def assert_contains_all(content, phrases):
 def assert_prompt_is_user_grounded(prompt):
     forbidden = [
         "Skill contract:",
+        "skill contract covers",
+        "contract-classification eval",
         "The skill should",
         "Classify whether",
+        "For each expected behavior named by the scenario",
     ]
     leaked = [phrase for phrase in forbidden if phrase in prompt]
     assert not leaked, f"eval prompt leaks contract language: {leaked}"

@@ -139,3 +139,28 @@ test('eval scenarios keep user prompts realistic and put fixtures in workspace c
     }
   }
 });
+
+test('eval prompt templates do not expose contract-classification framing', () => {
+  const promptFiles = fs
+    .readdirSync(path.join(EVAL_ROOT, 'prompts'))
+    .filter((fileName) => fileName.endsWith('.txt'));
+  const forbiddenPromptPhrases = [
+    'contract-classification eval',
+    'skill contract covers',
+    'For each expected behavior named by the scenario',
+    'do not describe steps you would take',
+  ];
+
+  for (const fileName of promptFiles) {
+    const relativePath = path.join('prompts', fileName);
+    const text = readText(relativePath);
+
+    for (const phrase of forbiddenPromptPhrases) {
+      assert.equal(
+        text.includes(phrase),
+        false,
+        `${relativePath} exposes eval harness framing: ${phrase}`,
+      );
+    }
+  }
+});
