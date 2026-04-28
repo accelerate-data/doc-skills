@@ -80,7 +80,9 @@ Phase-based, ordered. Agent must create a task per item:
 - "brainstorm inline here — do not hand off to `superpowers:brainstorming`"
 - Add spec clarity discipline block:
   - Scope check first: if the request spans multiple canonical IDs, flag and decompose — one invocation = one canonical ID
-  - Section clarity: each section describes one behavioral aspect; a section doing double duty signals a scope problem
+  - Break the spec into sections where each has one clear purpose and can be understood independently
+  - For each section, answer: what behavior does it describe, how does it connect to the flow, what does it depend on? If you cannot answer, the section boundary is wrong
+  - Section clarity: a section doing double duty signals a scope or altitude problem — split or cut
   - Self-contained: the spec must be readable without implementation knowledge — if a sentence requires it, the altitude is wrong
   - Iterate, don't paper over: if a gap surfaces during review, return to Phase 5 — do not fill gaps with placeholder prose or assumptions
 
