@@ -41,15 +41,14 @@ tests:
       expect_routes_functional_docs_to_authoring_functional_spec: "false"
       expect_rejects_design_specs: "true"
 
-  - description: "rejects implementation plan request as functional spec work"
+  - description: "rejects implementation plan request and hands user the spec path"
     vars:
       scenario: |-
         User prompt:
         "Turn the intent-user-data-mart-build functional spec into implementation tasks."
       expect_routes_functional_docs_to_authoring_functional_spec: "false"
       expect_rejects_implementation_plans: "true"
-      expect_routes_implementation_plans_to_writing_plans: "true"
-      expect_hands_over_functional_spec_context_to_writing_plans: "true"
+      expect_hands_user_canonical_id_and_spec_path: "true"
 
   - description: "preconditions — validates tooling, auth, git checkout, and allowed repo"
     vars:
@@ -63,18 +62,19 @@ tests:
       expect_resolves_allowed_repos_from_sheet_column_c: "true"
       expect_aborts_outside_sheet_resolved_repos: "true"
 
-  - description: "preconditions — verifies required completion support skill is available"
+  - description: "preconditions — falls back to manual review when verification skill unavailable"
     vars:
       scenario: |-
         User prompt:
         "Author the functional spec for intent-user-data-mart-build and pressure-test it before you call it done."
 
         Workspace context:
-        The active runtime may not expose every expected supporting skill. v0.2 brainstorming happens inline, but completion still requires verification-before-completion.
+        The active runtime does not expose superpowers:verification-before-completion.
       expect_checks_required_skill_availability: "true"
-      expect_aborts_when_required_skill_missing: "true"
+      expect_aborts_when_required_skill_missing: "false"
+      expect_falls_back_when_required_skill_missing: "true"
 
-  - description: "sheet lookup — canonical ID fetch avoids status and Sheet writes"
+  - description: "sheet lookup — canonical ID fetch avoids status column and Sheet writes"
     vars:
       scenario: |-
         User prompt:
@@ -88,19 +88,18 @@ tests:
       expect_does_not_write_sheet: "true"
       expect_verifies_repo_alignment: "true"
       expect_functional_spec_lives_in_sheet_repo: "true"
-      expect_one_flow_one_functional_spec_many_design_docs: "true"
+      expect_one_flow_one_functional_spec: "true"
 
-  - description: "missing id — asks for canonical ID and can infer child flow"
+  - description: "missing id — asks for canonical ID and aborts when no row found"
     vars:
       scenario: |-
         User prompt:
-        "Author a functional spec for the child flow under intent-user-data-mart-build. I don't remember the exact canonical ID."
+        "Author a functional spec. I don't remember the exact canonical ID."
 
         Workspace context:
-        Some child flow IDs are composite IDs below a parent row. A typo may have no exact row and no matching parent prefix.
+        The user cannot name the canonical ID. The Sheet has no row matching any guess the user provides.
       expect_asks_for_canonical_id_when_missing: "true"
-      expect_uses_child_longest_prefix_inference: "true"
-      expect_aborts_when_no_row_or_parent: "true"
+      expect_aborts_when_no_row_found: "true"
 
   - description: "candidate selection — repo-filtered candidate IDs"
     vars:
@@ -113,18 +112,29 @@ tests:
       expect_asks_for_canonical_id_when_missing: "true"
       expect_lists_candidate_ids_for_current_repo: "true"
 
-  - description: "paths — parent and child output locations are constrained"
+  - description: "paths — spec lives at README.md; never creates a duplicate"
     vars:
       scenario: |-
         User prompt:
-        "Add the FS for the third child under intent-user-data-mart-build."
+        "Update the functional spec for intent-user-data-mart-build."
 
         Workspace context:
-        Parent flows use a README in docs/functional. Child flows are listed in the parent's frontmatter and should not create a second parent-level README.
-      expect_writes_child_numbered_path: "true"
-      expect_requires_parent_readme_and_subflow: "true"
+        docs/functional/intent-user-data-mart-build/README.md exists. No other spec file exists for this canonical ID.
       expect_updates_existing_spec_in_place: "true"
       expect_never_creates_duplicate_functional_spec: "true"
+      expect_functional_spec_lives_in_sheet_repo: "true"
+
+  - description: "child pages — acknowledged as supporting material, out of scope for authoring"
+    vars:
+      scenario: |-
+        User prompt:
+        "The functional spec for intent-user-data-mart-build has a ui-details.md beside the README. Should I author that too?"
+
+        Workspace context:
+        docs/functional/intent-user-data-mart-build/ contains README.md and ui-details.md.
+      expect_routes_functional_docs_to_authoring_functional_spec: "true"
+      expect_treats_child_pages_as_out_of_scope: "true"
+      expect_authors_readme_only: "true"
 
   - description: "drafting — gathers behavioral context and keeps behavior altitude"
     vars:
@@ -141,7 +151,7 @@ tests:
       expect_emits_required_frontmatter: "true"
       expect_keeps_behavior_altitude: "true"
 
-  - description: "v0.2 frontmatter — requires shape and consolidated persona"
+  - description: "frontmatter — requires shape and consolidated persona"
     vars:
       scenario: |-
         User prompt:
@@ -157,7 +167,7 @@ tests:
       expect_uses_git_history_for_provenance: "true"
       expect_supports_shape_menus_without_placeholders: "true"
 
-  - description: "v0.2 shape lenses — loads the relevant menu instead of a fixed journey scaffold"
+  - description: "shape lenses — loads the relevant menu instead of a fixed journey scaffold"
     vars:
       scenario: |-
         User prompt:
@@ -170,7 +180,7 @@ tests:
       expect_supports_shape_menus_without_placeholders: "true"
       expect_keeps_behavior_altitude: "true"
 
-  - description: "v0.2 brainstorming — pressure-tests assumptions before drafting"
+  - description: "brainstorming — behavioral summary gate before drafting"
     vars:
       scenario: |-
         User prompt:
@@ -181,6 +191,24 @@ tests:
       expect_brainstorms_before_drafting: "true"
       expect_records_assumptions_before_first_question: "true"
       expect_does_not_handoff_to_brainstorming: "true"
+      expect_writes_behavioral_summary_before_drafting: "true"
+      expect_waits_for_user_approval_before_drafting: "true"
+
+  - description: "user-approval gate — waits for approval before committing"
+    vars:
+      scenario: |-
+        User prompt:
+        "Once the FS draft is in place, review it and commit it locally. Do not push."
+
+        Workspace context:
+        The draft may still contain placeholders, contradictions, or unresolved behavior questions.
+      expect_brainstorms_before_drafting: "true"
+      expect_does_not_handoff_to_brainstorming: "true"
+      expect_self_reviews_before_showing_user: "true"
+      expect_shows_draft_before_committing: "true"
+      expect_waits_for_user_approval_before_commit: "true"
+      expect_refuses_downstream_artifact: "true"
+      expect_offers_commit_without_push: "true"
 
   - description: "code-grounded behavior — code informs behavior without design leakage"
     vars:
@@ -208,29 +236,3 @@ tests:
       expect_cites_production_artifacts_by_stable_name: "true"
       expect_preserves_sibling_flow_traceability: "true"
       expect_keeps_behavior_altitude: "true"
-
-  - description: "review and closeout — inline brainstorming, self-review, commit offer, no push"
-    vars:
-      scenario: |-
-        User prompt:
-        "Once the FS draft is in place, review it and commit it locally. Do not push. Then we can talk about the implementation plan."
-
-        Workspace context:
-        The draft may still contain placeholders, contradictions, or unresolved behavior questions.
-      expect_brainstorms_before_drafting: "true"
-      expect_does_not_handoff_to_brainstorming: "true"
-      expect_self_reviews_before_completion: "true"
-      expect_refuses_downstream_artifact: "true"
-      expect_offers_commit_without_push: "true"
-
-  - description: "existing functional spec - edits canonical file instead of creating a second FS"
-    vars:
-      scenario: |-
-        User prompt:
-        "The FS for intent-user-data-mart-build already exists, but it is stale. Update it instead of making a new version."
-
-        Workspace context:
-        docs/functional/intent-user-data-mart-build/README.md exists in the repo named by the User-Flows sheet.
-      expect_updates_existing_spec_in_place: "true"
-      expect_never_creates_duplicate_functional_spec: "true"
-      expect_functional_spec_lives_in_sheet_repo: "true"

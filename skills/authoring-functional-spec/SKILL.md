@@ -46,11 +46,17 @@ Fetch the row for the column B canonical ID. Extract only B canonical ID, C repo
 
 Compare the current repo to Sheet column C. Abort with an error if they do not match. The target path is `docs/functional/<canonical-id>/README.md`. If the target exists, update it in place — do not create a sibling, alternate, or duplicate spec. If it does not exist, create it.
 
-Child pages may exist alongside the README (e.g., `docs/functional/<canonical-id>/ui-details.md`, `design-notes.md`). These are author-managed supporting material — high-level design context, UI detail, or reference sketches that would lower the altitude of the main spec. This skill authors and reviews only `README.md`; child pages are out of scope.
+Child pages may exist alongside the README (`docs/functional/<canonical-id>/<page>.md`) as author-managed supporting material — design context, UI detail, reference sketches that would lower the altitude of the main spec. This skill authors and reviews `README.md` only.
 
 ## Phase 4 — Gather References
 
-If reference material has not already been provided by the user, ask before drafting. Read primary-repo functional specs and relevant code automatically once discovered. Use public web research for best-practice grounding when the subject domain has established external standards the user hasn't provided. Meeting notes, project management data, and documents in external services are user-provided only. Digest behavioral signals only; avoid verbatim copying. Cite code only to ground behavioral claims. Stable production artifacts and sibling flow IDs may be named for traceability; design-phase names stay out of the functional body.
+- If reference material has not already been provided, ask before drafting
+- Read primary-repo functional specs and relevant code automatically once discovered
+- Use public web research when the domain has established external standards not yet provided by the user
+- Meeting notes, project management data, and external-service documents are user-provided only
+- Digest behavioral signals only; avoid verbatim copying
+- Cite code only to ground behavioral claims
+- Stable production artifact names and sibling flow IDs may appear for traceability; design-phase names stay out of the body
 
 ## Phase 5 — Shape and Brainstorm
 
@@ -71,12 +77,12 @@ Set frontmatter `shape:` to one of `journey | surface | service | skill | instal
 - Be flexible: if something does not make sense during the brainstorm, go back and clarify
 
 **Spec clarity discipline:**
-- Scope check first: if the request spans multiple canonical IDs, flag and decompose — one invocation = one canonical ID
-- Break the spec into sections where each has one clear purpose and can be understood independently
-- For each section, answer: what behavior does it describe, how does it connect to the flow, what does it depend on? If you cannot answer, the section boundary is wrong
-- A section doing double duty signals a scope or altitude problem — split or cut
-- The spec must be readable without implementation knowledge — if a sentence requires it, the altitude is wrong
-- If a gap surfaces during review, return to Phase 5 — do not fill gaps with placeholder prose or assumptions
+- One invocation = one canonical ID; flag and decompose if the request spans multiple IDs
+- Each section: one clear purpose, independently understandable
+- Each section must answer: what behavior, how it connects, what it depends on — unclear = wrong boundary
+- Section doing double duty = scope or altitude problem — split or cut
+- Spec must be readable without implementation knowledge; sentences that require it are too low
+- Gap surfaced during review? Return to Phase 5 — no placeholder prose
 
 **Hard gate:** Do not proceed until every gap and ambiguity is resolved — no gaps enter the draft.
 
@@ -90,7 +96,11 @@ Prompt: "Behavioral model agreed. Here's what I'll draft — let me know if anyt
 
 ## Phase 6 — Draft Directly
 
-Read `references/functional-spec-template.md` and `references/writing-the-draft.md`. Use `doc-skills:writing-clearly-and-concisely` if available. Emit frontmatter with required fields `id`, `title`, `shape`, and `persona`, plus optional `renamed-from` and `absorbs` only when applicable. Do not add date, review-date, version, or SHA frontmatter; review history and provenance come from git commits, tags, and SHAs. Draft directly; do not emit placeholder scaffolds. Include `Goal`, `Inputs`, `Outputs`, `Invariants`, and `Cross-refs` when applicable, then choose sections from the matching shape menu. Omit sections that genuinely do not apply.
+- Read `references/functional-spec-template.md` and `references/writing-the-draft.md`; use `doc-skills:writing-clearly-and-concisely` if available
+- Required frontmatter: `id`, `title`, `shape`, `persona`; add `renamed-from` / `absorbs` only when applicable
+- No date, review-date, version, or SHA frontmatter — provenance comes from git commits, tags, SHAs
+- Draft directly; no placeholder scaffolds
+- Include `Goal`, `Inputs`, `Outputs`, `Invariants`, `Cross-refs` when applicable; choose remaining sections from the shape menu; omit what doesn't apply
 
 ## Phase 7 — Review and User Approval
 
