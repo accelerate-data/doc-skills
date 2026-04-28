@@ -31,6 +31,7 @@ Phase-based, ordered. Agent must create a task per item:
 - [ ] Phase 3 — Repo verified, target path established
 - [ ] Phase 4 — Reference material gathered
 - [ ] Phase 5 — Shape, persona set; all gaps resolved; brainstorm complete
+- [ ] Phase 5b — Behavioral summary written, committed, and user-approved
 - [ ] Phase 6 — Draft written (no gaps enter the draft)
 - [ ] Phase 7a — Inline review passed (hard stops + polish)
 - [ ] Phase 7b — Self-review checklist passed; spec committed
@@ -91,7 +92,14 @@ Phase-based, ordered. Agent must create a task per item:
   - Section clarity: a section doing double duty signals a scope or altitude problem — split or cut
   - Self-contained: the spec must be readable without implementation knowledge — if a sentence requires it, the altitude is wrong
   - Iterate, don't paper over: if a gap surfaces during review, return to Phase 5 — do not fill gaps with placeholder prose or assumptions
-- Add hard gate: **do not proceed to Phase 6 until every gap and ambiguity is resolved** — no gaps enter the draft
+- Add hard gate: **do not proceed until every gap and ambiguity is resolved** — no gaps enter the draft
+- After hard gate passes: write a behavioral summary capturing:
+  - Agreed shape and persona
+  - Key behavioral assumptions confirmed during brainstorm
+  - Sections that will be included and why
+  - Open Questions remaining (tagged `[design]`)
+- Commit the summary and prompt: "Behavioral model agreed. Here's what I'll draft — let me know if anything needs adjusting before I write the spec."
+- Wait for user approval before proceeding to Phase 6
 
 ### Phase 6
 
