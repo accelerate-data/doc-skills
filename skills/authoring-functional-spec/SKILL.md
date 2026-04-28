@@ -1,16 +1,29 @@
 ---
 name: authoring-functional-spec
-description: Use when authoring or updating top-level Vibedata functional, behavior, journey, PRD-adjacent, or product-requirements specs that belong under docs/functional and must stay above design or implementation detail
-version: 0.2.0
+description: Use when creating or updating a functional spec for a user flow listed in column B of the User-Flows-Details Sheet
+version: 0.3.0
 ---
 
 # Authoring a Vibedata Functional Spec
 
 ## Contract
 
-Author the source-of-truth, product-level functional spec for one canonical User-Flows-Details Sheet row. One canonical user flow maps to exactly one functional spec. One functional spec may be supported by many design docs. The User-Flows-Details Sheet repo column is the primary repo for the flow. The functional spec must live in that primary repo. Code grounding is expected to come from the primary repo; read secondary helper code only when the user explicitly identifies another repo as supporting context.
+Author the source-of-truth functional spec for one canonical User-Flows-Details Sheet row. One canonical user flow maps to exactly one functional spec — refuse to create a second spec for a canonical ID that already has one. Design docs are downstream; do not conflate them with the functional spec. The spec must live in the repo identified by Sheet column C. Code grounding comes from that repo; read code from other repos only when the user explicitly identifies them as supporting context.
 
-This skill is not for design specs, implementation plans, End-user help pages, or AI prompt-writing requests. For implementation-plan requests based on a functional spec, route to `superpowers:writing-plans` and hand over the canonical flow ID, functional-spec path, open questions, relevant design docs or source files already identified, and implementation constraints the user gave.
+This skill is not for design specs, implementation plans, end-user help pages, or AI prompt-writing requests. For implementation-plan requests, hand the user the canonical ID and spec path — what happens next is the user's decision.
+
+## Checklist
+
+Create a task for each item and complete them in order:
+
+- [ ] Phase 0 — Preflight (gws auth, repo check, allowed repos)
+- [ ] Phase 1 — Canonical ID confirmed
+- [ ] Phase 2 — Sheet row fetched
+- [ ] Phase 3 — Repo verified, target path established
+- [ ] Phase 4 — Reference material gathered
+- [ ] Phase 5 — Shape, persona set; gaps resolved; behavioral summary written and user-approved
+- [ ] Phase 6 — Draft written
+- [ ] Phase 7 — Review complete; user-approved; spec committed
 
 ## Phase 0 — Preflight
 
