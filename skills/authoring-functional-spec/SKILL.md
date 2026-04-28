@@ -50,7 +50,7 @@ Child pages may exist alongside the README (`docs/functional/<canonical-id>/<pag
 
 ## Phase 4 — Gather References
 
-- Check out the current project state first (files, docs, recent commits)
+- Read the current project state first (files, docs, recent commits)
 - If reference material has not already been provided, ask before drafting
 - Read primary-repo functional specs and relevant code automatically once discovered
 - Use public web research when the domain has established external standards not yet provided by the user

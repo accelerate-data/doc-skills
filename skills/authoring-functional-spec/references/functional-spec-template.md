@@ -72,12 +72,6 @@ Child pages may live alongside the README for supporting material — high-level
 
 ## Labels, Tags, and Signal Names
 
-Three classes of names are legitimate to cite by value:
-
-1. Existing production artifacts that already define behavior.
-2. Canonical sibling flow IDs from the User-Flows-Details Sheet.
-3. Already-cited artifacts in a prior version that still map to reality.
-
-Hypothetical future labels, event names, payload keys, signal identifiers, UI copy, and schema names are design choices and stay downstream.
+See `writing-the-draft.md` for the three exception classes that allow citing a specific name by value.
 
 

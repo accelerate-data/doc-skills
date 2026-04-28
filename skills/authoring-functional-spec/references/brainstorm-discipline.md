@@ -20,18 +20,17 @@
 - Cover: components, data flow, error handling and corner conditions
 - Be ready to go back and clarify if something doesn't make sense
 
-## Design for isolation and clarity:
+## Module and boundary definition:
 
-- Break the system into smaller units that each have one clear purpose, communicate through well-defined interfaces, and can be understood and tested independently
-- For each unit, you should be able to answer: what does it do, how do you use it, and what does it depend on?
-- Can someone understand what a unit does without reading its internals? Can you change the internals without breaking consumers? If not, the boundaries need work.
-- Smaller, well-bounded units are also easier for you to work with - you reason better about code you can hold in context at once, and your edits are more reliable when files are focused. When a file grows large, that's often a signal that it's doing too much.
+- Define modules with one clear behavioral purpose each — a module whose spec requires reading two other modules to understand has the wrong boundary
+- For each module, answer: what behavior does it own, what does it consume, what does it produce? If any answer is unclear, the boundary is wrong
+- Modules communicate through well-defined behavioral contracts — spec the contract, not the internals
 
-## Working in existing codebases:
+## Grounding in the existing system:
 
-- Explore the current structure before proposing changes. Follow existing patterns.
-- Where existing code has problems that affect the work (e.g., a file that's grown too large, unclear boundaries, tangled responsibilities), include targeted improvements as part of the design - the way a good developer improves code they're working in.
-- Don't propose unrelated refactoring. Stay focused on what serves the current goal.
+- Read the existing codebase before defining behavioral boundaries — modules in the spec must reflect how the system is actually structured
+- Where the existing code has gaps or inconsistencies relevant to this flow, surface them as Open Questions rather than spec-ing around them
+- Stay within the canonical ID's scope — do not absorb adjacent flows during brainstorm
 
 ## Key Principles
 
