@@ -31,20 +31,20 @@ Create a task for each item and complete them in order:
    `Run gws auth login first, then retry.`
 2. Verify the current directory is inside a git checkout.
 3. Resolve the current repo from `git remote get-url origin`.
-4. Read the allowed target repo names at runtime from User-Flows-Details Sheet column C using `references/sheet-interop.md`. Case-fold and trim names; never use a hardcoded repo allowlist. Abort outside allowed repos with the Sheet-derived repo names.
-5. Confirm `superpowers:verification-before-completion` is available before final completion claims.
+4. Read the allowed target repo names at runtime from User-Flows-Details Sheet column C using `references/sheet-interop.md`. Case-fold and trim names; never use a hardcoded repo allowlist. Abort with an error listing the Sheet-derived repo names if the current repo is not in the allowed list.
+5. Confirm `superpowers:verification-before-completion` is available before final completion claims. If unavailable, re-read the draft against all required fields manually before claiming completion.
 
 ## Phase 1 — Identify the Canonical ID
 
-Use the invocation ID if present. Otherwise ask which canonical ID to author. If the author cannot name it, use `references/sheet-interop.md` to list candidate IDs for the current repo, filtered by the runtime-resolved Sheet repo list.
+Use the canonical ID present in the user's message if one is given. Otherwise ask which canonical ID to author. If the author cannot name it, use `references/sheet-interop.md` to list candidate IDs for the current repo, filtered by the runtime-resolved Sheet repo list.
 
 ## Phase 2 — Fetch Sheet Row
 
-Fetch the row for column B canonical ID. Extract only B canonical ID, C repo, D category, E title, and K persona. Do NOT read column H. Do not write to the Sheet. If no exact row exists, attempt longest-prefix child-flow inference against column B. If no parent prefix matches, abort and ask the user to add or correct the Sheet row.
+Fetch the row for the column B canonical ID. Extract only B canonical ID, C repo, D category, E title, and K persona. Do NOT read column H (Status — managed by Sheet owners, not this skill). Do not write to the Sheet. If no exact row matches, abort and ask the user to add or correct the Sheet row.
 
 ## Phase 3 — Verify Repo and Existing Spec
 
-Compare current repo to Sheet column C for a parent/standalone or to the parent's repo for a child. Abort on mismatch. Target paths are `docs/functional/<canonical-id>/README.md` for standalone/parent specs and `docs/functional/<parent-id>/NN-<child-slug>.md` for child specs. Child specs require the parent README and sub-flow listing. If the target exists, update that file in place; do not create a sibling, alternate, or duplicate functional spec.
+Compare the current repo to Sheet column C. Abort with an error if they do not match. The target path is `docs/functional/<canonical-id>/README.md`. If the target exists, update it in place — do not create a sibling, alternate, or duplicate spec. If it does not exist, create it.
 
 ## Phase 4 — Gather References
 
