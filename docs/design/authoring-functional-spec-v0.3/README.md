@@ -78,6 +78,10 @@ Phase-based, ordered. Agent must create a task per item:
   - Align with sibling specs before drafting
   - Resolve all behavioral gaps before entering prose — do not carry gaps into the draft
 - "brainstorm inline here — do not hand off to `superpowers:brainstorming`"
+- Add key principles block:
+  - YAGNI: omit sections that genuinely don't apply — absence means not applicable, not a failed checklist
+  - Explore alternatives: when a behavioral gap has more than one valid resolution, present the options before choosing
+  - Incremental validation: confirm each major behavioral assumption before moving to the next
 - Add spec clarity discipline block:
   - Scope check first: if the request spans multiple canonical IDs, flag and decompose — one invocation = one canonical ID
   - Break the spec into sections where each has one clear purpose and can be understood independently
