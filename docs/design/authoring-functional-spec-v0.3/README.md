@@ -32,7 +32,7 @@ Phase-based, ordered. Agent must create a task per item:
 - [ ] Phase 4 — Reference material gathered
 - [ ] Phase 5 — Shape, persona set; gaps resolved; behavioral summary written and user-approved
 - [ ] Phase 6 — Draft written
-- [ ] Phase 7 — Review complete; spec committed and user-approved
+- [ ] Phase 7 — Review complete; user-approved; spec committed
 ```
 
 ### Contract
@@ -117,10 +117,11 @@ Phase-based, ordered. Agent must create a task per item:
 - Fix issues inline — no need to re-review after fixing
 
 **Add user review gate:**
-- After self-review passes, commit the draft and tell the user the path
-- Exact prompt: "Spec written and committed to `<path>`. Please review it and let me know if you want any changes before we move to the implementation plan."
-- Wait for user response — do not proceed until approved
-- If changes requested: make them, re-run self-review, re-commit, re-prompt
+- After self-review passes, show the draft to the user (do not commit yet)
+- Exact prompt: "Spec ready for review at `<path>`. Let me know if you want any changes — I'll commit once you're happy."
+- Wait for user response — do not commit until approved
+- If changes requested: make them, re-run self-review, re-prompt
+- Commit only after explicit user approval
 
 
 ---
