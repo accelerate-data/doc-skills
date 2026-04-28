@@ -1,425 +1,120 @@
 # Functional Spec Template & Authoring Prompt
 
-<!-- Moved from vd-specs-product-architecture/user-flows/flows/ on 2026-04-24. See the engineering-skills repo for ongoing history. -->
+This reference is the v0.2 template for behavior-focused functional specs under `docs/functional/`. Treat it as a menu, not a section checklist. The authoring skill chooses the sections that fit the subject and omits sections that do not apply. Do not emit `N/A`, `TBD`, or `[describe ...]` placeholders.
 
-This file is both:
+## Functional Spec Altitude
 
-1. **A prompt** that another agent can follow verbatim to author a new behavior-focused functional specification in this directory.
-2. **A template** showing the exact frontmatter and section structure to use.
+Functional specs describe outcomes, externally meaningful behavior, state guarantees, and user-visible terminal states. They do not prescribe UI layout, component structure, payload schemas, event names, retry policies, file paths, class names, API shapes, or implementation plans.
 
-Do not treat this file as a functional spec itself; it is reference material. Rationale behind the current structure lives in [`functional-spec-template-rationalization.md`](functional-spec-template-rationalization.md).
+Pause on any paragraph and ask:
 
----
+> Could a competent engineer using an agentic coding tool build this differently from what I am describing, and still be correct?
 
-## When to use this
-
-Use this prompt when creating or restructuring a functional specification. A functional spec lives in its target GitHub repo (`studio`, `skill-builder`, `domain-cicd`, or `migration-utility`) at `docs/functional/<canonical-id>/`. A functional spec is the **top-level, behavior-focused source-of-truth artifact** for a user flow. Downstream functional specifications and detailed design documents link to this spec, not the other way around.
-
-Functional specs are **not**:
-
-- Design specs (mockups, component structure, copy, styling).
-- Implementation-level technical specs (explicit event names, payload schemas, retry policies, detailed state machines for implementation components).
-- Implementation plans (file paths, class names, migration steps).
-- PRDs (market positioning, business case).
-
----
-
-## Three flow shapes
-
-Every flow is one file. Its frontmatter and filesystem position tell you whether it has a parent, or children, or neither. All three shapes use the **same template**; one section flexes based on shape.
-
-| Shape | Frontmatter marker | File path inside target repo | Behavior section |
-| --- | --- | --- | --- |
-| **Standalone** | neither `parent:` nor `sub-flows:` | `docs/functional/<canonical-id>/README.md` | `## Main flow` (numbered steps) |
-| **Parent (has children)** | `sub-flows:` list | `docs/functional/<canonical-id>/README.md` | `## Phases` (narrative + nested child links) |
-| **Child (of a parent)** | `parent: <parent-slug>` | `docs/functional/<parent-id>/NN-<child-slug>.md` (sibling of parent's README) | `## Main flow` (numbered steps) |
-
-Every canonical ID gets its own folder under `docs/functional/`. Standalones have a single `README.md`. Parents have `README.md` plus sibling `NN-<child-slug>.md` child files. Children do not get their own folders — they live as siblings beside the parent's `README.md`. A child's canonical ID is the composite `<parent-slug>-<child-slug>`.
-
-**Children are expected primarily in the `Intent` category** (e.g., chat-journey flows like `intent-user-data-mart-build` with many internal stages). Most flows in other categories are standalone.
-
-### File layout
-
-```text
-<target-repo>/docs/functional/
-├─ <standalone-canonical-id>/
-│  └─ README.md
-│
-└─ <parent-canonical-id>/
-   ├─ README.md                          ← parent functional spec
-   ├─ 01-<first-child-slug>.md           ← child functional specs
-   ├─ 02-<second-child-slug>.md
-   └─ …
-```
-
-Child filenames begin with a zero-padded sequence prefix (`01-`, `02-`, …). The prefix encodes reading / phase order; it is **not** part of the canonical ID. The child's canonical ID is still the composite `<parent-slug>-<child-slug>`.
-
----
-
-## The authoring prompt
-
-Use the following prompt as-is (or adapt it lightly) when tasking an agent to author a new functional spec:
-
-> You are authoring a **top-level, behavior-focused functional specification**. This is the source-of-truth user-flow document. Downstream functional and design specs link back to this one.
->
-> ### The output must document
->
-> - the user's / system's goal
-> - the trigger
-> - preconditions (things that must be true **before** the trigger fires)
-> - inputs consumed and outputs produced
-> - the success outcome and all terminal outcomes
-> - the main flow (numbered steps) **or** the phases with nested children (when the flow is a parent)
-> - alternate flows (A1, A2, …)
-> - failure cases (F1, F2, …)
-> - state transitions (only when the flow is genuinely stateful)
-> - business rules (behavioral parameters, thresholds, enumerations)
-> - invariants (guarantees that hold regardless of execution path)
-> - events / observability at **kind-level only** (classes of events that must be emittable; no specific event names or payload schemas)
-> - cross-references to upstream / downstream sibling flows and existing production artifacts — by canonical ID or artifact name (see the three exception classes under "Labels, tags, and signal names")
->
-> ### The output must NOT document
->
-> - UI layout, visual design, styling, component structure
-> - copywriting, interaction microdetails
-> - specific event names, payload schemas, label strings, column names, signal identifiers — these are design concerns
-> - exact retry counts, iteration limits, timeout values
-> - internal state machines of implementation components (only user-visible / behaviorally-meaningful state belongs here)
-> - file paths, class names, API shapes, code snippets
->
-> ### The Altitude Test
->
-> Pause on any sentence and ask:
->
-> > *"Could a competent engineer using an agentic coding tool build this differently from what I'm describing, and still be correct?"*
->
-> If **yes**, you're at the right altitude.
-> If **no** — every implementation choice is forced by your wording — you've slipped into design / functional territory. Cut the prescriptive detail or move it to a downstream spec.
->
-> ### Principles
->
-> - Focus on outcomes, state transitions, and observable system behavior.
-> - Treat the functional spec as the top-level source of truth. Downstream specs link to it; not vice versa.
-> - Separate facts from assumptions. Mark assumptions explicitly.
-> - Call out open questions rather than guessing; tag each `[product]` or `[design]`.
-> - Prefer precise, behavior-relevant language over UX language.
-> - Organize around what changes in the system, not around screens or pages.
-> - Keep the flow stable across UI redesigns and implementation shifts.
->
-> ### Labels, tags, and signal names
->
-> Where the spec must name a signal (e.g. `triage-pending`, `severity:p1`, `dbt-failure`), treat those names as **illustrative examples** of the behavior, not prescriptions. The actual string values are a design decision. Add a one-line note near the top of the Scope section clarifying this convention when the spec cites any such names.
->
-> Three classes of names are legitimate to cite by value, *even though* they look like the illustrative strings you're told to cut:
->
-> 1. **Existing production artifacts** — data structures, protocol blocks, file conventions, or runtimes that already exist in code (e.g., the `vd-meta` block, `intent.md`, `design.md`, the `vd-monitoring-agents` runtime). Citing by name is legitimate because the behavior is defined in terms of the artifact.
-> 2. **Canonical sibling flow IDs** — when describing what this flow *excludes* or what *upstream / downstream* flows are responsible for, cite the sibling flow's canonical ID (e.g., `alert-fire-route`, `operate-diagnosis-agent`, `intent-user-data-mart-build-intent-creation`). The Sheet's canonical ID is a **stable name**, not a design-phase choice. Scope / Excluded lists and handoff references without these IDs lose traceability.
-> 3. **Already-cited artifacts in a prior version** — if a pre-existing spec cited an artifact by name and the artifact still maps to reality, preserve the reference. Do not strip it in the name of altitude — the author had a reason.
->
-> Rule of thumb: if the name appears in the User-Flows-Details Sheet (canonical ID column) or in production code (durable artifact, file, or runtime), citing it is fine. If it's a hypothetical future label or an event name someone picked while authoring, it's a design choice and belongs downstream.
->
-> ### Business rules vs invariants — two different sections
->
-> - **Business rules** are *behavioral parameters and constraints* — tiers, thresholds, enumerations, windows. Example: *"Severity tiers: p1 / p2 / p3 (no p0, no p4)."* If product changes the parameter, the rule gets edited. Business rules describe *how* the system behaves under given inputs.
-> - **Invariants** are *guarantees that must hold regardless of execution path*. Example: *"Webhook handling is idempotent"* or *"Approval is recorded against the current version of `design.md`, so a later change forces re-approval."* If an invariant is violated, the flow is broken even if every individual step succeeded. Invariants describe *what must remain true* across all paths.
->
-> These are separate sections in the template. Do not combine them. Combining hides invariants among parameter bullets.
->
-> ### Events / observability — kind-level only
->
-> Name the *classes* of events the flow must make observable for it to be trustworthy. Do **not** specify event names, payload fields, or catalog schemas — those live in the downstream functional or design spec.
->
-> Good: *"A completion telemetry event must be emittable with the run's terminal outcome; each finding decision must be observable; authoring failures must be distinguishable from upstream input errors."*
->
-> Not good: *"`issue_retro_completed` — duration_ms, findings_detected, prs_opened, terminal_state."* That's functional-spec detail.
->
-> ### Open Questions discipline
->
-> - List only questions that are genuinely unresolved. Do not invent gaps.
-> - Tag each question `[product]` or `[design]` so the reader knows who resolves it.
-> - If a question is a design concern (label names, schema keys, retry mechanics, notification channels), say so explicitly and keep it out of the behavioral body.
-> - Resolve behavioral questions during brainstorming rather than leaving them in the spec.
->
-> ### Finalization — use the superpowers brainstorming skill
->
-> **After the initial draft, invoke the `brainstorming` skill from the `superpowers` plugin** to pressure-test and finalize the spec. Do this one flow at a time. Ask one question at a time; edit the draft to reflect each answer before asking the next.
->
-> Typical brainstorming arc for a functional spec:
->
-> 1. Summarize the draft's behavioral model in 4–6 bullets so the owner can correct the framing quickly.
-> 2. Enumerate the Open Questions in priority order (structural / behavioral first, design details last).
-> 3. Ask the top question as a multiple-choice. Accept the answer, **edit the draft to reflect it before asking the next question** — this keeps the draft and the conversation in sync and surfaces knock-on effects early.
-> 4. Continue until all behavioral Open Questions are resolved. Design-phase Open Questions stay as Open Questions.
-> 5. Run the self-review (see Process guidance below), then hand the spec back to the owner for approval.
->
-> Do not skip this step, even for "simple" flows.
->
-> ### Formatting
->
-> - Numbered steps for `Main flow` and the internal steps inside each `Alternate flow`.
-> - `### Phase N — <name>` headers with 2–3 sentence intros for `Phases`, and nested links to children underneath.
-> - Bullet points for `Business rules`, `Invariants`, `Events`, `Terminal outcomes`.
-> - Concise and structured. Enough detail for engineering and QA; no more.
-> - Where applicable, identify what must be **persisted, validated, emitted, or blocked**.
-> - Normalize vague input into clear system states and terminal outcomes.
->
-> ### File location
->
-> Write the spec to the target GitHub repo named in the User-Flows-Details Sheet's `repo` column:
->
-> - Standalone or parent: `<repo>/docs/functional/<canonical-id>/README.md`
-> - Child: `<repo>/docs/functional/<parent-id>/NN-<child-slug>.md`
->
-> The canonical ID matches Sheet column B. The target repo (`studio`, `skill-builder`, `domain-cicd`, or `migration-utility`) is Sheet column C. Category (Sheet column D) is no longer encoded in the file path — it lives only in the Sheet.
-
----
+If yes, the paragraph is at functional-spec altitude. If no, cut the prescriptive detail or move it to a downstream design spec.
 
 ## Frontmatter
 
-### Standalone flow
+Every new v0.2 spec requires these fields:
 
 ```yaml
 ---
-id: <canonical-slug>                   # matches Sheet canonical ID
+id: <canonical-id>
 title: <human-readable title>
-persona: <DRE | FSA | AE | DE | MST>
-last-reviewed: <YYYY-MM-DD>
-# Optional — include only when applicable:
-# renamed-from: <previous-slug>
+shape: <journey | surface | service | skill | install | utility>
+persona: <DRE | FSA | CDO | CloudOps>
+# Optional only when applicable:
+# parent: <parent-id>
+# sub-flows:
+#   - <child-slug>
+# renamed-from: <previous-id>
 # absorbs:
-#   - <prior-slug-1>
-#   - <prior-slug-2>
+#   - <prior-id>
 ---
 ```
 
-### Parent flow (has children)
+`shape` lives only in the spec file. The User-Flows-Details Sheet has no shape column and the skill does not validate shape against Sheet category.
 
-```yaml
----
-id: <canonical-slug>
-title: <human-readable title>
-persona: <DRE | FSA | AE | DE | MST>
-last-reviewed: <YYYY-MM-DD>
-sub-flows:                             # ordered — matches phase / reading order
-  - <first-child-slug>
-  - <second-child-slug>
-  - …
-# Optional:
-# renamed-from: <previous-slug>
-# absorbs: [<prior-slug-1>, …]
----
-```
+Do not add date fields, review-date fields, document version fields, or SHA fields to frontmatter. Functional spec provenance comes from git history: commits, tags, and commit SHAs.
 
-### Child flow (of a parent)
+`persona` is single-valued. Choose the persona whose work or outcome is most directly affected by the spec's behavior:
 
-```yaml
----
-id: <parent-slug>-<child-slug>         # composite canonical ID
-title: <human-readable child title>
-parent: <parent-slug>                  # pointer to parent
-persona: <DRE | FSA | AE | DE | MST>
-last-reviewed: <YYYY-MM-DD>
-# Optional:
-# renamed-from: <previous-slug>
-# absorbs: [<prior-slug-1>, …]
----
-```
+- `DRE` — data reliability or operations outcome owner.
+- `FSA` — field solution / implementation outcome owner; AE and DE roll up here.
+- `CDO` — business or governance outcome owner.
+- `CloudOps` — platform, deployment, install, or operations owner.
 
-**Not included** (deliberately — these live in the Sheet or are encoded in the path):
+Pre-v0.2 specs may contain older persona values. Do not migrate them as part of normal authoring.
 
-- `owner` — Sheet column F
-- `wave` — Sheet column G
-- `status` — Sheet column E
-- `category` — folder path already encodes it
-- `kind` — filename / subfolder convention already encodes parent vs child vs standalone
+## Expected Sections
 
-The Sheet is canonical for the first four. Duplicating them in frontmatter guarantees drift.
-
----
-
-## Section structure
-
-Sections below use these status markers:
-
-- **bold** — required for every flow
-- *italic* — optional; include only when the flow genuinely has content for it
-- ⧉ — conditional on whether the flow has children (see Behavior section)
-
-### Shared sections (apply to all three shapes)
+These sections are expected in nearly every spec when they apply:
 
 ```markdown
-# Flow: <Title> (`<canonical-slug>`)
+# <Title> (`<canonical-id>`)
 
 ## Goal
 
-One or two sentences. What user / system outcome does this flow achieve?
-
-## Scope
-
-**Included**
-
-- …
-
-**Excluded**
-
-- …
-
-> **A note on labels, tags, and signal names** throughout this spec: where the document names a specific signal, the **behavior** is what the spec prescribes; any cited label strings are illustrative examples. Equivalent names chosen during design are acceptable so long as the behavior is preserved.
-
-## Preconditions  *(optional)*
-
-Things that must be true **before** the trigger fires. Not interchangeable with trigger conditions.
-
-- …
-
-## Trigger
-
-- …
-
-## Primary actor
-
-- …
-
 ## Inputs
-
-What this flow consumes. No source attribution (do not say "from <Component>" — name the thing itself).
-
-- …
 
 ## Outputs
 
-What this flow produces. No destination attribution.
+## Invariants
 
-- …
-
-## Success outcome
-
-What must be true on the happy path.
-
-- …
-
-## Terminal outcomes
-
-Every end state the flow can reach.
-
-- **Success — <variant>** — …
-- **User-abandoned** — …
-- **System-blocked** — …
-- (add more variants as needed; each is a distinct end-state)
+## Cross-refs
 ```
 
-### Behavior — use ONE of the following two sections ⧉
+If one genuinely does not apply, omit it. Absence means not applicable; it is not a failed checklist.
 
-Which section applies depends on whether the flow has children (listed in `sub-flows:` frontmatter).
+## Shape Menus
 
-**Standalone flows and child flows (no children) use `Main flow`:**
+Load `shape-lenses.md` and choose from the matching shape section.
+Starting menus are:
 
-```markdown
-## Main flow
+- `journey`: Trigger, Primary actor, Main flow / Phases, Alternate flows, Failure cases, State transitions, Business rules, Events / observability.
+- `surface`: When-to-use, Surface inventory, Surface states, Interaction model, Cross-flow touch matrix, Access & responsiveness.
+- `service`: Goals + Non-goals, Boundary contract, Lifecycle, Ownership, Consumers, Concurrency / ordering invariants, Risks & mitigations, Failure modes by class.
+- `skill`: Invocation triggers, Phases, Refusal & scope rails, Handoffs, Runtime context contract, Resources used.
+- `install`: Preconditions, Procedure, Verification, Rollback / recovery, Idempotency guarantees, Failure classes.
+- `utility`: Public surface, Distribution kind, Audience class, Lifecycle, Exit conditions, Versioning & compatibility stance.
 
-1. System / User …
-2. System …
-3. …
+Section names in the final body are author-chosen. The menu is guidance, not an enforced vocabulary.
+
+## File Layout
+
+Standalone or parent specs live at:
+
+```text
+docs/functional/<canonical-id>/README.md
 ```
 
-**Parent flows (have children) use `Phases` instead:**
+Child specs live beside the parent README:
 
-```markdown
-## Phases
-
-### Phase 1 — <Phase Name>
-
-Two to three sentences framing what this phase accomplishes and when it ends.
-
-- [`01-<first-child-slug>`](<parent-slug>/01-<first-child-slug>.md) — one-line description.
-- [`02-<second-child-slug>`](<parent-slug>/02-<second-child-slug>.md) — one-line description.
-
-### Phase 2 — <Phase Name>
-
-…
+```text
+docs/functional/<parent-id>/NN-<child-slug>.md
 ```
 
-For a parent with few children that don't cluster into multiple phases, use a single phase ("Phase 1 — Main flow") with all children listed under it. The structure is always present; its depth scales with content.
+Every child file requires an existing parent README and a corresponding `sub-flows:` entry in the parent frontmatter.
 
-### Remaining sections (apply to all shapes)
+## Labels, Tags, and Signal Names
 
-```markdown
-## Alternate flows  *(optional)*
+Three classes of names are legitimate to cite by value:
 
-### A1. <name>
+1. Existing production artifacts that already define behavior.
+2. Canonical sibling flow IDs from the User-Flows-Details Sheet.
+3. Already-cited artifacts in a prior version that still map to reality.
 
-1. …
-2. …
+Hypothetical future labels, event names, payload keys, signal identifiers, UI copy, and schema names are design choices and stay downstream.
 
-### A2. <name>
+## Drafting Process
 
-1. …
-2. …
+1. Resolve the Sheet row and target repo.
+2. Decide `shape` and `persona`.
+3. Read `shape-lenses.md` and use the matching shape section.
+4. Enumerate the tentative behavioral model and assumptions before asking the
+   first question.
+5. Brainstorm one question at a time until behavioral gaps are resolved.
+6. Draft directly, without placeholder scaffolds.
+7. Self-review for altitude, coherence, scope match, cross-flow alignment,
+   frontmatter consistency, completeness, and unresolved Open Questions.
 
-## Failure cases  *(optional)*
-
-### F1. <name>
-
-- Trigger: …
-- Response: …
-- Final state: …
-
-### F2. <name>
-
-- Trigger: …
-- Response: …
-- Final state: …
-
-## State transitions  *(optional — include only for genuinely stateful flows)*
-
-- <state A> → <state B> on <event>
-- …
-
-## Business rules  *(optional)*
-
-Behavioral parameters, constraints, thresholds, enumerations.
-
-- **<Rule name>** — …
-- …
-
-## Invariants  *(optional)*
-
-Guarantees that must hold regardless of execution path.
-
-- **<Invariant name>** — …
-- …
-
-## Events / observability  *(optional — kind-level only)*
-
-Classes of events that must be emittable for the flow to be trustworthy. No specific event names or payload schemas.
-
-- **<Event class>** — what it proves / why it must exist.
-- …
-
-## Open questions  *(optional)*
-
-1. `[product]` **<Question>** — why it's still open, what would resolve it.
-2. `[design]` **<Question>** — why it's still open, what would resolve it.
-```
-
----
-
-## Process guidance
-
-1. **Identify the source material.** Gather: the canonical Sheet row (id, title, category, persona, absorbs / renamed-from); any prior functional specs; any existing design or implementation code if the flow is backed by code. Cite code only to ground behavioral claims — remove implementation-level citations before finalization.
-2. **Decide the shape.** Standalone, parent, or child? If the flow in the Sheet corresponds to a chat journey with many internal stages (primarily in the Intent category), it is a parent — write `sub-flows:` frontmatter and plan the children as separate files in the sibling subfolder. Otherwise it is standalone or a child of some other parent.
-3. **Draft with open questions.** First pass: capture behavior; mark ambiguities as explicit Open Questions tagged `[product]` or `[design]`.
-4. **Brainstorm to close — use the `superpowers:brainstorming` skill.** One flow at a time. Ask one question at a time. Edit the draft inline after each answer.
-5. **Self-review.** Scan for placeholders (`TBD`, `TODO`), internal contradictions, prescriptive design details that crept in, and Open Questions that are actually resolved. Apply the Altitude Test to every paragraph. Fix inline.
-6. **Do not write to the Sheet.** Use the User-Flows-Details Google Sheet as read-only source material. If the Sheet appears missing, stale, or inconsistent after authoring, report the discrepancy and the spec path; do not create rows, update cells, or otherwise sync Sheet data from this skill. Child functional specs nested under a parent currently live outside the Sheet's main inventory tab — see [`functional-spec-template-rationalization.md`](functional-spec-template-rationalization.md) for deferred questions on per-parent tab conventions.
-
----
-
-## Reference examples
-
-Archived under `vd-specs-product-architecture/user-flows/_archive/flows/` for historical reference — these files were authored under the pre-rationalization template and have not been refactored to the folder-per-ID layout:
-
-- `_archive/flows/context-management/ctx-issue-retro-agent.md` — standalone flow built from consolidation of three source flows.
-- `_archive/flows/operate/pipeline-operate-triage-agent.md` — standalone flow backed by existing production code.
-
-Until those samples are refactored into their target repo's `docs/functional/<canonical-id>/`, read this template's structure as the canonical source.
+Do not write to the Sheet. If Sheet data appears missing, stale, or inconsistent, report the discrepancy and the expected user action.

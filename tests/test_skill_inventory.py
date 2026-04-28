@@ -38,3 +38,11 @@ def test_shared_skills_avoid_claude_only_runtime_instructions() -> None:
             assert phrase not in content, (
                 f"{skill} contains shared-runtime-only forbidden phrase: {phrase}"
             )
+
+
+def test_authoring_functional_spec_skill_stays_lean() -> None:
+    content = (SKILLS / "authoring-functional-spec" / "SKILL.md").read_text(
+        encoding="utf-8"
+    )
+
+    assert len(content.splitlines()) < 100

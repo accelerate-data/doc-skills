@@ -1,314 +1,59 @@
 ---
 name: authoring-functional-spec
 description: Use when authoring or updating top-level Vibedata functional, behavior, journey, PRD-adjacent, or product-requirements specs that belong under docs/functional and must stay above design or implementation detail
-version: 0.1.0
+version: 0.2.0
 ---
 
 # Authoring a Vibedata Functional Spec
 
-## When to use this
+## Contract
 
-Use this skill when authoring or updating a **product level, behavior-focused
-functional specification** for Vibedata. The output is the source-of-truth artifact. Downstream design specs, and implementation plans link back to this one — not the other way around.
+Author the source-of-truth, product-level functional spec for one canonical User-Flows-Details Sheet row. One canonical user flow maps to exactly one functional spec. One functional spec may be supported by many design docs. The User-Flows-Details Sheet repo column is the primary repo for the flow. The functional spec must live in that primary repo. Code grounding is expected to come from the primary repo; read secondary helper code only when the user explicitly identifies another repo as supporting context.
 
-## Canonical artifact model
+This skill is not for design specs, implementation plans, End-user help pages, or AI prompt-writing requests. For implementation-plan requests based on a functional spec, route to `superpowers:writing-plans` and hand over the canonical flow ID, functional-spec path, open questions, relevant design docs or source files already identified, and implementation constraints the user gave.
 
-- One canonical user flow maps to exactly one functional spec.
-- One functional spec may be supported by many design docs.
-- The User-Flows-Details Sheet repo column is the primary repo for the flow.
-- The functional spec must live in that primary repo.
-- Code grounding is expected to come from the primary repo. Read or cite code
-  from another repo only when the user explicitly identifies that repo as a
-  secondary helper location for the flow.
+## Phase 0 — Preflight
 
-This skill is **not** for:
+1. Verify `gws` exists and `gws auth status` exits zero; otherwise abort with
+   `Run gws auth login first, then retry.`
+2. Verify the current directory is inside a git checkout.
+3. Resolve the current repo from `git remote get-url origin`.
+4. Read the allowed target repo names at runtime from User-Flows-Details Sheet column C using `references/sheet-interop.md`. Case-fold and trim names; never use a hardcoded repo allowlist. Abort outside allowed repos with the Sheet-derived repo names.
+5. Confirm `superpowers:verification-before-completion` is available before final completion claims.
 
-- PRDs (market positioning, business case)
-- Design specs (mockups, component structure, copy, styling, explicit event names, payload schemas, retry policies)
-- Implementation plans (file paths, class names, migration steps)
-- End-user help pages or user-guide documentation
-- AI prompt-writing requests for Claude, ChatGPT, Cursor, or other tools
+## Phase 1 — Identify the Canonical ID
 
-If the user asks for a downstream artifact, do not use this skill as the primary
-authoring workflow. Route to the downstream skill when the canonical functional
-spec already exists. If it does not exist, stop and explain that the functional
-spec must be authored first, then ask whether to switch to this skill.
+Use the invocation ID if present. Otherwise ask which canonical ID to author. If the author cannot name it, use `references/sheet-interop.md` to list candidate IDs for the current repo, filtered by the runtime-resolved Sheet repo list.
 
-For implementation-plan requests based on a functional spec, route to
-`superpowers:writing-plans`. Hand over the canonical flow ID, functional-spec
-path, open questions, relevant design docs or source files already identified,
-and any implementation constraints the user provided.
+## Phase 2 — Fetch Sheet Row
 
-## Prerequisites
+Fetch the row for column B canonical ID. Extract only B canonical ID, C repo, D category, E title, and K persona. Do NOT read column H. Do not write to the Sheet. If no exact row exists, attempt longest-prefix child-flow inference against column B. If no parent prefix matches, abort and ask the user to add or correct the Sheet row.
 
-Before invoking the skill, confirm:
+## Phase 3 — Verify Repo and Existing Spec
 
-- `gws` CLI is installed and logged in (`gws auth status` exits zero).
-- Current working directory is inside a git checkout of one of the four
-  target repos: `studio`, `skill-builder`, `domain-cicd`, `migration-utility`.
-- The functional spec's canonical ID exists as a row in the User-Flows-Details Sheet
-  (or the author has scheduled to add it per
-  `vd-specs-product-architecture/.claude/rules/user-flows-sheet-sync.md`).
+Compare current repo to Sheet column C for a parent/standalone or to the parent's repo for a child. Abort on mismatch. Target paths are `docs/functional/<canonical-id>/README.md` for standalone/parent specs and `docs/functional/<parent-id>/NN-<child-slug>.md` for child specs. Child specs require the parent README and sub-flow listing. If the target exists, update that file in place; do not create a sibling, alternate, or duplicate functional spec.
 
-## Workflow
+## Phase 4 — Gather References
 
-### Phase 0 — Precondition check
+Ask for reference material before drafting. Read primary-repo functional specs and relevant code automatically once discovered. Use public web research when best-practice grounding would clarify the subject domain. Linear, Granola, Google Docs, Google Sheets, and cross-repo code are user-provided only. Digest behavioral signals only; avoid verbatim copying. Cite code only to ground behavioral claims. Stable production artifacts and sibling flow IDs may be named for traceability; design-phase names stay out of the functional body.
 
-1. Verify `command -v gws` resolves.
-2. Run `gws auth status`. If non-zero, abort with:
+## Phase 5 — Shape and Brainstorm
 
-   > Run `gws auth login` first, then retry.
+Set frontmatter `shape:` to one of `journey | surface | service | skill | install | utility`. Set `persona:` to one of `DRE | FSA | CDO | CloudOps`, choosing the persona whose work or outcome is most directly affected. Load `references/shape-lenses.md` and use the matching shape section.
 
-3. Verify `git rev-parse --is-inside-work-tree` exits zero.
-4. Parse `git remote get-url origin` to extract the repo name (everything
-   after the last `/`, stripping `.git`). Must match one of
-   `{studio, skill-builder, domain-cicd, migration-utility}`. Otherwise abort
-   with the four legitimate repo names listed.
-5. Confirm the required cross-skill handoffs are available through the
-   runtime's skill/tool registry before drafting:
+Before drafting, enumerate the tentative behavioral model and assumptions, then brainstorm in this skill: ask one question at a time, prefer multiple choice when real alternatives exist, apply the altitude rule, align with sibling specs, and resolve behavioral gaps before they enter prose. Do not hand off to `superpowers:brainstorming`.
 
-   - `superpowers:brainstorming`
-   - `superpowers:verification-before-completion`
+## Phase 6 — Draft Directly
 
-   Do not rely on local filesystem paths alone; use the active runtime's skill
-   availability mechanism so the check reflects what can actually be invoked.
-   In Codex, use the available skills list and follow the relevant `SKILL.md`;
-   in Claude Code, use the Skill tool. If either skill is unavailable, abort
-   before creating or modifying the functional spec and report the missing skill
-   names.
-
-### Phase 1 — Identify the canonical ID
-
-- If the invocation passed an ID (e.g., `/authoring-functional-spec intent-user-data-mart-build`),
-  use it.
-- Otherwise ask: *"Which canonical ID are you authoring?"*
-- If the author cannot name one, use the pattern from
-  `references/sheet-interop.md` to list candidate IDs for the current repo,
-  then let them pick. List only IDs whose Sheet repo column matches the
-  current repo, and include the title so the choice is anchored in the
-  canonical inventory instead of free-form guessing.
-
-### Phase 2 — Fetch Sheet row
-
-Run the `values get` command from `references/sheet-interop.md` to fetch
-the row matching the canonical ID. Extract columns:
-
-- `B` = canonical ID
-- `C` = `repo` (target repo name)
-- `D` = `category`
-- `E` = `title`
-- `K` = `persona`
-
-Do NOT read column H (`status`); the skill never writes back to the Sheet.
-
-If no row matches, proceed to Phase 2a.
-
-### Phase 2a — Child-flow inference
-
-Attempt a longest-prefix match of the candidate ID against column B across all
-rows. If a prefix match is found, the candidate is a child of that parent.
-Parent prefix collisions are assumed impossible (design-time assumption from
-the spec author).
-
-If no parent prefix matches, abort with:
-
-> No row found for `<id>` and no parent prefix match. Add a row to the Sheet
-> first (see `.claude/rules/user-flows-sheet-sync.md`) or verify the ID
-> spelling.
-
-### Phase 3 — Verify repo alignment
-
-Compare the current repo name from Phase 0 to the Sheet's column C (for a
-parent/standalone) or the parent's column C (for a child). If they differ,
-abort:
-
-> You are in `<current-repo>` but flow `<id>` targets `<sheet-repo>`. Re-run
-> this skill from the correct repo.
-
-### Phase 4 — Check for existing spec
-
-- **Parent/standalone target path:**
-  `<repo-root>/docs/functional/<canonical-id>/README.md`
-- **Child target path:**
-  `<repo-root>/docs/functional/<parent-id>/NN-<child-slug>.md`, where `NN`
-  is the child's 1-indexed position (zero-padded to two digits) in the
-  parent's `sub-flows:` frontmatter list.
-
-**Child-authoring precondition:** the parent's `README.md` **must** already
-exist at `<repo-root>/docs/functional/<parent-id>/README.md`, AND the child's
-composite ID must appear in that README's `sub-flows:` list. If either is
-missing, abort:
-
-> Author the parent flow `<parent-id>` first (and add `<child-id>` to its
-> `sub-flows:` list).
-
-If the target file already exists, read it and update that file in place.
-Preserve closed sections, re-run brainstorming on open ones, and do not create
-a sibling, alternate, or replacement functional spec for the same canonical
-flow. If the author explicitly refuses in-place updates, abort instead of
-creating another file.
-
-Otherwise, proceed to draft.
-
-### Phase 5 — Gather reference material
-
-Before drafting, ask the author what existing context should shape the
-functional spec:
-
-> *"Before I draft, are there any existing documents I should read? For
-> example: prior functional specs (same repo or archived under*
-> *`vd-specs-product-architecture/user-flows/_archive/flows/`), design*
-> *docs or architecture proposals, Linear issues, Granola meeting*
-> *transcripts, Google Docs or Sheets with PRD / requirement context, or*
-> *existing code that implements part of the behavior."*
-
-Collect whatever the author provides:
-
-- **File paths** in the primary repo → read them using the active runtime's
-  file-reading mechanism.
-- **File paths in another repo** → read them only when the user explicitly says
-  that repo contains secondary helper code for this flow. Treat that material as
-  supporting context; do not move the functional spec out of the Sheet repo.
-- **Linear issue IDs** (e.g., `VD-123`) → fetch via the Linear MCP tool
-  available in your runtime.
-- **Granola meeting IDs or titles** → fetch via the Granola MCP tool
-  available in your runtime.
-- **Google Doc / Sheet IDs** → fetch via the `gws` CLI (e.g.,
-  `gws docs documents get`, `gws sheets spreadsheets values get`).
-- **URLs (GitHub, public web)** → fetch via the active runtime's available web
-  reader or browser tool.
-- **Nothing offered** → proceed to Phase 6 with no additional material.
-
-For each source, extract only the content that shapes the behavioral
-spec — ignore implementation detail, UI copy, retry policies, and
-anything below the altitude line per
-`references/writing-the-draft.md`. Build a short internal digest
-(4–8 bullets) summarizing the behavioral signals found. Use the digest
-to populate Phase 6's scaffold and to frame Phase 7's brainstorming arc.
-When code is provided, cite code only to ground behavioral claims. Stable
-production artifacts and sibling flow IDs may be named by artifact name or
-canonical ID, but implementation paths, classes, payload schemas, and event
-strings must not become functional requirements.
-
-Do not copy verbatim prose into the draft. Paraphrase into behavioral
-language.
-
-### Phase 6 — Draft the scaffold
-
-Load `references/functional-spec-template.md` and `references/writing-the-draft.md`.
-Decide shape from Phase 2 / 2a signals and any author input about sub-flows.
-
-Emit frontmatter:
-
-- `id`: the canonical ID (composite for a child).
-- `title`: from Sheet column E (or author-provided for a child).
-- `persona`: from Sheet column K.
-- `parent`: only if this is a child.
-- `sub-flows:`: empty list for a parent (author fills during brainstorming);
-  omitted for standalone/child.
-- `last-reviewed: <today's date>` (`date +%Y-%m-%d`).
-
-Emit every required template section with short placeholder prompts
-(e.g., `[describe the goal]`) that Phase 7 will close. Incorporate the
-Phase 5 reference-material digest: any behavioral signal it captured
-should appear as a populated section (not a placeholder) or as a tagged
-Open Question.
-
-### Phase 7 — Hand off to `superpowers:brainstorming`
-
-Invoke `superpowers:brainstorming` through the active runtime's skill mechanism
-with the following context:
-
-> The draft functional spec lives at `<path>`. Pressure-test it section by section.
-> The altitude rules and the authoring prompt are in
-> `references/functional-spec-template.md`; honor them. Use the typical brainstorming
-> arc: summarize the behavioral model in 4–6 bullets → enumerate Open
-> Questions → ask one at a time, editing the draft inline after each answer.
-
-Wait for brainstorming to return control before proceeding.
-
-### Phase 8 — Self-review
-
-Apply the altitude test per `references/writing-the-draft.md` to every
-paragraph. Check for:
-
-- Placeholders: `TBD`, `TODO`, `[describe…]`.
-- Internal contradictions: do Main flow steps and Success outcome align?
-  Do Business rules contradict Invariants?
-- Altitude violations: design detail that slipped in.
-- Illegitimate name citations: anything outside the three legitimate-cite
-  classes.
-- Unresolved behavioral Open Questions: these must be either resolved or
-  have a specific resolution path. Design-tagged (`[design]`) Open Questions
-  may remain.
-
-Fix inline. Single pass; do not re-loop.
-
-### Phase 9 — Write output and offer commit
-
-1. `mkdir -p <repo-root>/docs/functional/<canonical-id>/` (or `<parent-id>/`
-   for a child).
-2. Write the file to the target path.
-3. Print a summary:
-   - Canonical ID + target path
-   - Sections populated
-   - Open Questions remaining
-   - Reminder that the Sheet's Filename hyperlink auto-updates once the
-     pre-work formula change is applied.
-4. Prompt:
-
-   > Commit now? (y = commit with suggested message / n = skip / show =
-   > show the message first)
-
-5. On `y`, run:
-
-   ```bash
-   git add <path>
-   git commit -m "docs(functional): author functional spec for <canonical-id>"
-   ```
-
-   No `git push`.
-
-## Safety rails
-
-The skill refuses the following, citing `references/functional-spec-template.md`:
-
-- Specifying event names, payload schemas, label strings, or UI details.
-- Writing to any path other than `docs/functional/<canonical-id>/README.md`
-  or `NN-<child-slug>.md`.
-- Running outside the four target repos.
-- Writing to any Sheet cell.
-
-## Cross-skill handoffs
-
-| When | Invoke |
-|---|---|
-| Phase 7 (pressure-test the draft) | `superpowers:brainstorming` |
-| Before claiming the spec is complete | `superpowers:verification-before-completion` |
-| Author asks to open a Linear PR after the spec lands | Use `engineering-skills:raising-linear-pr` when available |
-| Author asks for the design spec or implementation plan | Redirect — those link back to the functional spec; produce the functional spec first |
+Load `references/functional-spec-template.md` and `references/writing-the-draft.md`. Emit frontmatter with required fields `id`, `title`, `shape`, and `persona`, plus optional `parent`, `sub-flows`, `renamed-from`, and `absorbs` only when applicable. Do not add date, review-date, version, or SHA frontmatter; review history and provenance come from git commits, tags, and SHAs. Draft directly; do not emit placeholder scaffolds. Include `Goal`, `Inputs`, `Outputs`, `Invariants`, and `Cross-refs` when applicable, then choose sections from the matching shape menu. Omit sections that genuinely do not apply.
+
+## Phase 7 — Substantive Review and Commit Offer
+
+Review and edit inline for altitude, internal coherence, scope match, cross-flow alignment, frontmatter consistency, completeness, and Open Questions cleanup. Refuse event names, payload schemas, label strings, UI details, file paths, class names, API shapes, and implementation plans. Use `superpowers:verification-before-completion` before claiming completion. Summarize the canonical ID, target path, sections populated, and remaining Open Questions. Offer a local commit with `git add <path>` and `git commit -m "docs(functional): author functional spec for <canonical-id>"`. Never run `git push`.
 
 ## References
 
-- `references/functional-spec-template.md` — canonical template, folder-per-ID
-  layout. Loaded in Phase 6 (scaffold) and Phase 8 (self-review).
-- `references/functional-spec-template-rationalization.md` — rationale behind the
-  template's structure. Human-oriented; maintainers only.
-- `references/sheet-interop.md` — `gws` command patterns for Phase 1
-  (candidate listing), Phase 2 (row fetch), and any Google Doc / Sheet
-  fetches surfaced by Phase 5 (reference gathering).
-- `references/writing-the-draft.md` — altitude test, legitimate-cite
-  classes, business-rules-vs-invariants distinction, events/observability
-  kind-level rule.
-
-## Out of scope
-
-- Status updates. Do not write to the Sheet from this skill; report requested
-  status changes to the user and do not edit
-  Sheet status cells from this skill.
-- Creating or updating Sheet rows. Follow
-  `vd-specs-product-architecture/.claude/rules/user-flows-sheet-sync.md`
-  manually.
-- `git push`. The author pushes when ready.
-- Migrating pre-existing functional specs from the archive to the target repos.
-  Each migration is a separate invocation of this skill.
+- `references/functional-spec-template.md` — v0.2 frontmatter and section menu.
+- `references/sheet-interop.md` — read-only `gws` commands, including column-C repo resolution.
+- `references/writing-the-draft.md` — altitude rule and cite boundaries.
+- `references/shape-lenses.md` — shape menus.
