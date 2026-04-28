@@ -2,9 +2,9 @@
 
 ## Understanding the idea:
 
-- Before asking detailed questions, assess scope: if the request describes multiple independent subsystems (e.g., "build a platform with chat, file storage, billing, and analytics"), flag this immediately. Don't spend questions refining details of a project that needs to be decomposed first.
-- For appropriately-scoped projects, ask questions to refine the idea
-- Focus on understanding: purpose, constraints, success criteria
+- Before asking the first question, enumerate your tentative behavioral model — state what you already understand about the flow so the user can confirm or correct it
+- Assess scope before asking detail questions: if the request spans multiple canonical IDs, flag and decompose first
+- For appropriately-scoped requests, ask questions to resolve gaps; focus on: purpose, constraints, success criteria
 
 ## Exploring approaches:
 

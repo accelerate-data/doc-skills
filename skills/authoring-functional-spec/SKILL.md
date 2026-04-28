@@ -32,7 +32,7 @@ Create a task for each item and complete them in order:
 2. Verify the current directory is inside a git checkout.
 3. Resolve the current repo from `git remote get-url origin`.
 4. Read the allowed target repo names at runtime from User-Flows-Details Sheet column C using `references/using-gws.md`. Case-fold and trim names; never use a hardcoded repo allowlist. Abort with an error listing the Sheet-derived repo names if the current repo is not in the allowed list.
-5. Confirm `superpowers:verification-before-completion` is available before final completion claims. If unavailable, re-read the draft against all required fields manually before claiming completion.
+5. Check now whether `superpowers:verification-before-completion` is available. If unavailable, plan to re-read the draft against all required fields manually at Phase 7 instead of relying on the skill.
 
 ## Phase 1 — Identify the Canonical ID
 
