@@ -13,8 +13,6 @@ The authoring-functional-spec skill reads the User-Flows-Details Google Sheet to
 
 ### 0. Resolve allowed target repos from Sheet column C
 
-Used in Phase 0 to avoid hardcoded repository allowlists.
-
 ```bash
 gws sheets spreadsheets values get --params \
   '{"spreadsheetId":"1nq0ab_E6sAjxR7WgihsF92CGfRzj7lCe3Z3GQSu25kA","range":"Flow Inventory!C2:C"}' \
@@ -31,14 +29,9 @@ gws sheets spreadsheets values get --params \
   --format csv | awk -F, -v id="<canonical-id>" '$2 == id'
 ```
 
-The skill filters client-side on column B (canonical ID). Sheet-level query APIs are not used because `gws` does not expose them directly.
-
-Expected output: one CSV row, 13 columns. If no row matches, treat as a child-flow candidate and fall through to Phase 2a of the skill workflow (longest-prefix parent match).
+Expected output: one CSV row, 13 columns. If no row matches, abort and ask the user to add or correct the Sheet row.
 
 ### 2. List all canonical IDs for the current target repo
-
-Used when the user invokes the skill without a canonical ID and cannot name
-one. Shows the IDs that belong to the repo you are currently inside.
 
 ```bash
 gws sheets spreadsheets values get --params \

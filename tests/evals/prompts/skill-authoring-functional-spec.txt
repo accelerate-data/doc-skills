@@ -8,7 +8,9 @@ Real user request:
 Before choosing an action, inspect `skills/authoring-functional-spec/SKILL.md`
 and its referenced files. Decide how this installed skill applies to the user's
 request and workspace context. Set a field to true only when this skill clearly
-supports that behavior for this request; otherwise leave it false.
+supports that behavior for this request; otherwise set it to false.
+
+Every field in the JSON must be present in your response. Never omit a field — use false as the default if the behavior is not clearly observed or not applicable to this request.
 
 Treat route fields as primary-skill decisions for the requested deliverable.
 Treat reject fields as true only when the current user request is for that other
@@ -23,27 +25,27 @@ Return JSON only with this shape:
   "aborts_outside_sheet_resolved_repos": false,
   "checks_required_skill_availability": false,
   "aborts_when_required_skill_missing": false,
+  "falls_back_when_required_skill_missing": false,
   "routes_functional_docs_to_authoring_functional_spec": false,
   "rejects_design_specs": false,
   "rejects_implementation_plans": false,
   "rejects_user_guides": false,
   "rejects_prompt_writing_requests": false,
-  "one_flow_one_functional_spec_many_design_docs": false,
+  "hands_user_canonical_id_and_spec_path": false,
+  "one_flow_one_functional_spec": false,
   "asks_for_canonical_id_when_missing": false,
+  "aborts_when_no_row_found": false,
   "lists_candidate_ids_for_current_repo": false,
   "fetches_sheet_row_for_id": false,
   "extracts_allowed_sheet_columns_only": false,
   "does_not_read_status_column": false,
   "does_not_write_sheet": false,
-  "uses_child_longest_prefix_inference": false,
-  "aborts_when_no_row_or_parent": false,
   "verifies_repo_alignment": false,
   "functional_spec_lives_in_sheet_repo": false,
-  "writes_parent_readme_path": false,
-  "writes_child_numbered_path": false,
-  "requires_parent_readme_and_subflow": false,
   "updates_existing_spec_in_place": false,
   "never_creates_duplicate_functional_spec": false,
+  "treats_child_pages_as_out_of_scope": false,
+  "authors_readme_only": false,
   "asks_for_reference_material": false,
   "digests_behavioral_signals_only": false,
   "primary_code_expected_in_sheet_repo": false,
@@ -64,12 +66,13 @@ Return JSON only with this shape:
   "brainstorms_before_drafting": false,
   "records_assumptions_before_first_question": false,
   "does_not_handoff_to_brainstorming": false,
-  "keeps_behavior_altitude": false,
-  "invokes_brainstorming": false,
-  "self_reviews_before_completion": false,
+  "writes_behavioral_summary_before_drafting": false,
+  "waits_for_user_approval_before_drafting": false,
+  "keeps_behavioral_altitude": false,
+  "self_reviews_before_showing_user": false,
+  "shows_draft_before_committing": false,
+  "waits_for_user_approval_before_commit": false,
   "refuses_downstream_artifact": false,
-  "routes_implementation_plans_to_writing_plans": false,
-  "hands_over_functional_spec_context_to_writing_plans": false,
   "offers_commit_without_push": false,
   "notes": "string"
 }
