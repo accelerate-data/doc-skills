@@ -1,20 +1,14 @@
-# Functional Spec Template & Authoring Prompt
+# Functional Spec Template
 
-This reference is the v0.2 template for behavior-focused functional specs under `docs/functional/`. Treat it as a menu, not a section checklist. The authoring skill chooses the sections that fit the subject and omits sections that do not apply. Do not emit `N/A`, `TBD`, or `[describe ...]` placeholders.
+This reference is the template for behavior-focused functional specs under `docs/functional/`. Treat it as a menu, not a section checklist. The authoring skill chooses the sections that fit the subject and omits sections that do not apply. Do not emit `N/A`, `TBD`, or `[describe ...]` placeholders.
 
 ## Functional Spec Altitude
 
-Functional specs describe outcomes, externally meaningful behavior, state guarantees, and user-visible terminal states. They do not prescribe UI layout, component structure, payload schemas, event names, retry policies, file paths, class names, API shapes, or implementation plans.
-
-Pause on any paragraph and ask:
-
-> Could a competent engineer using an agentic coding tool build this differently from what I am describing, and still be correct?
-
-If yes, the paragraph is at functional-spec altitude. If no, cut the prescriptive detail or move it to a downstream design spec.
+See `writing-the-draft.md` for the altitude test and discipline rules.
 
 ## Frontmatter
 
-Every new v0.2 spec requires these fields:
+Every spec requires these fields:
 
 ```yaml
 ---
@@ -23,9 +17,6 @@ title: <human-readable title>
 shape: <journey | surface | service | skill | install | utility>
 persona: <DRE | FSA | CDO | CloudOps>
 # Optional only when applicable:
-# parent: <parent-id>
-# sub-flows:
-#   - <child-slug>
 # renamed-from: <previous-id>
 # absorbs:
 #   - <prior-id>
@@ -67,33 +58,15 @@ If one genuinely does not apply, omit it. Absence means not applicable; it is no
 
 ## Shape Menus
 
-Load `shape-lenses.md` and choose from the matching shape section.
-Starting menus are:
-
-- `journey`: Trigger, Primary actor, Main flow / Phases, Alternate flows, Failure cases, State transitions, Business rules, Events / observability.
-- `surface`: When-to-use, Surface inventory, Surface states, Interaction model, Cross-flow touch matrix, Access & responsiveness.
-- `service`: Goals + Non-goals, Boundary contract, Lifecycle, Ownership, Consumers, Concurrency / ordering invariants, Risks & mitigations, Failure modes by class.
-- `skill`: Invocation triggers, Phases, Refusal & scope rails, Handoffs, Runtime context contract, Resources used.
-- `install`: Preconditions, Procedure, Verification, Rollback / recovery, Idempotency guarantees, Failure classes.
-- `utility`: Public surface, Distribution kind, Audience class, Lifecycle, Exit conditions, Versioning & compatibility stance.
-
-Section names in the final body are author-chosen. The menu is guidance, not an enforced vocabulary.
+Read `shape-lenses.md` and use the matching shape section. Section names in the final body are author-chosen; the menu is guidance, not an enforced vocabulary.
 
 ## File Layout
 
-Standalone or parent specs live at:
+All specs live at:
 
 ```text
 docs/functional/<canonical-id>/README.md
 ```
-
-Child specs live beside the parent README:
-
-```text
-docs/functional/<parent-id>/NN-<child-slug>.md
-```
-
-Every child file requires an existing parent README and a corresponding `sub-flows:` entry in the parent frontmatter.
 
 ## Labels, Tags, and Signal Names
 
@@ -105,16 +78,4 @@ Three classes of names are legitimate to cite by value:
 
 Hypothetical future labels, event names, payload keys, signal identifiers, UI copy, and schema names are design choices and stay downstream.
 
-## Drafting Process
 
-1. Resolve the Sheet row and target repo.
-2. Decide `shape` and `persona`.
-3. Read `shape-lenses.md` and use the matching shape section.
-4. Enumerate the tentative behavioral model and assumptions before asking the
-   first question.
-5. Brainstorm one question at a time until behavioral gaps are resolved.
-6. Draft directly, without placeholder scaffolds.
-7. Self-review for altitude, coherence, scope match, cross-flow alignment,
-   frontmatter consistency, completeness, and unresolved Open Questions.
-
-Do not write to the Sheet. If Sheet data appears missing, stale, or inconsistent, report the discrepancy and the expected user action.
