@@ -1,0 +1,86 @@
+# yaml-language-server: $schema=https://promptfoo.dev/config-schema.json
+description: "writing-clearly-and-concisely skill - documentation prose style contract"
+
+prompts:
+  - id: writing-clearly-and-concisely
+    label: writing-clearly-and-concisely
+    raw: file://../../prompts/skill-writing-clearly-and-concisely.txt
+
+providers:
+  - id: file://../../scripts/opencode-cli-provider.js
+    config:
+      provider_id: opencode
+      model: qwen3.6-plus
+      working_dir: ../..
+      max_turns: 12
+      tools:
+        read: true
+        grep: true
+        glob: true
+        list: true
+        bash: true
+
+defaultTest:
+  assert:
+    - type: javascript
+      value: file://../../assertions/check-writing-clearly-and-concisely-contract.js
+
+tests:
+  - description: "functional spec prose - tighten without changing behavior"
+    vars:
+      scenario: |-
+        User prompt:
+        "This functional spec reads too wordy. Tighten the prose but keep the behavior, frontmatter ID, acceptance criteria, and flow links intact."
+      expect_routes_functional_spec_prose_to_writing_clearly_and_concisely: "true"
+      expect_tightens_wording_without_changing_meaning: "true"
+      expect_preserves_required_doc_structure: "true"
+
+  - description: "design document prose - preserve architecture nuance"
+    vars:
+      scenario: |-
+        User prompt:
+        "Make this design document clearer and less repetitive. Do not remove source-file references or unresolved gap notes."
+      expect_routes_design_document_prose_to_writing_clearly_and_concisely: "true"
+      expect_tightens_wording_without_changing_meaning: "true"
+      expect_preserves_required_doc_structure: "true"
+
+  - description: "user guide prose - simplify help copy"
+    vars:
+      scenario: |-
+        User prompt:
+        "Rewrite this user guide section so it is easier to scan. Keep the exact UI labels and the help navigation headings."
+      expect_routes_user_guide_prose_to_writing_clearly_and_concisely: "true"
+      expect_tightens_wording_without_changing_meaning: "true"
+      expect_preserves_required_doc_structure: "true"
+
+  - description: "implementation plan prose - keep checklist semantics"
+    vars:
+      scenario: |-
+        User prompt:
+        "Clean up this implementation plan. The steps are right, but the wording is flabby. Keep the checklist, test commands, and review gates."
+      expect_routes_implementation_plan_prose_to_writing_clearly_and_concisely: "true"
+      expect_tightens_wording_without_changing_meaning: "true"
+      expect_preserves_required_doc_structure: "true"
+
+  - description: "style reference - consult Strunk when useful"
+    vars:
+      scenario: |-
+        User prompt:
+        "Can you do a classic Elements of Style pass on this design spec section? It has passive voice and a lot of needless words."
+      expect_routes_design_document_prose_to_writing_clearly_and_concisely: "true"
+      expect_uses_strunk_reference_when_helpful: "true"
+      expect_cites_upstream_attribution: "true"
+
+  - description: "ai prompt writing - route elsewhere"
+    vars:
+      scenario: |-
+        User prompt:
+        "Write a prompt for Claude Code to produce a concise implementation plan."
+      expect_rejects_ai_prompt_writing: "true"
+
+  - description: "non-documentation prose - do not over-trigger"
+    vars:
+      scenario: |-
+        User prompt:
+        "Make this email to a vendor shorter and warmer."
+      expect_rejects_non_documentation_prose: "true"

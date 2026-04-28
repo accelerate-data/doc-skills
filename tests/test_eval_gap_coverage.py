@@ -235,3 +235,42 @@ def test_writing_ai_prompts_skill_has_no_question_count_or_cot_contradiction():
     assert "Template E - Reasoning Summary" in templates
     assert "without revealing hidden" in skill
     assert "Never ask the model to reveal hidden chain-of-thought" in templates
+
+
+def test_writing_clearly_and_concisely_eval_covers_doc_routing_and_style_contract():
+    config = read(
+        "tests/evals/packages/writing-clearly-and-concisely/"
+        "skill-writing-clearly-and-concisely.yaml"
+    )
+    prompt = read("tests/evals/prompts/skill-writing-clearly-and-concisely.txt")
+    assertion = read(
+        "tests/evals/assertions/check-writing-clearly-and-concisely-contract.js"
+    )
+    assert_prompt_is_user_grounded(prompt)
+    assert_scenarios_are_user_grounded(config)
+
+    assert_contains_all(
+        config,
+        [
+            "functional spec prose",
+            "design document prose",
+            "user guide prose",
+            "implementation plan prose",
+            "non-documentation prose",
+        ],
+    )
+    assert_contains_all(
+        prompt + assertion,
+        [
+            "routes_functional_spec_prose_to_writing_clearly_and_concisely",
+            "routes_design_document_prose_to_writing_clearly_and_concisely",
+            "routes_user_guide_prose_to_writing_clearly_and_concisely",
+            "routes_implementation_plan_prose_to_writing_clearly_and_concisely",
+            "rejects_ai_prompt_writing",
+            "rejects_non_documentation_prose",
+            "tightens_wording_without_changing_meaning",
+            "preserves_required_doc_structure",
+            "uses_strunk_reference_when_helpful",
+            "cites_upstream_attribution",
+        ],
+    )
