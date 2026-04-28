@@ -101,10 +101,13 @@ Phase-based, ordered. Agent must create a task per item:
 
 ### `functional-spec-template.md`
 
-- Remove altitude test block (the "pause and ask" paragraph) — `writing-the-draft.md` is the authoritative source
-- Add one-line pointer: "See `writing-the-draft.md` for the altitude test"
-- Remove `parent` and `sub-flows` from optional frontmatter — users add what they need; skill does not enumerate
-- Remove child spec file layout section — one path only
+This file should own exactly one thing: the frontmatter schema and expected section list. Current leakage to fix:
+
+- Remove altitude test block → add one-line pointer to `writing-the-draft.md`
+- Remove "Drafting Process" section (steps 1–7) — duplicates SKILL.md phase structure
+- Remove shape section menus from body — duplicates `shape-lenses.md`; keep only the one-line reference "Load `shape-lenses.md` and use the matching shape section"
+- Remove `parent` and `sub-flows` from optional frontmatter — users add what they need
+- Remove child spec file layout section — one path only: `docs/functional/<canonical-id>/README.md`
 
 ### `writing-the-draft.md`
 
@@ -144,7 +147,7 @@ Note: `renamed-from` and `absorbs` frontmatter fields stay — they track canoni
 | File | Change type |
 |---|---|
 | `skills/authoring-functional-spec/SKILL.md` | Edit — 11 targeted fixes + checklist + Phase 5 interaction rules + subflow removal |
-| `skills/authoring-functional-spec/references/functional-spec-template.md` | Edit — altitude block → pointer; optional frontmatter simplified; child layout removed |
+| `skills/authoring-functional-spec/references/functional-spec-template.md` | Edit — owns frontmatter schema only; altitude block, Drafting Process, shape menus, child layout, parent/sub-flows frontmatter all removed |
 | `skills/authoring-functional-spec/references/writing-the-draft.md` | No change |
 | `skills/authoring-functional-spec/references/shape-lenses.md` | No change |
 | `skills/authoring-functional-spec/references/sheet-interop.md` | No change |
