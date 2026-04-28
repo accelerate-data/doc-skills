@@ -60,16 +60,17 @@ tests:
         Workspace context:
         The agent is in a git checkout with an origin URL that may or may not be one of the supported product repos. The User-Flows-Details Sheet is accessed through gws.
       expect_checks_gws_auth_git_and_repo: "true"
-      expect_aborts_outside_allowed_repos: "true"
+      expect_resolves_allowed_repos_from_sheet_column_c: "true"
+      expect_aborts_outside_sheet_resolved_repos: "true"
 
-  - description: "preconditions — verifies required cross-skill handoffs are available"
+  - description: "preconditions — verifies required completion support skill is available"
     vars:
       scenario: |-
         User prompt:
         "Author the functional spec for intent-user-data-mart-build and pressure-test it before you call it done."
 
         Workspace context:
-        The active runtime may not expose every expected supporting skill.
+        The active runtime may not expose every expected supporting skill. v0.2 brainstorming happens inline, but completion still requires verification-before-completion.
       expect_checks_required_skill_availability: "true"
       expect_aborts_when_required_skill_missing: "true"
 
@@ -140,6 +141,47 @@ tests:
       expect_emits_required_frontmatter: "true"
       expect_keeps_behavior_altitude: "true"
 
+  - description: "v0.2 frontmatter — requires shape and consolidated persona"
+    vars:
+      scenario: |-
+        User prompt:
+        "Author the functional spec for a backend service flow. It is not a click-by-click journey, so don't force Trigger, Primary actor, and Main flow if they don't fit."
+
+        Workspace context:
+        The Sheet row has a canonical ID, repo, category, title, and persona. The spec file owns any shape classification.
+      expect_routes_functional_docs_to_authoring_functional_spec: "true"
+      expect_requires_shape_and_persona_frontmatter: "true"
+      expect_constrains_shape_values: "true"
+      expect_constrains_persona_values: "true"
+      expect_omits_date_and_version_frontmatter: "true"
+      expect_uses_git_history_for_provenance: "true"
+      expect_supports_shape_menus_without_placeholders: "true"
+
+  - description: "v0.2 shape lenses — loads the relevant menu instead of a fixed journey scaffold"
+    vars:
+      scenario: |-
+        User prompt:
+        "Create a functional spec for an install/setup procedure. It needs preconditions, verification, rollback, and idempotency, not alternate UI flows."
+
+        Workspace context:
+        The subject is an install procedure with operator-visible outcomes and failure classes.
+      expect_routes_functional_docs_to_authoring_functional_spec: "true"
+      expect_loads_shape_lens_guidance: "true"
+      expect_supports_shape_menus_without_placeholders: "true"
+      expect_keeps_behavior_altitude: "true"
+
+  - description: "v0.2 brainstorming — pressure-tests assumptions before drafting"
+    vars:
+      scenario: |-
+        User prompt:
+        "Before you write the FS, grill me on the behavioral assumptions. I don't want assumption-based gaps committed into the prose."
+
+        Workspace context:
+        Multiple valid scope choices exist and sibling specs may constrain the boundary.
+      expect_brainstorms_before_drafting: "true"
+      expect_records_assumptions_before_first_question: "true"
+      expect_does_not_handoff_to_brainstorming: "true"
+
   - description: "code-grounded behavior — code informs behavior without design leakage"
     vars:
       scenario: |-
@@ -167,7 +209,7 @@ tests:
       expect_preserves_sibling_flow_traceability: "true"
       expect_keeps_behavior_altitude: "true"
 
-  - description: "review and closeout — brainstorming, self-review, commit offer, no push"
+  - description: "review and closeout — inline brainstorming, self-review, commit offer, no push"
     vars:
       scenario: |-
         User prompt:
@@ -175,7 +217,8 @@ tests:
 
         Workspace context:
         The draft may still contain placeholders, contradictions, or unresolved behavior questions.
-      expect_invokes_brainstorming: "true"
+      expect_brainstorms_before_drafting: "true"
+      expect_does_not_handoff_to_brainstorming: "true"
       expect_self_reviews_before_completion: "true"
       expect_refuses_downstream_artifact: "true"
       expect_offers_commit_without_push: "true"

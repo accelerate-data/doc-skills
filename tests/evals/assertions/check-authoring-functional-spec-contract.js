@@ -15,6 +15,17 @@ function requireFileContains(relativePath, phrases) {
   return null;
 }
 
+function requireFileNotContains(relativePath, phrases) {
+  const absolutePath = path.join(ROOT, relativePath);
+  const content = fs.readFileSync(absolutePath, 'utf8');
+  for (const phrase of phrases) {
+    if (content.includes(phrase)) {
+      return `${relativePath} contains forbidden anchor: ${phrase}`;
+    }
+  }
+  return null;
+}
+
 function staticContractReason() {
   const checks = [
     requireFileContains('skills/authoring-functional-spec/SKILL.md', [
@@ -31,21 +42,51 @@ function staticContractReason() {
       'do not create',
       'alternate',
       'gws auth status',
-      'superpowers:brainstorming',
       'superpowers:verification-before-completion',
       'superpowers:writing-plans',
-      'Hand over the canonical flow ID',
+      'hand over the canonical flow ID',
+      'Sheet column C',
+      'never use a hardcoded repo allowlist',
       'Do NOT read column H',
       'Do not write to the Sheet',
       'list candidate IDs for the current repo',
-      'cite code only to ground behavioral claims',
+      'Cite code only to ground behavioral claims',
       'production artifacts and sibling flow IDs',
+      'shape:',
+      'journey | surface | service | skill | install | utility',
+      'DRE | FSA | CDO | CloudOps',
+      'Do not add date, review-date, version, or SHA frontmatter',
+      'git commits, tags, and SHAs',
+      'references/shape-lenses.md',
+      'Do not hand off to `superpowers:brainstorming`',
       'references/functional-spec-template.md',
       '`git push`',
     ]),
     requireFileContains('skills/authoring-functional-spec/references/sheet-interop.md', [
+      'Resolve allowed target repos from Sheet column C',
       'Never write to any Sheet cell from this skill',
       'gws auth status',
+    ]),
+    requireFileContains('skills/authoring-functional-spec/references/functional-spec-template.md', [
+      'shape: <journey | surface | service | skill | install | utility>',
+      'persona: <DRE | FSA | CDO | CloudOps>',
+      'Functional spec provenance comes from git history',
+      'Do not emit `N/A`, `TBD`, or `[describe ...]` placeholders',
+      'Shape Menus',
+    ]),
+    requireFileNotContains('skills/authoring-functional-spec/SKILL.md', [
+      'last-reviewed',
+    ]),
+    requireFileNotContains('skills/authoring-functional-spec/references/functional-spec-template.md', [
+      'last-reviewed',
+    ]),
+    requireFileContains('skills/authoring-functional-spec/references/shape-lenses.md', [
+      '## Journey',
+      '## Surface',
+      '## Service',
+      '## Skill',
+      '## Install',
+      '## Utility',
     ]),
   ];
   return checks.find(Boolean) || null;
