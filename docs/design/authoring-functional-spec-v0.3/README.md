@@ -101,6 +101,7 @@ Phase-based, ordered. Agent must create a task per item:
 ### Phase 6
 
 - "Load" → "Read" (unambiguous tool action)
+- Add: use `doc-skills:writing-clearly-and-concisely` skill if available when writing the draft
 
 ### Phase 7
 
