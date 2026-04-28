@@ -48,13 +48,43 @@ Compare the current repo to Sheet column C. Abort with an error if they do not m
 
 ## Phase 4 — Gather References
 
-Ask for reference material before drafting. Read primary-repo functional specs and relevant code automatically once discovered. Use public web research when best-practice grounding would clarify the subject domain. Linear, Granola, Google Docs, Google Sheets, and cross-repo code are user-provided only. Digest behavioral signals only; avoid verbatim copying. Cite code only to ground behavioral claims. Stable production artifacts and sibling flow IDs may be named for traceability; design-phase names stay out of the functional body.
+If reference material has not already been provided by the user, ask before drafting. Read primary-repo functional specs and relevant code automatically once discovered. Use public web research for best-practice grounding when the subject domain has established external standards the user hasn't provided. Meeting notes, project management data, and documents in external services are user-provided only. Digest behavioral signals only; avoid verbatim copying. Cite code only to ground behavioral claims. Stable production artifacts and sibling flow IDs may be named for traceability; design-phase names stay out of the functional body.
 
 ## Phase 5 — Shape and Brainstorm
 
-Set frontmatter `shape:` to one of `journey | surface | service | skill | install | utility`. Set `persona:` to one of `DRE | FSA | CDO | CloudOps`, choosing the persona whose work or outcome is most directly affected. Load `references/shape-lenses.md` and use the matching shape section.
+Set frontmatter `shape:` to one of `journey | surface | service | skill | install | utility`. Set `persona:` to one of `DRE | FSA | CDO | CloudOps`, choosing the persona whose work or outcome is most directly affected. Read `references/shape-lenses.md` and use the matching shape section.
 
-Before drafting, enumerate the tentative behavioral model and assumptions, then brainstorm in this skill: ask one question at a time, prefer multiple choice when real alternatives exist, apply the altitude rule, align with sibling specs, and resolve behavioral gaps before they enter prose. Do not hand off to `superpowers:brainstorming`.
+**Interaction rules:**
+- Enumerate the tentative behavioral model before asking the first question
+- Ask one question at a time
+- Prefer multiple choice when the answer is not obvious from the subject alone
+- Align with sibling specs before drafting
+- Resolve all behavioral gaps before entering prose — do not carry gaps into the draft
+- Brainstorm inline here — do not hand off to `superpowers:brainstorming`
+
+**Key principles:**
+- YAGNI: omit sections that genuinely do not apply — absence means not applicable, not a failed checklist
+- Explore alternatives: when a behavioral gap has more than one valid resolution, present the options before choosing
+- Incremental validation: confirm each major behavioral assumption before moving to the next
+- Be flexible: if something does not make sense during the brainstorm, go back and clarify
+
+**Spec clarity discipline:**
+- Scope check first: if the request spans multiple canonical IDs, flag and decompose — one invocation = one canonical ID
+- Break the spec into sections where each has one clear purpose and can be understood independently
+- For each section, answer: what behavior does it describe, how does it connect to the flow, what does it depend on? If you cannot answer, the section boundary is wrong
+- A section doing double duty signals a scope or altitude problem — split or cut
+- The spec must be readable without implementation knowledge — if a sentence requires it, the altitude is wrong
+- If a gap surfaces during review, return to Phase 5 — do not fill gaps with placeholder prose or assumptions
+
+**Hard gate:** Do not proceed until every gap and ambiguity is resolved — no gaps enter the draft.
+
+**Behavioral summary:** After all gaps are resolved, write a brief behavioral summary capturing:
+- Agreed shape and persona
+- Key behavioral assumptions confirmed during brainstorm
+- Sections that will be included and why
+- Open Questions remaining (tagged `[design]`)
+
+Prompt: "Behavioral model agreed. Here's what I'll draft — let me know if anything needs adjusting before I write the spec." Wait for user approval before proceeding to Phase 6.
 
 ## Phase 6 — Draft Directly
 
