@@ -23,9 +23,9 @@ Return JSON only with this shape:
   "routes_implementation_plan_prose_to_writing_clearly_and_concisely": false,
   "rejects_ai_prompt_writing": false,
   "rejects_non_documentation_prose": false,
+  "hands_off_new_authoring_to_owning_workflow_first": false,
   "tightens_wording_without_changing_meaning": false,
   "preserves_required_doc_structure": false,
   "uses_strunk_reference_when_helpful": false,
-  "cites_upstream_attribution": false,
   "notes": "string"
 }

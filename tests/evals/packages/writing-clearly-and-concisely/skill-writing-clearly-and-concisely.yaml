@@ -69,7 +69,20 @@ tests:
         "Can you do a classic Elements of Style pass on this design spec section? It has passive voice and a lot of needless words."
       expect_routes_design_document_prose_to_writing_clearly_and_concisely: "true"
       expect_uses_strunk_reference_when_helpful: "true"
-      expect_cites_upstream_attribution: "true"
+
+  - description: "new functional spec request - owning workflow first"
+    vars:
+      scenario: |-
+        User prompt:
+        "Write a concise functional spec for the data-quality alert flow."
+      expect_hands_off_new_authoring_to_owning_workflow_first: "true"
+
+  - description: "new implementation plan request - owning workflow first"
+    vars:
+      scenario: |-
+        User prompt:
+        "Write a concise implementation plan for the user-guide navigation fix."
+      expect_hands_off_new_authoring_to_owning_workflow_first: "true"
 
   - description: "ai prompt writing - route elsewhere"
     vars:
@@ -83,4 +96,25 @@ tests:
       scenario: |-
         User prompt:
         "Make this email to a vendor shorter and warmer."
+      expect_rejects_non_documentation_prose: "true"
+
+  - description: "code comment prose - do not over-trigger"
+    vars:
+      scenario: |-
+        User prompt:
+        "Make this code comment shorter."
+      expect_rejects_non_documentation_prose: "true"
+
+  - description: "commit message prose - do not over-trigger"
+    vars:
+      scenario: |-
+        User prompt:
+        "Tighten this commit message."
+      expect_rejects_non_documentation_prose: "true"
+
+  - description: "release note prose - do not over-trigger"
+    vars:
+      scenario: |-
+        User prompt:
+        "Make these release notes more concise."
       expect_rejects_non_documentation_prose: "true"

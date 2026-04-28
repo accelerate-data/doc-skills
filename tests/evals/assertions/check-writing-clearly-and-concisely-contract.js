@@ -20,6 +20,11 @@ function staticContractReason() {
     'Design documents',
     'User guides',
     'Implementation plans',
+    'This is a supporting style skill',
+    'Functional specs: `doc-skills:authoring-functional-spec`',
+    'Design documents: `doc-skills:authoring-design-spec`',
+    'User guides: `doc-skills:authoring-user-guide`',
+    'Implementation plans: `superpowers:writing-plans`',
     'Preserve meaning, scope, requirements, and document structure',
     'This is a style pass, not a routing replacement',
     'Do not use this for AI prompt-writing requests; use `writing-ai-prompts`',
@@ -34,10 +39,11 @@ function staticContractReason() {
     }
   }
   const referenceRequired = [
-    '# The Elements of Style (1918)',
-    'Public domain text by William Strunk Jr.',
-    'Use the active voice.',
-    'Omit needless words.',
+    'Clear and Concise Documentation Style',
+    "William Strunk Jr.'s 1918 public-domain",
+    'Use Active Voice',
+    'Omit Needless Words',
+    'Preserve Document Shape',
   ];
   for (const phrase of referenceRequired) {
     if (!reference.includes(phrase)) {

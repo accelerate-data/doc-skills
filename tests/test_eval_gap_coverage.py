@@ -257,6 +257,11 @@ def test_writing_clearly_and_concisely_eval_covers_doc_routing_and_style_contrac
             "user guide prose",
             "implementation plan prose",
             "non-documentation prose",
+            "new functional spec request",
+            "new implementation plan request",
+            "code comment prose",
+            "commit message prose",
+            "release note prose",
         ],
     )
     assert_contains_all(
@@ -268,9 +273,9 @@ def test_writing_clearly_and_concisely_eval_covers_doc_routing_and_style_contrac
             "routes_implementation_plan_prose_to_writing_clearly_and_concisely",
             "rejects_ai_prompt_writing",
             "rejects_non_documentation_prose",
+            "hands_off_new_authoring_to_owning_workflow_first",
             "tightens_wording_without_changing_meaning",
             "preserves_required_doc_structure",
             "uses_strunk_reference_when_helpful",
-            "cites_upstream_attribution",
         ],
     )
