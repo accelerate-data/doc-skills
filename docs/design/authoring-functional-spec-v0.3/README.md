@@ -30,9 +30,11 @@ Phase-based, ordered. Agent must create a task per item:
 - [ ] Phase 2 — Sheet row fetched
 - [ ] Phase 3 — Repo verified, target path established
 - [ ] Phase 4 — Reference material gathered
-- [ ] Phase 5 — Shape, persona set; brainstorm complete
-- [ ] Phase 6 — Draft written
-- [ ] Phase 7 — Review passed; commit offered
+- [ ] Phase 5 — Shape, persona set; all gaps resolved; brainstorm complete
+- [ ] Phase 6 — Draft written (no gaps enter the draft)
+- [ ] Phase 7a — Inline review passed (hard stops + polish)
+- [ ] Phase 7b — Self-review checklist passed; spec committed
+- [ ] Phase 7c — User approved
 ```
 
 ### Contract
@@ -40,7 +42,7 @@ Phase-based, ordered. Agent must create a task per item:
 - Convert background statements to enforcement rules:
   - "Refuse to create a second functional spec for a canonical ID that already has one"
   - "Design docs are downstream — do not conflate them with the functional spec"
-- Strip handoff detail from routing-out clause — "hand the user the canonical ID and spec path, then invoke `superpowers:writing-plans`"
+- Strip handoff detail from routing-out clause — skill ends at user approval; what happens next is the user's decision
 
 ### Phase 0
 
@@ -89,6 +91,7 @@ Phase-based, ordered. Agent must create a task per item:
   - Section clarity: a section doing double duty signals a scope or altitude problem — split or cut
   - Self-contained: the spec must be readable without implementation knowledge — if a sentence requires it, the altitude is wrong
   - Iterate, don't paper over: if a gap surfaces during review, return to Phase 5 — do not fill gaps with placeholder prose or assumptions
+- Add hard gate: **do not proceed to Phase 6 until every gap and ambiguity is resolved** — no gaps enter the draft
 
 ### Phase 6
 
@@ -96,10 +99,24 @@ Phase-based, ordered. Agent must create a task per item:
 
 ### Phase 7
 
-- Split review into two tiers:
-  - **Hard stops** (fix before proceeding): altitude violations, scope violations, repo mismatch
-  - **Polish** (clean up before committing): Open Questions, frontmatter consistency
+**Inline review — two tiers:**
+- Hard stops (fix before proceeding): altitude violations, scope violations, repo mismatch
+- Polish (clean up before committing): Open Questions, frontmatter consistency
 - Commit verb: "Use `author` for new specs, `update` for existing"
+
+**Add self-review checklist (after draft is written, before commit):**
+- Placeholder scan: any "TBD", "TODO", incomplete sections, or vague requirements? Fix them
+- Internal consistency: do any sections contradict each other?
+- Scope check: is this spec focused on one canonical ID, or does it need decomposition?
+- Ambiguity check: could any requirement be interpreted two ways? Pick one and make it explicit
+- Fix issues inline — no need to re-review after fixing
+
+**Add user review gate:**
+- After self-review passes, commit the draft and tell the user the path
+- Exact prompt: "Spec written and committed to `<path>`. Please review it and let me know if you want any changes before we move to the implementation plan."
+- Wait for user response — do not proceed until approved
+- If changes requested: make them, re-run self-review, re-commit, re-prompt
+
 
 ---
 
