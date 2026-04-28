@@ -88,15 +88,39 @@ Prompt: "Behavioral model agreed. Here's what I'll draft — let me know if anyt
 
 ## Phase 6 — Draft Directly
 
-Load `references/functional-spec-template.md` and `references/writing-the-draft.md`. Emit frontmatter with required fields `id`, `title`, `shape`, and `persona`, plus optional `parent`, `sub-flows`, `renamed-from`, and `absorbs` only when applicable. Do not add date, review-date, version, or SHA frontmatter; review history and provenance come from git commits, tags, and SHAs. Draft directly; do not emit placeholder scaffolds. Include `Goal`, `Inputs`, `Outputs`, `Invariants`, and `Cross-refs` when applicable, then choose sections from the matching shape menu. Omit sections that genuinely do not apply.
+Read `references/functional-spec-template.md` and `references/writing-the-draft.md`. Use `doc-skills:writing-clearly-and-concisely` if available. Emit frontmatter with required fields `id`, `title`, `shape`, and `persona`, plus optional `renamed-from` and `absorbs` only when applicable. Do not add date, review-date, version, or SHA frontmatter; review history and provenance come from git commits, tags, and SHAs. Draft directly; do not emit placeholder scaffolds. Include `Goal`, `Inputs`, `Outputs`, `Invariants`, and `Cross-refs` when applicable, then choose sections from the matching shape menu. Omit sections that genuinely do not apply.
 
-## Phase 7 — Substantive Review and Commit Offer
+## Phase 7 — Review and User Approval
 
-Review and edit inline for altitude, internal coherence, scope match, cross-flow alignment, frontmatter consistency, completeness, and Open Questions cleanup. Refuse event names, payload schemas, label strings, UI details, file paths, class names, API shapes, and implementation plans. Use `superpowers:verification-before-completion` before claiming completion. Summarize the canonical ID, target path, sections populated, and remaining Open Questions. Offer a local commit with `git add <path>` and `git commit -m "docs(functional): author functional spec for <canonical-id>"`. Never run `git push`.
+**Hard stops — fix before proceeding:**
+Altitude violations, scope violations, repo mismatch. Use `superpowers:verification-before-completion` before claiming completion.
+
+**Polish — clean up before showing to user:**
+Open Questions cleanup, frontmatter consistency, completeness check.
+
+**Self-review checklist:**
+- Placeholder scan: any "TBD", "TODO", incomplete sections, or vague requirements? Fix them.
+- Internal consistency: do any sections contradict each other?
+- Scope check: is this spec focused on one canonical ID, or does it need decomposition?
+- Ambiguity check: could any requirement be interpreted two ways? Pick one and make it explicit.
+- Fix issues inline — no need to re-review after fixing.
+
+Refuse event names, payload schemas, label strings, UI details, file paths, class names, API shapes, and implementation plans.
+
+**User review gate:**
+After self-review passes, show the draft to the user (do not commit yet). Prompt: "Spec ready for review at `<path>`. Let me know if you want any changes — I'll commit once you're happy."
+
+Wait for user response. Do not commit until approved. If changes are requested, make them, re-run self-review, and re-prompt.
+
+After approval, commit with:
+- `git commit -m "docs(functional): author functional spec for <canonical-id>"` for new specs
+- `git commit -m "docs(functional): update functional spec for <canonical-id>"` for existing specs
+
+Never run `git push`. Summarize the canonical ID, target path, sections populated, and remaining Open Questions.
 
 ## References
 
-- `references/functional-spec-template.md` — v0.2 frontmatter and section menu.
+- `references/functional-spec-template.md` — frontmatter schema and expected section list.
 - `references/sheet-interop.md` — read-only `gws` commands, including column-C repo resolution.
 - `references/writing-the-draft.md` — altitude rule and cite boundaries.
 - `references/shape-lenses.md` — shape menus.
