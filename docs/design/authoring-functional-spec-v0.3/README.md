@@ -30,12 +30,9 @@ Phase-based, ordered. Agent must create a task per item:
 - [ ] Phase 2 — Sheet row fetched
 - [ ] Phase 3 — Repo verified, target path established
 - [ ] Phase 4 — Reference material gathered
-- [ ] Phase 5 — Shape, persona set; all gaps resolved; brainstorm complete
-- [ ] Phase 5b — Behavioral summary written, committed, and user-approved
-- [ ] Phase 6 — Draft written (no gaps enter the draft)
-- [ ] Phase 7a — Inline review passed (hard stops + polish)
-- [ ] Phase 7b — Self-review checklist passed; spec committed
-- [ ] Phase 7c — User approved
+- [ ] Phase 5 — Shape, persona set; gaps resolved; behavioral summary written and user-approved
+- [ ] Phase 6 — Draft written
+- [ ] Phase 7 — Review complete; spec committed and user-approved
 ```
 
 ### Contract
