@@ -4,7 +4,7 @@ This reference is the template for behavior-focused functional specs under `docs
 
 ## Functional Spec Altitude
 
-See `writing-the-draft.md` for the altitude test and discipline rules.
+See `altitude-discipline.md` for the altitude test and discipline rules.
 
 ## Frontmatter
 
@@ -72,6 +72,6 @@ Child pages may live alongside the README for supporting material — high-level
 
 ## Labels, Tags, and Signal Names
 
-See `writing-the-draft.md` for the three exception classes that allow citing a specific name by value.
+See `altitude-discipline.md` for the three exception classes that allow citing a specific name by value.
 
 

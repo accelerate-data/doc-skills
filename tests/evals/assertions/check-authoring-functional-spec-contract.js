@@ -53,30 +53,30 @@ function staticContractReason() {
       'No date, review-date, version, or SHA frontmatter',
       'git commits, tags, SHAs',
       'references/shape-lenses.md',
-      'references/brainstorm-discipline.md',
-      'references/review-discipline.md',
-      'references/functional-spec-template.md',
+      'references/brainstorming.md',
+      'references/reviewing.md',
+      'references/spec-template.md',
       'Behavioral model agreed',
       'Spec ready for review at',
       'Do not commit until approved',
       '`README.md` only',
       '`git push`',
     ]),
-    requireFileContains('skills/authoring-functional-spec/references/brainstorm-discipline.md', [
+    requireFileContains('skills/authoring-functional-spec/references/brainstorming.md', [
       'YAGNI',
       'Hard gate',
       'Behavioral summary format',
     ]),
-    requireFileContains('skills/authoring-functional-spec/references/review-discipline.md', [
+    requireFileContains('skills/authoring-functional-spec/references/reviewing.md', [
       'Hard stops',
       'Self-review checklist',
     ]),
-    requireFileContains('skills/authoring-functional-spec/references/sheet-interop.md', [
+    requireFileContains('skills/authoring-functional-spec/references/using-gws.md', [
       'Resolve allowed target repos from Sheet column C',
       'Never write to any Sheet cell from this skill',
       'gws auth status',
     ]),
-    requireFileContains('skills/authoring-functional-spec/references/functional-spec-template.md', [
+    requireFileContains('skills/authoring-functional-spec/references/spec-template.md', [
       'shape: <journey | surface | service | skill | install | utility>',
       'persona: <DRE | FSA | CDO | CloudOps>',
       'journey | surface | service | skill | install | utility',
@@ -93,7 +93,7 @@ function staticContractReason() {
       'invocation ID',
       'Granola',
     ]),
-    requireFileNotContains('skills/authoring-functional-spec/references/functional-spec-template.md', [
+    requireFileNotContains('skills/authoring-functional-spec/references/spec-template.md', [
       'last-reviewed',
       'parent: <parent-id>',
       'sub-flows:',

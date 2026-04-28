@@ -31,12 +31,12 @@ Create a task for each item and complete them in order:
    `Run gws auth login first, then retry.`
 2. Verify the current directory is inside a git checkout.
 3. Resolve the current repo from `git remote get-url origin`.
-4. Read the allowed target repo names at runtime from User-Flows-Details Sheet column C using `references/sheet-interop.md`. Case-fold and trim names; never use a hardcoded repo allowlist. Abort with an error listing the Sheet-derived repo names if the current repo is not in the allowed list.
+4. Read the allowed target repo names at runtime from User-Flows-Details Sheet column C using `references/using-gws.md`. Case-fold and trim names; never use a hardcoded repo allowlist. Abort with an error listing the Sheet-derived repo names if the current repo is not in the allowed list.
 5. Confirm `superpowers:verification-before-completion` is available before final completion claims. If unavailable, re-read the draft against all required fields manually before claiming completion.
 
 ## Phase 1 — Identify the Canonical ID
 
-Use the canonical ID present in the user's message if one is given. Otherwise ask which canonical ID to author. If the author cannot name it, use `references/sheet-interop.md` to list candidate IDs for the current repo, filtered by the runtime-resolved Sheet repo list.
+Use the canonical ID present in the user's message if one is given. Otherwise ask which canonical ID to author. If the author cannot name it, use `references/using-gws.md` to list candidate IDs for the current repo, filtered by the runtime-resolved Sheet repo list.
 
 ## Phase 2 — Fetch Sheet Row
 
@@ -61,13 +61,13 @@ Child pages may exist alongside the README (`docs/functional/<canonical-id>/<pag
 
 ## Phase 5 — Shape and Brainstorm
 
-Set `shape` and `persona` using the enums in `references/functional-spec-template.md`. Read `references/shape-lenses.md` for the matching section menu. Apply discipline from `references/brainstorm-discipline.md`.
+Set `shape` and `persona` using the enums in `references/spec-template.md`. Read `references/shape-lenses.md` for the matching section menu. Apply discipline from `references/brainstorming.md`.
 
-After resolving all gaps, write the behavioral summary (format in `references/brainstorm-discipline.md`) and prompt: "Behavioral model agreed. Here's what I'll draft — let me know if anything needs adjusting before I write the spec." Wait for user approval before proceeding to Phase 6.
+After resolving all gaps, write the behavioral summary (format in `references/brainstorming.md`) and prompt: "Behavioral model agreed. Here's what I'll draft — let me know if anything needs adjusting before I write the spec." Wait for user approval before proceeding to Phase 6.
 
 ## Phase 6 — Draft Directly
 
-- Read `references/functional-spec-template.md` and `references/writing-the-draft.md`; use `doc-skills:writing-clearly-and-concisely` if available
+- Read `references/spec-template.md` and `references/altitude-discipline.md`; use `doc-skills:writing-clearly-and-concisely` if available
 - Required frontmatter: `id`, `title`, `shape`, `persona`; add `renamed-from` / `absorbs` only when applicable
 - No date, review-date, version, or SHA frontmatter — provenance comes from git commits, tags, SHAs
 - Draft directly; no placeholder scaffolds
@@ -75,7 +75,7 @@ After resolving all gaps, write the behavioral summary (format in `references/br
 
 ## Phase 7 — Review and User Approval
 
-Review per `references/review-discipline.md`. Use `superpowers:verification-before-completion` before claiming completion. Refuse implementation-detail content — altitude test in `references/writing-the-draft.md`.
+Review per `references/reviewing.md`. Use `superpowers:verification-before-completion` before claiming completion. Refuse implementation-detail content — altitude test in `references/altitude-discipline.md`.
 
 Show the draft (do not commit yet). Prompt: "Spec ready for review at `<path>`. Let me know if you want any changes — I'll commit once you're happy."
 
@@ -89,9 +89,9 @@ Never run `git push`. Summarize canonical ID, target path, sections populated, a
 
 ## References
 
-- `references/functional-spec-template.md` — frontmatter schema and expected section list.
-- `references/sheet-interop.md` — read-only `gws` commands, including column-C repo resolution.
-- `references/brainstorm-discipline.md` — brainstorm rules, spec clarity, hard gate, behavioral summary format.
-- `references/review-discipline.md` — review tiers and self-review checklist.
-- `references/writing-the-draft.md` — altitude rule and cite boundaries.
+- `references/spec-template.md` — frontmatter schema and expected section list.
+- `references/using-gws.md` — read-only `gws` commands, including column-C repo resolution.
+- `references/brainstorming.md` — brainstorm rules, spec clarity, hard gate, behavioral summary format.
+- `references/reviewing.md` — review tiers and self-review checklist.
+- `references/altitude-discipline.md` — altitude rule and cite boundaries.
 - `references/shape-lenses.md` — shape menus.
