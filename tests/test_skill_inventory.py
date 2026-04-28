@@ -20,6 +20,7 @@ def test_doc_artifact_skill_inventory() -> None:
         "authoring-functional-spec",
         "authoring-design-spec",
         "authoring-user-guide",
+        "writing-clearly-and-concisely",
         "writing-ai-prompts",
     }
 

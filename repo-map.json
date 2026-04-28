@@ -20,7 +20,7 @@
     },
     "skills": {
       "path": "skills/",
-      "description": "Canonical skill directories: authoring-functional-spec, authoring-design-spec, authoring-user-guide, writing-ai-prompts."
+      "description": "Canonical skill directories: authoring-functional-spec, authoring-design-spec, authoring-user-guide, writing-clearly-and-concisely, writing-ai-prompts."
     },
     "validation_scripts": {
       "path": "scripts/",

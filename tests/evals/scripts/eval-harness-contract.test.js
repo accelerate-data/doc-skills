@@ -105,6 +105,13 @@ test('eval assertions reject all-true outputs when a scenario expects false', ()
         expect_rejects_user_guides: 'true',
       },
     },
+    {
+      assertion: 'assertions/check-writing-clearly-and-concisely-contract.js',
+      vars: {
+        expect_routes_design_document_prose_to_writing_clearly_and_concisely: 'false',
+        expect_rejects_non_documentation_prose: 'true',
+      },
+    },
   ];
 
   for (const testCase of cases) {

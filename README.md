@@ -9,6 +9,7 @@ Create and maintain functional specs, design specs, user guides, and AI prompts 
 | `authoring-functional-spec` | Author top-level behavior/functional specs under `docs/functional/` |
 | `authoring-design-spec` | Author design specs under `docs/design/` from an existing canonical functional spec |
 | `authoring-user-guide` | Create or update user guide pages under `docs/user-guide/` |
+| `writing-clearly-and-concisely` | Tighten prose in functional specs, design documents, user guides, and implementation plans |
 | `writing-ai-prompts` | Generate surgical, token-efficient prompts |
 
 ## Skill Entry Points
@@ -20,6 +21,7 @@ the skills; it does not provide a separate routing workflow.
 - Design specs: use `authoring-design-spec`; it requires an existing canonical functional spec.
 - Implementation plans: use `superpowers:writing-plans`; this plugin does not duplicate that workflow.
 - User guides: use `authoring-user-guide`.
+- Prose tightening for functional specs, design documents, user guides, and implementation plans: use `writing-clearly-and-concisely`.
 - AI prompt-writing requests: use `writing-ai-prompts`.
 
 ## Install

@@ -1,0 +1,31 @@
+You are selecting whether one installed skill should handle a real user request.
+Do not execute the request or modify files. Return JSON only.
+
+Real user request:
+
+{{scenario}}
+
+Before choosing an action, inspect `skills/writing-clearly-and-concisely/SKILL.md`.
+Decide how this installed skill applies to the user's request and workspace
+context. Set a field to true only when this skill clearly supports that behavior
+for this request; otherwise leave it false.
+
+Treat route fields as primary-skill decisions for prose polishing in the named
+documentation deliverable. Treat reject fields as true only when the current
+request is outside this skill's documentation-prose boundary.
+
+Return JSON only with this shape:
+
+{
+  "routes_functional_spec_prose_to_writing_clearly_and_concisely": false,
+  "routes_design_document_prose_to_writing_clearly_and_concisely": false,
+  "routes_user_guide_prose_to_writing_clearly_and_concisely": false,
+  "routes_implementation_plan_prose_to_writing_clearly_and_concisely": false,
+  "rejects_ai_prompt_writing": false,
+  "rejects_non_documentation_prose": false,
+  "hands_off_new_authoring_to_owning_workflow_first": false,
+  "tightens_wording_without_changing_meaning": false,
+  "preserves_required_doc_structure": false,
+  "uses_strunk_reference_when_helpful": false,
+  "notes": "string"
+}
