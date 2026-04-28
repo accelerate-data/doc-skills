@@ -8,7 +8,9 @@ Real user request:
 Before choosing an action, inspect `skills/authoring-functional-spec/SKILL.md`
 and its referenced files. Decide how this installed skill applies to the user's
 request and workspace context. Set a field to true only when this skill clearly
-supports that behavior for this request; otherwise leave it false.
+supports that behavior for this request; otherwise set it to false.
+
+Every field in the JSON must be present in your response. Never omit a field — use false as the default if the behavior is not clearly observed or not applicable to this request.
 
 Treat route fields as primary-skill decisions for the requested deliverable.
 Treat reject fields as true only when the current user request is for that other
