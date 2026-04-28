@@ -77,7 +77,12 @@ Phase-based, ordered. Agent must create a task per item:
   - Prefer multiple choice when the answer is not obvious from the subject alone
   - Align with sibling specs before drafting
   - Resolve all behavioral gaps before entering prose — do not carry gaps into the draft
-- "brainstorm in this skill" → "brainstorm inline here — do not hand off to `superpowers:brainstorming`"
+- "brainstorm inline here — do not hand off to `superpowers:brainstorming`"
+- Add spec clarity discipline block:
+  - Scope check first: if the request spans multiple canonical IDs, flag and decompose — one invocation = one canonical ID
+  - Section clarity: each section describes one behavioral aspect; a section doing double duty signals a scope problem
+  - Self-contained: the spec must be readable without implementation knowledge — if a sentence requires it, the altitude is wrong
+  - Iterate, don't paper over: if a gap surfaces during review, return to Phase 5 — do not fill gaps with placeholder prose or assumptions
 
 ### Phase 6
 
