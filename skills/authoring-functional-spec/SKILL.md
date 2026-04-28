@@ -60,34 +60,9 @@ Child pages may exist alongside the README (`docs/functional/<canonical-id>/<pag
 
 ## Phase 5 — Shape and Brainstorm
 
-Set `shape` and `persona` using the enums in `references/functional-spec-template.md`. Read `references/shape-lenses.md` for the matching section menu.
+Set `shape` and `persona` using the enums in `references/functional-spec-template.md`. Read `references/shape-lenses.md` for the matching section menu. Apply discipline from `references/brainstorm-discipline.md`.
 
-**Brainstorm rules:**
-- Enumerate the tentative behavioral model before asking the first question
-- Ask one question at a time; prefer multiple choice when the answer is not obvious
-- Align with sibling specs before drafting
-- When a behavioral gap has more than one valid resolution, present the options before choosing
-- Confirm each major behavioral assumption before moving to the next
-- Brainstorm inline here — do not hand off to `superpowers:brainstorming`
-
-**Spec clarity:**
-- One invocation = one canonical ID; flag and decompose if the request spans multiple IDs
-- Each section: one clear purpose, independently understandable
-- Each section must answer: what behavior, how it connects, what it depends on — unclear = wrong boundary
-- Section doing double duty = scope or altitude problem — split or cut
-- Spec must be readable without implementation knowledge; sentences that require it are too low
-- YAGNI: omit sections that genuinely do not apply — absence means not applicable
-- Gap surfaced during review? Return to Phase 5 — no placeholder prose
-
-**Hard gate:** Do not proceed until every gap and ambiguity is resolved.
-
-**Behavioral summary** — write before proceeding to Phase 6:
-- Agreed shape and persona
-- Key behavioral assumptions confirmed
-- Sections that will be included and why
-- Open Questions remaining (tagged `[design]`)
-
-Prompt: "Behavioral model agreed. Here's what I'll draft — let me know if anything needs adjusting before I write the spec." Wait for user approval.
+After resolving all gaps, write the behavioral summary (format in `references/brainstorm-discipline.md`) and prompt: "Behavioral model agreed. Here's what I'll draft — let me know if anything needs adjusting before I write the spec." Wait for user approval before proceeding to Phase 6.
 
 ## Phase 6 — Draft Directly
 
@@ -99,20 +74,8 @@ Prompt: "Behavioral model agreed. Here's what I'll draft — let me know if anyt
 
 ## Phase 7 — Review and User Approval
 
-| Tier | What to address |
-|---|---|
-| **Hard stops** (fix before showing user) | Altitude violations · scope violations · repo mismatch |
-| **Polish** (clean up) | Open Questions · frontmatter consistency · completeness |
+Review per `references/review-discipline.md`. Use `superpowers:verification-before-completion` before claiming completion. Refuse implementation-detail content — altitude test in `references/writing-the-draft.md`.
 
-Use `superpowers:verification-before-completion` before claiming completion. Refuse implementation-detail content — see `references/writing-the-draft.md` for the altitude test.
-
-**Self-review checklist:**
-- Placeholder scan: any "TBD", "TODO", or vague requirements? Fix them.
-- Internal consistency: do sections contradict each other?
-- Scope check: one canonical ID, or needs decomposition?
-- Ambiguity: any requirement interpretable two ways? Pick one.
-
-**User review gate:**
 Show the draft (do not commit yet). Prompt: "Spec ready for review at `<path>`. Let me know if you want any changes — I'll commit once you're happy."
 
 Do not commit until approved. If changes requested: revise → re-review → re-prompt.
@@ -127,5 +90,7 @@ Never run `git push`. Summarize canonical ID, target path, sections populated, a
 
 - `references/functional-spec-template.md` — frontmatter schema and expected section list.
 - `references/sheet-interop.md` — read-only `gws` commands, including column-C repo resolution.
+- `references/brainstorm-discipline.md` — brainstorm rules, spec clarity, hard gate, behavioral summary format.
+- `references/review-discipline.md` — review tiers and self-review checklist.
 - `references/writing-the-draft.md` — altitude rule and cite boundaries.
 - `references/shape-lenses.md` — shape menus.
