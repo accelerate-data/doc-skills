@@ -62,11 +62,13 @@ Read `shape-lenses.md` and use the matching shape section. Section names in the 
 
 ## File Layout
 
-All specs live at:
+The main spec lives at:
 
 ```text
 docs/functional/<canonical-id>/README.md
 ```
+
+Child pages may live alongside the README for supporting material — high-level design context, UI detail, or reference sketches that would lower the altitude of the main spec. Child pages are author-managed and are not authored or reviewed by this skill.
 
 ## Labels, Tags, and Signal Names
 

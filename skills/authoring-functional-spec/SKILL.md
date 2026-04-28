@@ -46,6 +46,8 @@ Fetch the row for the column B canonical ID. Extract only B canonical ID, C repo
 
 Compare the current repo to Sheet column C. Abort with an error if they do not match. The target path is `docs/functional/<canonical-id>/README.md`. If the target exists, update it in place — do not create a sibling, alternate, or duplicate spec. If it does not exist, create it.
 
+Child pages may exist alongside the README (e.g., `docs/functional/<canonical-id>/ui-details.md`, `design-notes.md`). These are author-managed supporting material — high-level design context, UI detail, or reference sketches that would lower the altitude of the main spec. This skill authors and reviews only `README.md`; child pages are out of scope.
+
 ## Phase 4 — Gather References
 
 If reference material has not already been provided by the user, ask before drafting. Read primary-repo functional specs and relevant code automatically once discovered. Use public web research for best-practice grounding when the subject domain has established external standards the user hasn't provided. Meeting notes, project management data, and documents in external services are user-provided only. Digest behavioral signals only; avoid verbatim copying. Cite code only to ground behavioral claims. Stable production artifacts and sibling flow IDs may be named for traceability; design-phase names stay out of the functional body.
