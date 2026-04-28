@@ -41,7 +41,6 @@
 - YAGNI ruthlessly — remove unnecessary features from all designs
 - Explore alternatives — always propose 2-3 approaches before settling
 - Incremental validation — present design, get approval before moving on
-- Brainstorm inline — do not hand off to `superpowers:brainstorming`
 
 ## Hard gate
 

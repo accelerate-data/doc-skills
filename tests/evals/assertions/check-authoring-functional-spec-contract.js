@@ -63,7 +63,6 @@ function staticContractReason() {
       '`git push`',
     ]),
     requireFileContains('skills/authoring-functional-spec/references/brainstorm-discipline.md', [
-      'do not hand off to `superpowers:brainstorming`',
       'YAGNI',
       'Hard gate',
       'Behavioral summary format',
