@@ -60,39 +60,34 @@ Child pages may exist alongside the README (`docs/functional/<canonical-id>/<pag
 
 ## Phase 5 — Shape and Brainstorm
 
-Set frontmatter `shape:` to one of `journey | surface | service | skill | install | utility`. Set `persona:` to one of `DRE | FSA | CDO | CloudOps`, choosing the persona whose work or outcome is most directly affected. Read `references/shape-lenses.md` and use the matching shape section.
+Set `shape` and `persona` using the enums in `references/functional-spec-template.md`. Read `references/shape-lenses.md` for the matching section menu.
 
-**Interaction rules:**
+**Brainstorm rules:**
 - Enumerate the tentative behavioral model before asking the first question
-- Ask one question at a time
-- Prefer multiple choice when the answer is not obvious from the subject alone
+- Ask one question at a time; prefer multiple choice when the answer is not obvious
 - Align with sibling specs before drafting
-- Resolve all behavioral gaps before entering prose — do not carry gaps into the draft
+- When a behavioral gap has more than one valid resolution, present the options before choosing
+- Confirm each major behavioral assumption before moving to the next
 - Brainstorm inline here — do not hand off to `superpowers:brainstorming`
 
-**Key principles:**
-- YAGNI: omit sections that genuinely do not apply — absence means not applicable, not a failed checklist
-- Explore alternatives: when a behavioral gap has more than one valid resolution, present the options before choosing
-- Incremental validation: confirm each major behavioral assumption before moving to the next
-- Be flexible: if something does not make sense during the brainstorm, go back and clarify
-
-**Spec clarity discipline:**
+**Spec clarity:**
 - One invocation = one canonical ID; flag and decompose if the request spans multiple IDs
 - Each section: one clear purpose, independently understandable
 - Each section must answer: what behavior, how it connects, what it depends on — unclear = wrong boundary
 - Section doing double duty = scope or altitude problem — split or cut
 - Spec must be readable without implementation knowledge; sentences that require it are too low
+- YAGNI: omit sections that genuinely do not apply — absence means not applicable
 - Gap surfaced during review? Return to Phase 5 — no placeholder prose
 
-**Hard gate:** Do not proceed until every gap and ambiguity is resolved — no gaps enter the draft.
+**Hard gate:** Do not proceed until every gap and ambiguity is resolved.
 
-**Behavioral summary:** After all gaps are resolved, write a brief behavioral summary capturing:
+**Behavioral summary** — write before proceeding to Phase 6:
 - Agreed shape and persona
-- Key behavioral assumptions confirmed during brainstorm
+- Key behavioral assumptions confirmed
 - Sections that will be included and why
 - Open Questions remaining (tagged `[design]`)
 
-Prompt: "Behavioral model agreed. Here's what I'll draft — let me know if anything needs adjusting before I write the spec." Wait for user approval before proceeding to Phase 6.
+Prompt: "Behavioral model agreed. Here's what I'll draft — let me know if anything needs adjusting before I write the spec." Wait for user approval.
 
 ## Phase 6 — Draft Directly
 
@@ -104,31 +99,29 @@ Prompt: "Behavioral model agreed. Here's what I'll draft — let me know if anyt
 
 ## Phase 7 — Review and User Approval
 
-**Hard stops — fix before proceeding:**
-Altitude violations, scope violations, repo mismatch. Use `superpowers:verification-before-completion` before claiming completion.
+| Tier | What to address |
+|---|---|
+| **Hard stops** (fix before showing user) | Altitude violations · scope violations · repo mismatch |
+| **Polish** (clean up) | Open Questions · frontmatter consistency · completeness |
 
-**Polish — clean up before showing to user:**
-Open Questions cleanup, frontmatter consistency, completeness check.
+Use `superpowers:verification-before-completion` before claiming completion. Refuse implementation-detail content — see `references/writing-the-draft.md` for the altitude test.
 
 **Self-review checklist:**
-- Placeholder scan: any "TBD", "TODO", incomplete sections, or vague requirements? Fix them.
-- Internal consistency: do any sections contradict each other?
-- Scope check: is this spec focused on one canonical ID, or does it need decomposition?
-- Ambiguity check: could any requirement be interpreted two ways? Pick one and make it explicit.
-- Fix issues inline — no need to re-review after fixing.
-
-Refuse event names, payload schemas, label strings, UI details, file paths, class names, API shapes, and implementation plans.
+- Placeholder scan: any "TBD", "TODO", or vague requirements? Fix them.
+- Internal consistency: do sections contradict each other?
+- Scope check: one canonical ID, or needs decomposition?
+- Ambiguity: any requirement interpretable two ways? Pick one.
 
 **User review gate:**
-After self-review passes, show the draft to the user (do not commit yet). Prompt: "Spec ready for review at `<path>`. Let me know if you want any changes — I'll commit once you're happy."
+Show the draft (do not commit yet). Prompt: "Spec ready for review at `<path>`. Let me know if you want any changes — I'll commit once you're happy."
 
-Wait for user response. Do not commit until approved. If changes are requested, make them, re-run self-review, and re-prompt.
+Do not commit until approved. If changes requested: revise → re-review → re-prompt.
 
-After approval, commit with:
-- `git commit -m "docs(functional): author functional spec for <canonical-id>"` for new specs
-- `git commit -m "docs(functional): update functional spec for <canonical-id>"` for existing specs
+After approval:
+- New spec: `git commit -m "docs(functional): author functional spec for <canonical-id>"`
+- Existing spec: `git commit -m "docs(functional): update functional spec for <canonical-id>"`
 
-Never run `git push`. Summarize the canonical ID, target path, sections populated, and remaining Open Questions.
+Never run `git push`. Summarize canonical ID, target path, sections populated, and remaining Open Questions.
 
 ## References
 
