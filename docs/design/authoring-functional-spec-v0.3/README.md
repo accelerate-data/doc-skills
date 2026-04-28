@@ -71,7 +71,12 @@ Phase-based, ordered. Agent must create a task per item:
 
 ### Phase 5
 
-- "real alternatives" → "when the answer is not obvious from the subject alone"
+- Extract interaction rules from the run-on sentence into explicit bullets:
+  - Enumerate the tentative behavioral model before asking the first question
+  - Ask one question at a time
+  - Prefer multiple choice when the answer is not obvious from the subject alone
+  - Align with sibling specs before drafting
+  - Resolve all behavioral gaps before entering prose — do not carry gaps into the draft
 - "brainstorm in this skill" → "brainstorm inline here — do not hand off to `superpowers:brainstorming`"
 
 ### Phase 6
@@ -133,7 +138,7 @@ Note: `renamed-from` and `absorbs` frontmatter fields stay — they track canoni
 
 | File | Change type |
 |---|---|
-| `skills/authoring-functional-spec/SKILL.md` | Edit — 11 targeted fixes + checklist + subflow removal |
+| `skills/authoring-functional-spec/SKILL.md` | Edit — 11 targeted fixes + checklist + Phase 5 interaction rules + subflow removal |
 | `skills/authoring-functional-spec/references/functional-spec-template.md` | Edit — altitude block → pointer; optional frontmatter simplified; child layout removed |
 | `skills/authoring-functional-spec/references/writing-the-draft.md` | No change |
 | `skills/authoring-functional-spec/references/shape-lenses.md` | No change |
