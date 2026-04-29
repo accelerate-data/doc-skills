@@ -79,11 +79,12 @@ After resolving all gaps, write the behavioral summary (format in `references/br
 
 ## Phase 7 — Review and User Approval
 
-Review per `references/reviewing.md`. Apply `doc-skills:writing-clearly-and-concisely` to tighten prose. Use `superpowers:verification-before-completion` before claiming completion. Refuse implementation-detail content — altitude test in `references/altitude-discipline.md`.
-
-Show the draft (do not commit yet). Prompt: "Spec ready for review at `<path>`. Let me know if you want any changes — I'll commit once you're happy."
-
-Do not commit until approved. If changes requested: revise → re-review → re-prompt.
+1. Review per `references/reviewing.md`.
+2. Apply `doc-skills:writing-clearly-and-concisely` to tighten prose.
+3. Refuse implementation-detail content — altitude test in `references/altitude-discipline.md`.
+4. Use `superpowers:verification-before-completion` before claiming completion.
+5. Show the draft (do not commit yet). Prompt: "Spec ready for review at `<path>`. Let me know if you want any changes — I'll commit once you're happy."
+6. If changes requested: revise → re-review → re-prompt. Do not commit until approved.
 
 After approval:
 - New spec: `git commit -m "docs(functional): author functional spec for <canonical-id>"`
