@@ -79,7 +79,7 @@ After resolving all gaps, write the behavioral summary (format in `references/br
 
 ## Phase 7 — Review and User Approval
 
-Review per `references/reviewing.md`. Use `superpowers:verification-before-completion` before claiming completion. Refuse implementation-detail content — altitude test in `references/altitude-discipline.md`.
+Review per `references/reviewing.md`. Apply `doc-skills:writing-clearly-and-concisely` to tighten prose. Use `superpowers:verification-before-completion` before claiming completion. Refuse implementation-detail content — altitude test in `references/altitude-discipline.md`.
 
 Show the draft (do not commit yet). Prompt: "Spec ready for review at `<path>`. Let me know if you want any changes — I'll commit once you're happy."
 

@@ -281,6 +281,8 @@ Before writing or claiming completion, check:
   or left as an unresolved product question.
 - Implementation plan tasks are absent.
 - `docs/design/README.md` is updated when it exists.
+- `doc-skills:writing-clearly-and-concisely` is applied to tighten prose before
+  showing the draft.
 - `superpowers:verification-before-completion` is invoked before completion
   when available.
 
