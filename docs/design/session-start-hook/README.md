@@ -1,6 +1,6 @@
 # Session Start Hook — Routing Priority Override
 
-> **Status:** Draft
+> **Status:** Implemented
 > **Linear issue:** [AD-30](https://linear.app/acceleratedata/issue/AD-30)
 
 ## Overview
@@ -38,7 +38,7 @@ implementation-tier to process-tier for their respective request types.
 
 ## Architecture / How It Works
 
-```
+```text
 hooks/
   hooks.json        ← declares SessionStart hook, references run-hook.cmd
   run-hook.cmd      ← cross-platform polyglot wrapper (bash on Unix, Git Bash on Windows)
