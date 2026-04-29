@@ -40,7 +40,11 @@ Use the canonical ID present in the user's message if one is given. Otherwise as
 
 ## Phase 2 — Fetch Sheet Row
 
-Fetch the row for the column B canonical ID. Extract only B canonical ID, C repo, D category, E title, and K persona. Do NOT read column H (Status — managed by Sheet owners, not this skill). Do not write to the Sheet. If no exact row matches, abort and ask the user to add or correct the Sheet row.
+Fetch the row for the column B canonical ID. Extract B canonical ID, C repo, D category, E title, H status, and K persona. Do not write to the Sheet. If no exact row matches, abort and ask the user to add or correct the Sheet row.
+
+If column H status is `Retired`, abort:
+
+> This flow is marked **Retired** in the User-Flows-Details Sheet. No spec will be authored or updated for a retired flow. If this retirement is wrong, ask a Sheet owner to update column H first.
 
 ## Phase 3 — Verify Repo and Existing Spec
 
