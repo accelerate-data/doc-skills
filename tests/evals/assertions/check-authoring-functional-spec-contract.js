@@ -45,7 +45,7 @@ function staticContractReason() {
       'superpowers:verification-before-completion',
       'Sheet column C',
       'never use a hardcoded repo allowlist',
-      'Do NOT read column H',
+      'ask a Sheet owner to update column H',
       'Do not write to the Sheet',
       'list candidate IDs for the current repo',
       'Cite code only to ground behavioral claims',

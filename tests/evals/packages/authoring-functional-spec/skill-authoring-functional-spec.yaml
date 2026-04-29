@@ -84,11 +84,21 @@ tests:
         The sheet has columns for canonical ID, repo, category, title, status, and persona. Status is operational metadata, not spec content.
       expect_fetches_sheet_row_for_id: "true"
       expect_extracts_allowed_sheet_columns_only: "true"
-      expect_does_not_read_status_column: "true"
       expect_does_not_write_sheet: "true"
       expect_verifies_repo_alignment: "true"
       expect_functional_spec_lives_in_sheet_repo: "true"
       expect_one_flow_one_functional_spec: "true"
+
+  - description: "retired flow — aborts before drafting when Sheet col H status is Retired"
+    vars:
+      scenario: |-
+        User prompt:
+        "Author the functional spec for intent-user-data-mart-build."
+
+        Workspace context:
+        The User-Flows-Details Sheet row for intent-user-data-mart-build has column H (Status) set to "Retired".
+      expect_aborts_on_retired_flow: "true"
+      expect_routes_functional_docs_to_authoring_functional_spec: "false"
 
   - description: "missing id — asks for canonical ID and aborts when no row found"
     vars:

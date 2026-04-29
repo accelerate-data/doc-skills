@@ -38,7 +38,7 @@ Return JSON only with this shape:
   "lists_candidate_ids_for_current_repo": false,
   "fetches_sheet_row_for_id": false,
   "extracts_allowed_sheet_columns_only": false,
-  "does_not_read_status_column": false,
+  "aborts_on_retired_flow": false,
   "does_not_write_sheet": false,
   "verifies_repo_alignment": false,
   "functional_spec_lives_in_sheet_repo": false,
