@@ -14,7 +14,7 @@ This skill is not for design specs, implementation plans, end-user help pages, o
 
 ## Checklist
 
-Create a task for each item and complete them in order:
+Create a task for each item. Mark each task `in_progress` when starting the phase and `completed` as soon as it finishes — before moving to the next:
 
 - [ ] Phase 0 — Preflight (gws auth, repo check, allowed repos)
 - [ ] Phase 1 — Canonical ID confirmed
