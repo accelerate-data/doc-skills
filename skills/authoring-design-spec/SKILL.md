@@ -1,6 +1,6 @@
 ---
 name: authoring-design-spec
-description: Use when authoring or updating developer-facing design specs under docs/design for an existing canonical functional spec, especially architecture decisions, technical tradeoffs, states, data flows, schemas, source-file references, and gaps between flow behavior and current design coverage
+description: Use when authoring or updating developer-facing design specs under docs/design for one or more canonical functional specs (many-to-many via tags), especially architecture decisions, technical tradeoffs, states, data flows, schemas, source-file references, and gaps between flow behavior and current design coverage
 ---
 
 # Authoring a Design Spec
@@ -14,7 +14,13 @@ truth; the design spec explains how the repo intends to realize that behavior.
 ## Canonical artifact model
 
 - One canonical user flow maps to exactly one functional spec.
-- One functional spec may be supported by many design docs.
+- The relationship between functional specs and design docs is many-to-many:
+  - A functional spec may be supported by many design docs.
+  - A design doc may cover behavior from many functional specs.
+- Tagging expresses this relationship. Each design doc carries a `functional-specs`
+  tag list in its frontmatter enumerating every canonical flow ID it covers; each
+  functional spec may carry a `design-specs` tag list listing the design docs that
+  realize it.
 - The User-Flows-Details Sheet repo column is the primary repo for the flow.
 - The functional spec and all design docs for that flow must live in the primary
   repo.
@@ -25,12 +31,12 @@ truth; the design spec explains how the repo intends to realize that behavior.
 This skill is **not** for:
 
 - User-flow, behavior, journey, or PRD-adjacent specs. Use
-  `authoring-functional-spec` first. A direct request to author a functional
+  `doc-skills:authoring-functional-spec` first. A direct request to author a functional
   spec is not a design-spec trigger; do not select this skill as the primary
   authoring workflow for that request.
 - Implementation plans. Use `superpowers:writing-plans`.
-- End-user help pages. Use `authoring-user-guide`.
-- AI prompt-writing requests. Use `writing-ai-prompts`.
+- End-user help pages. Use `doc-skills:authoring-user-guide`.
+- AI prompt-writing requests. Use `doc-skills:writing-ai-prompts`.
 
 For implementation-plan requests based on a functional spec or design spec, do
 not continue in design-spec authoring mode. Route to `superpowers:writing-plans`
@@ -44,16 +50,17 @@ design context to `superpowers:writing-plans`.
 
 ## Required inputs
 
-- Canonical flow ID.
-- Existing functional spec at `docs/functional/<canonical-id>/README.md`, or a child
-  flow file under `docs/functional/<parent-id>/NN-<child-slug>.md` whose
-  frontmatter `id` matches the canonical ID.
+- One or more canonical flow IDs. The first is the primary flow; additional IDs
+  indicate other functional specs this design doc also covers (many-to-many).
+- Existing functional spec for each canonical ID at
+  `docs/functional/<canonical-id>/README.md`, or a child flow file under
+  `docs/functional/<parent-id>/NN-<child-slug>.md` whose frontmatter `id` matches.
 - Access to the User-Flows-Details Sheet through `gws`, so the skill can verify
   the flow's Sheet repo before writing a design doc.
 
-If the canonical ID is missing, ask:
+If no canonical ID is supplied, ask:
 
-> Which canonical flow ID should this design spec support?
+> Which canonical flow ID(s) should this design spec cover?
 
 If the matching functional spec is not present, abort:
 
@@ -85,11 +92,12 @@ continuing in design-spec mode.
    functional-spec message above and include the `authoring-functional-spec`
    handoff context.
 
-### Phase 1 - Resolve the canonical flow
+### Phase 1 - Resolve the canonical flow(s)
 
-1. Use the supplied canonical ID, or ask for it if missing.
-2. Fetch the User-Flows-Details Sheet row for the canonical ID using the command
-   patterns from `authoring-functional-spec/references/sheet-interop.md`.
+1. Use the supplied canonical ID(s), or ask if none provided. Treat the first as
+   primary; resolve each additional ID through the same steps below.
+2. Fetch the User-Flows-Details Sheet row for the primary canonical ID using the
+   command patterns from `authoring-functional-spec/references/sheet-interop.md`.
    Extract column C (`repo`) as the primary repo.
 3. Verify the current repo from Phase 0 matches the Sheet repo. If they differ,
    abort:
@@ -98,10 +106,10 @@ continuing in design-spec mode.
    > this skill from the correct repo so the design doc lands beside the
    > functional spec.
 
-4. Check `docs/functional/<canonical-id>/README.md`.
+4. For each canonical ID, check `docs/functional/<canonical-id>/README.md`.
 5. If not found, search `docs/functional/**/*.md` for frontmatter
    `id: <canonical-id>`.
-6. Read the matching functional spec. Extract:
+6. Read each matching functional spec. For each, extract:
    - title and persona
    - goal, scope, trigger, inputs, outputs, success outcome
    - main flow or phases
@@ -121,12 +129,15 @@ continuing in design-spec mode.
 
 Read `docs/design/README.md` when present, then search `docs/design/` for:
 
-- the canonical flow ID
+- the canonical flow ID (including in `functional-specs` frontmatter tags)
 - the flow title
 - named production artifacts cited by the functional spec
 - sibling canonical IDs referenced in the functional spec
 - important behavioral nouns from the flow's goal, outputs, failures, and
   invariants
+
+When a design doc already carries the canonical ID in its `functional-specs` tag,
+treat it as a direct candidate for update rather than a new file.
 
 Read only related design specs. Build a short internal coverage map:
 
@@ -140,11 +151,12 @@ Read only related design specs. Build a short internal coverage map:
 
 Before drafting, present the gap analysis to the author:
 
-- canonical flow ID and functional-spec path
+- canonical flow ID(s) and functional-spec path(s) this design doc will tag
 - related design specs read
 - any functional-spec changes that need explicit author confirmation before
   editing the canonical functional spec in place
 - proposed target path under `docs/design/`
+- proposed `functional-specs` tag list for the design doc frontmatter
 - what should be covered or changed
 - what should stay out because it belongs in the functional spec or implementation
   plan
@@ -156,9 +168,9 @@ If no meaningful design gap exists, say so and stop without writing a new spec.
 Invoke `superpowers:brainstorming` through the active runtime's skill mechanism
 with this context:
 
-> We are authoring a design spec under `docs/design/` for canonical flow
-> `<canonical-id>`. The functional spec is `<functional-spec-path>` and is the behavioral
-> source of truth. Related design specs read: `<paths>`. Gap analysis:
+> We are authoring a design spec under `docs/design/` covering canonical flow(s)
+> `<canonical-id-list>`. Functional spec(s): `<functional-spec-paths>` — behavioral
+> source(s) of truth. Related design specs read: `<paths>`. Gap analysis:
 > `<covered/partial/missing/conflicting summary>`. Keep the design spec one level
 > below the functional spec and above the implementation plan. Pressure-test the
 > proposed design coverage, ask one question at a time, and keep implementation
@@ -176,10 +188,14 @@ an existing design directory already owns the topic.
 Use this structure unless the repo has a stricter local template:
 
 ```markdown
+---
+functional-specs: [<canonical-id>, ...]
+---
+
 # <Design Topic>
 
 > **Status:** Draft
-> **Functional spec:** [`<canonical-id>`](../../functional/<canonical-id>/README.md)
+> **Functional specs:** [`<canonical-id>`](../../functional/<canonical-id>/README.md), ...
 
 ## Overview
 
@@ -240,7 +256,9 @@ Include only state that matters to the design.
    correction, confirm with the author first, then edit the existing canonical
    functional spec in place. Never create an alternate functional spec for the
    same canonical flow.
-5. **Traceability**: Link to the functional spec and related design specs.
+5. **Traceability**: Tag every canonical flow ID this design doc covers in the
+   `functional-specs` frontmatter list and link to each functional spec in the
+   header. Link to related design specs in the relationship table.
 6. **Decisions over descriptions**: State the decision and rationale.
 7. **Present tense**: Describe the current intended design, not history.
 8. **Source file references**: Include accurate source files when code already
@@ -252,7 +270,8 @@ Include only state that matters to the design.
 
 Before writing or claiming completion, check:
 
-- The canonical functional spec exists and is linked.
+- All canonical functional specs this design doc covers exist, are listed in the
+  `functional-specs` frontmatter tag, and are linked in the header.
 - The current repo matches the Sheet repo for the canonical flow.
 - Related design specs were searched and read when relevant.
 - The spec explicitly covers a gap, partial coverage, or conflict.
@@ -269,7 +288,7 @@ Before writing or claiming completion, check:
 
 After writing, summarize:
 
-- canonical flow ID and functional-spec path
+- canonical flow ID(s) tagged and functional-spec path(s)
 - design spec path
 - related design specs read
 - functional spec updates made after author confirmation, or product-flow

@@ -15,10 +15,10 @@ paraphrase or invent user-facing elements.
 
 This skill is **not** for:
 
-- Functional specs, behavior specs, journey specs, or PRD-adjacent product flows. Use `authoring-functional-spec`.
-- Design specs or technical design docs. Use `authoring-design-spec`.
+- Functional specs, behavior specs, journey specs, or PRD-adjacent product flows. Use `doc-skills:authoring-functional-spec`.
+- Design specs or technical design docs. Use `doc-skills:authoring-design-spec`.
 - Implementation plans or task sequencing. Use `superpowers:writing-plans`.
-- AI prompt-writing requests. Use `writing-ai-prompts`.
+- AI prompt-writing requests. Use `doc-skills:writing-ai-prompts`.
 
 ## Autonomy
 
