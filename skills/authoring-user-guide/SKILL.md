@@ -2,7 +2,7 @@
 name: authoring-user-guide
 description: |
   Use when creating or updating end-user help pages, user documentation, screen docs, feature help pages, or docs under `docs/user-guide/`.
-  Trigger on "author user guide", "create user guide", "new user guide", "update user guide", "document <screen>", "help page for <feature>", or "/authoring-user-guide".
+  Trigger on "author user guide", "create user guide", "new user guide", "update user guide", "document [screen]", "help page for [feature]", or "/authoring-user-guide".
 ---
 
 # Authoring User Guide
