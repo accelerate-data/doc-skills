@@ -1,7 +1,7 @@
 {
   "name": "doc-skills",
   "description": "Create and maintain functional specs, design specs, user guides, and AI prompts for codebases.",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "author": {
     "name": "Accelerate Data"
   },
@@ -19,8 +19,9 @@
     "displayName": "Doc Skills",
     "shortDescription": "Documentation authoring skills.",
     "developerName": "Accelerate Data",
-    "category": "Documentation",
+    "category": "Productivity",
     "capabilities": [],
-    "screenshots": []
+    "screenshots": [],
+    "longDescription": "Create and maintain functional specs, design specs, user guides, and AI prompts for codebases."
   }
 }
